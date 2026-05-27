@@ -2,6 +2,82 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ========================================================================
+   Phenomenon-style landing page tokens (scoped under .brand-root)
+   Used by the new landing page. Other pages are unaffected.
+   ======================================================================== */
+.brand-root {
+  --brand-ink: #080d10;
+  --brand-bone: #fffefd;
+  --brand-surface: #272727;
+  --brand-orange: #590178;
+  --brand-orange-hover: #4a0166;
+  --brand-red: #ff3d2e;
+  --brand-section-radius: 40px;
+  --brand-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+
+  font-family: var(--font-albert), Arial, sans-serif;
+  color: var(--brand-ink);
+  background: var(--brand-bone);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.brand-root h1,
+.brand-root h2,
+.brand-root h3,
+.brand-root h4 {
+  font-family: var(--font-bricolage), Arial, sans-serif;
+  font-weight: 440;
+  text-shadow: none;
+}
+
+
+.brand-section-dark {
+  background: var(--brand-ink);
+  color: var(--brand-bone);
+}
+
+.brand-section-light {
+  background: var(--brand-bone);
+  color: var(--brand-ink);
+}
+
+.brand-eyebrow {
+  font-family: var(--font-albert), Arial, sans-serif;
+  font-size: 0.8125rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+/* Hide scrollbar on the landing page (still scrollable) */
+/* overflow-x: clip (not hidden) — clip prevents horizontal overflow without
+   creating a scroll container, so position: sticky descendants still work. */
+.brand-root {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  overflow-x: clip;
+}
+.brand-root::-webkit-scrollbar,
+.brand-root *::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+html:has(.brand-root),
+html:has(.brand-root) body {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  overflow-x: clip;
+}
+html:has(.brand-root)::-webkit-scrollbar,
+html:has(.brand-root) body::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
 /* Lenis smooth scrolling */
 html.lenis, html.lenis body {
   height: auto;
@@ -259,13 +335,13 @@ p {
   word-wrap: break-word;
 }
 
-a {
+a:not(.brand-root, .brand-root *) {
   transition: all 0.3s ease;
   color: #9FA8DA;
   text-decoration: none;
 }
 
-a:hover {
+a:not(.brand-root, .brand-root *):hover {
   color: #6D76B0;
 }
 

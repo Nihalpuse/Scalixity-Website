@@ -1,4 +1,4 @@
-import { Inter, Poppins, Playfair_Display, Source_Sans_3, Manrope } from "next/font/google";
+import { Inter, Poppins, Playfair_Display, Source_Sans_3, Manrope, Bricolage_Grotesque, Albert_Sans } from "next/font/google";
 import ClientLayout from "@/src/app/components/ClientLayout"; // Import the new client layout
 import "./globals.css";
 
@@ -33,6 +33,18 @@ const manrope = Manrope({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700", "800"],
   variable: "--font-manrope",
+  display: "swap",
+});
+
+const bricolage = Bricolage_Grotesque({
+  subsets: ["latin"],
+  variable: "--font-bricolage",
+  display: "swap",
+});
+
+const albertSans = Albert_Sans({
+  subsets: ["latin"],
+  variable: "--font-albert",
   display: "swap",
 });
 
@@ -82,7 +94,7 @@ export const metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className={`min-h-screen flex flex-col ${inter.variable} ${poppins.variable} ${playfair.variable} ${sourceSans.variable} ${manrope.variable}`}>
+      <body className={`min-h-screen flex flex-col ${inter.variable} ${poppins.variable} ${playfair.variable} ${sourceSans.variable} ${manrope.variable} ${bricolage.variable} ${albertSans.variable}`}>
         <ClientLayout>{children}</ClientLayout>
       </body>
     </html>

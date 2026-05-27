@@ -6,6 +6,7 @@ import { SiteHeader } from "@/src/app/components/site-header";
 import { Footer } from "@/src/app/components/footer";
 import Chatbot from "@/src/app/components/Chatbot";
 import OnboardingPopup from "@/src/app/components/OnboardingPopup";
+import { Agentation } from "agentation";
 import { v4 as uuidv4 } from "uuid";
 import Lenis from "lenis";
 import { gsap } from "gsap";
@@ -69,7 +70,8 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
       "/login", "/dashboard", "/dashboard/data", "/dashboard/useranalytics",
       "/dashboard/demographic", "/dashboard/technicalmetric", "/dashboard/AcquistionMatrix",
       "/dashboard/engagementmetrices", "/dashboard/home", "/dashboard/profile",
-      "/dashboard/settings", "/dashboard/work", "/dashboard/contact", "/dashboard/inquiry", "/dashboard/campaign","/dashboard/services"
+      "/dashboard/settings", "/dashboard/work", "/dashboard/contact", "/dashboard/inquiry", "/dashboard/campaign","/dashboard/services",
+      "/landing"
     ].includes(pathname) ||
     (pathname.startsWith("/dashboard/campaign/") && (pathname.endsWith("/form") || pathname.endsWith("/responses")));
 
@@ -421,6 +423,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
       
       </main>
       {!hideLayout && <Footer />}
+      {process.env.NODE_ENV === "development" && <Agentation />}
     </>
   );
 }

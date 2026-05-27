@@ -1,0 +1,152 @@
+"use client";
+
+import { useEffect, useRef } from "react";
+import { CTAButton } from "./CTAButton";
+
+// Adapted from src/app/components/scalixity-blends + growth-partner —
+// the existing site's "you don't need a developer team, you need a
+// growth engineering partner" framing.
+const EYEBROW = "AI solutions for data-driven companies";
+const TITLE = "Shipping AI is hard. Finding the right partner shouldn't be.";
+
+type Problem = {
+  problem: string;
+  solution: string;
+  ctaLabel: string;
+  ctaHref: string;
+};
+
+const PROBLEMS: Problem[] = [
+  {
+    problem:
+      "Most teams hire developers expecting growth — and just get code.",
+    solution:
+      "We're a growth engineering partner, not just a tech team. We engineer outcomes: AI-first systems, consulting-level thinking, and speed-focused execution that moves the business — not features for features' sake.",
+    ctaLabel: "Extend my team",
+    ctaHref: "#services",
+  },
+  {
+    problem:
+      "Your AI prototype works in a demo but breaks at scale?",
+    solution:
+      "We rebuild AI systems for production — proper infra, monitoring, cost controls, and the team to keep it running. From spike to scale-out, we own the outcome end to end.",
+    ctaLabel: "Scale my product",
+    ctaHref: "#services",
+  },
+  {
+    problem:
+      "Big AI idea but no MVP yet?",
+    solution:
+      "Our discovery process helps you focus on what matters most, and with pre-built ML frameworks we can speed up MVP development by 50%. Ship faster without sacrificing quality.",
+    ctaLabel: "Launch my MVP",
+    ctaHref: "#services",
+  },
+];
+
+export function Problems() {
+  return (
+    <section
+      data-nav-bg="light"
+      className="brand-section-light px-5 lg:px-10 pt-20 pb-24 lg:pt-32 lg:pb-32"
+    >
+      <p className="brand-eyebrow text-brand-ink-muted mb-8">{EYEBROW}</p>
+
+      <h2 className="font-bricolage text-brand-display text-brand-ink max-w-[22ch]">
+        {TITLE}
+      </h2>
+
+      <div className="mt-20 lg:mt-28">
+        {PROBLEMS.map((row, i) => (
+          <ProblemRow
+            key={row.ctaLabel}
+            row={row}
+            isLast={i === PROBLEMS.length - 1}
+          />
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function ProblemRow({ row, isLast }: { row: Problem; isLast: boolean }) {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // Last row has no follower — it never fades.
+    if (isLast) return;
+
+    const el = ref.current;
+    if (!el) return;
+    const next = el.nextElementSibling as HTMLElement | null;
+    if (!next) return;
+
+    const update = () => {
+      const elRect = el.getBoundingClientRect();
+      const nextRect = next.getBoundingClientRect();
+
+      // How much of `el` (in viewport pixels) is currently covered by `next`,
+      // assuming `next` lives below `el` in DOM order and rises over it as
+      // the user scrolls. Positive overlap when next.top < el.bottom.
+      const overlap = Math.max(0, elRect.bottom - nextRect.top);
+      const ratio = elRect.height > 0 ? overlap / elRect.height : 0;
+
+      // Stay fully visible up to 90% overlap, then linearly fade to 0 over
+      // the last 10% of overlap so the trailing edge of `el` doesn't peek
+      // out from behind `next`.
+      let opacity = 1;
+      if (ratio > 0.9) {
+        opacity = Math.max(0, 1 - (ratio - 0.9) / 0.1);
+      }
+      el.style.opacity = String(opacity);
+    };
+
+    let ticking = false;
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        update();
+        ticking = false;
+      });
+    };
+
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, [isLast]);
+
+  return (
+    <div
+      ref={ref}
+      className="sticky top-20 lg:top-24 bg-brand-bone py-12 lg:py-16 border-t border-brand-ink/10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start"
+    >
+      {/* Problem statement (narrow, left) */}
+      <div className="lg:col-span-3">
+        <p className="font-albert text-brand-body text-brand-ink leading-relaxed">
+          {row.problem}
+        </p>
+      </div>
+
+      {/* Solution + CTA (wide, center) */}
+      <div className="lg:col-span-6">
+        <p className="font-albert text-brand-body-lg text-brand-ink leading-relaxed">
+          {row.solution}
+        </p>
+        <div className="mt-8">
+          <CTAButton href={row.ctaHref} variant="primary" onLight>
+            {row.ctaLabel}
+          </CTAButton>
+        </div>
+      </div>
+
+      {/* Portrait video placeholder (right) */}
+      <div className="lg:col-span-3">
+        <div className="aspect-[9/14] w-full rounded-2xl bg-brand-ink" />
+      </div>
+    </div>
+  );
+}
