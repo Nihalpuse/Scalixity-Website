@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import { SiteHeader } from "@/src/app/components/site-header";
+import { PrimaryNav } from "@/src/app/landing/_components/PrimaryNav";
 import { Footer } from "@/src/app/components/footer";
 import Chatbot from "@/src/app/components/Chatbot";
 import OnboardingPopup from "@/src/app/components/OnboardingPopup";
@@ -18,6 +18,20 @@ if (typeof window !== "undefined") {
 }
 
 // const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:5000';
+
+// Site-wide nav config for the global PrimaryNav. Uses real routes (the
+// landing page mounts its own PrimaryNav with in-page anchors instead).
+const PRIMARY_NAV_LINKS = [
+  { label: "Services", href: "/services", hasDropdown: true },
+  { label: "Industries", href: "/industries", hasDropdown: true },
+  { label: "Cases", href: "/work", hasDropdown: false },
+  { label: "Company", href: "/company", hasDropdown: true },
+  { label: "Insights", href: "/blog", hasDropdown: false },
+  { label: "Resources", href: "/resources", hasDropdown: false },
+  { label: "Contacts", href: "/contact", hasDropdown: false },
+];
+const PRIMARY_NAV_CTA = { label: "Get in touch", href: "/contact" };
+
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [country, setCountry] = useState<string | null>(null);
@@ -417,7 +431,15 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
     <>
       {showOnboarding && <OnboardingPopup onClose={() => setShowOnboarding(false)} />}
       <Chatbot />
-      {!hideLayout && !hideHeaderOnly && <SiteHeader />}
+      {!hideLayout && !hideHeaderOnly && (
+        <div className="brand-chrome">
+          <PrimaryNav
+            logoText="scalixity"
+            links={PRIMARY_NAV_LINKS}
+            cta={PRIMARY_NAV_CTA}
+          />
+        </div>
+      )}
       <main className="flex-1">
         {children}
       

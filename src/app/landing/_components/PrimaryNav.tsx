@@ -103,7 +103,7 @@ const DROPDOWN_DATA: Record<string, NavDropdownData> = {
     cta: {
       title: "Ready to bring your AI idea to life?",
       buttonLabel: "Let's talk",
-      buttonHref: "#contact-form",
+      buttonHref: "/contact",
     },
     preview: "/images/industries.webp",
   },
@@ -120,6 +120,7 @@ const DROPDOWN_DATA: Record<string, NavDropdownData> = {
       buttonLabel: "Read our story",
       buttonHref: "/company",
     },
+    preview: "/images/company.webp",
   },
 };
 

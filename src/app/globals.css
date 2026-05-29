@@ -335,13 +335,18 @@ p {
   word-wrap: break-word;
 }
 
-a:not(.brand-root, .brand-root *) {
+/* .brand-chrome marks brand-styled site chrome (e.g. the global PrimaryNav)
+   that lives OUTSIDE a full .brand-root page wrapper. Excluding it here lets
+   its links keep their Tailwind brand-* colors instead of inheriting the
+   legacy periwinkle link color below — without gating the whole page in
+   .brand-root (which would also hide scrollbars site-wide). */
+a:not(.brand-root, .brand-root *, .brand-chrome, .brand-chrome *) {
   transition: all 0.3s ease;
   color: #9FA8DA;
   text-decoration: none;
 }
 
-a:not(.brand-root, .brand-root *):hover {
+a:not(.brand-root, .brand-root *, .brand-chrome, .brand-chrome *):hover {
   color: #6D76B0;
 }
 
@@ -711,6 +716,69 @@ button:active, .button-primary:active, .button-secondary:active {
   box-sizing: border-box;
   width: 100%;
   max-width: 100%;
+}
+
+/* Paper plane "send" animation — uses CSS `offset-path` so the plane
+   follows a real geometric curve: straight horizontal segment (linear
+   feel), then a smooth bezier arc up and to the right exiting the
+   viewport. `offset-rotate: auto` keeps the plane oriented along the
+   tangent of the path, so it points right at the start and naturally
+   rotates upward as the curve arcs. */
+@keyframes paper-plane-fly {
+  0% {
+    offset-distance: 0%;
+    opacity: 0;
+  }
+  6% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    offset-distance: 100%;
+    opacity: 0;
+  }
+}
+
+.paper-plane-fly {
+  /* Path: starts at (0,0), goes linearly right for 300px, then curves
+     smoothly up-right to (1500, -1500). The cubic bezier's first
+     control point matches the linear tangent so the transition between
+     segments is seamless. */
+  offset-path: path("M 0 0 L 300 0 C 600 0, 900 -300, 1500 -1500");
+  offset-rotate: auto;
+  offset-distance: 0%;
+  /* translate(-50%, -50%) centers the plane on the current offset
+     position; without it the SVG's top-left would track the path
+     instead of its center. */
+  transform: translate(-50%, -50%);
+  animation: paper-plane-fly 1.8s cubic-bezier(0.35, 0.05, 0.4, 1)
+    forwards;
+}
+
+/* Dotted trail behind the plane. The SVG path uses stroke-dasharray
+   for the dots; the opacity keyframe fades it in once the plane is
+   visibly launched, then fades it back out as the plane reaches its
+   exit point — so the trail "dissipates" rather than snapping off. */
+@keyframes paper-plane-trail {
+  0% {
+    opacity: 0;
+  }
+  18% {
+    opacity: 0.55;
+  }
+  70% {
+    opacity: 0.55;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.paper-plane-trail {
+  opacity: 0;
+  animation: paper-plane-trail 1.8s ease-out forwards;
 }
 
 /* Custom animations */

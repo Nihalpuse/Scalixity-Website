@@ -35,7 +35,6 @@ export default function LandingPage() {
           title={content.hero.title}
           subtitle={content.hero.subtitle}
           ctas={content.hero.ctas as { label: string; href: string; variant?: "primary" | "secondary" }[]}
-          showreelLabel={content.hero.showreel.label}
         />
 
         <CurvedDivider fromColor="ink" className="-mt-px relative z-10" />

@@ -11,7 +11,6 @@ type HeroProps = {
   title: string;
   subtitle: string;
   ctas: CTA[];
-  showreelLabel: string;
 };
 
 // Copy ported from src/app/components/landing-hero, trusted-companies,
@@ -30,7 +29,7 @@ const STATS: { value: string; label: string }[] = [
   { value: "4+", label: "continents — products shipped globally" },
 ];
 
-export function Hero({ eyebrow, title, ctas, showreelLabel }: HeroProps) {
+export function Hero({ eyebrow, title, ctas }: HeroProps) {
   return (
     <section className="relative bg-brand-ink text-brand-bone">
       <div className="px-5 pt-40 lg:px-10 lg:pt-48">
@@ -59,7 +58,7 @@ export function Hero({ eyebrow, title, ctas, showreelLabel }: HeroProps) {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-20 items-start">
           {/* Left: sticky showreel */}
           <div className="lg:sticky lg:top-24 lg:self-start">
-            <ShowreelPlaceholder label={showreelLabel} />
+            <ShowreelPlaceholder />
           </div>
 
           {/* Right: scrolls past the sticky showreel */}
