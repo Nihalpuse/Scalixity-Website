@@ -1,5 +1,8 @@
 import { CTAButton } from "./CTAButton";
 import { ShowreelPlaceholder } from "./ShowreelPlaceholder";
+import { Scramble } from "./Scramble";
+import { StaggerText } from "./StaggerText";
+import { AnimatedNumber } from "./AnimatedNumber";
 
 type CTA = { label: string; href: string; variant?: "primary" | "secondary" };
 
@@ -31,10 +34,12 @@ export function Hero({ eyebrow, title, ctas, showreelLabel }: HeroProps) {
   return (
     <section className="relative bg-brand-ink text-brand-bone">
       <div className="px-5 pt-40 lg:px-10 lg:pt-48">
-        <p className="brand-eyebrow text-brand-bone-muted mb-8">{eyebrow}</p>
+        <p className="brand-eyebrow text-brand-bone-muted mb-8">
+          <Scramble>{eyebrow}</Scramble>
+        </p>
 
         <h1 className="font-bricolage text-brand-display text-brand-bone max-w-[18ch]">
-          {title}
+          <StaggerText>{title}</StaggerText>
         </h1>
 
         <div className="mt-10 flex flex-wrap gap-3">
@@ -65,7 +70,7 @@ export function Hero({ eyebrow, title, ctas, showreelLabel }: HeroProps) {
 
             <div>
               <p className="brand-eyebrow text-brand-bone-muted mb-6">
-                {INVESTORS_EYEBROW}
+                <Scramble>{INVESTORS_EYEBROW}</Scramble>
               </p>
               <div className="grid grid-cols-2 md:grid-cols-4 border-t border-brand-bone-faint">
                 {INVESTORS.map((name, i) => (
@@ -90,7 +95,7 @@ export function Hero({ eyebrow, title, ctas, showreelLabel }: HeroProps) {
                 scrolls above together. */}
             <div className="lg:aspect-[5/4] lg:flex lg:flex-col">
               <p className="brand-eyebrow text-brand-bone-muted mb-6">
-                {STATS_EYEBROW}
+                <Scramble>{STATS_EYEBROW}</Scramble>
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 border-t border-brand-bone-faint lg:flex-1 lg:auto-rows-fr">
                 {STATS.map((stat, i) => {
@@ -106,7 +111,7 @@ export function Hero({ eyebrow, title, ctas, showreelLabel }: HeroProps) {
                       } ${isBottomRow ? "border-t border-brand-bone-faint" : ""}`}
                     >
                       <div className="font-bricolage text-5xl lg:text-6xl text-brand-bone leading-none">
-                        {stat.value}
+                        <AnimatedNumber value={stat.value} />
                       </div>
                       <p className="mt-4 font-albert text-brand-body text-brand-bone-muted max-w-[26ch]">
                         {stat.label}

@@ -1,11 +1,31 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CTAButton } from "./CTAButton";
+import { Scramble } from "./Scramble";
+import { StaggerText } from "./StaggerText";
 
-// Ported from src/app/components/success-stories. Project metadata
-// (tags, techStack, timeline) is plausible-but-placeholder — replace with
-// real case-study data when available.
+// API integration ported from src/app/components/project-showcase. The
+// existing `/api/work/projects` endpoint returns a thinner project shape
+// than the rich CaseStudy UI needs (no techStack, results, region…), so
+// fields the API doesn't provide get sensible defaults at map time and
+// the FALLBACK_CASES mock below seeds the initial render. If the fetch
+// fails or returns an empty array, the mock stays.
+const baseURL =
+  process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5000";
+
+type ApiProject = {
+  id: number;
+  title: string;
+  description?: string | null;
+  image?: string | null;
+  liveUrl?: string | null;
+  live_url?: string | null;
+  category?: string | null;
+  year?: string | null;
+  color?: string | null;
+};
+
 const INTRO = {
   eyebrow: "Featured cases",
   title:
@@ -23,9 +43,10 @@ type CaseStudy = {
   timeline: string;
   results: string[];
   ctaHref: string;
+  image?: string;
 };
 
-const CASES: CaseStudy[] = [
+const FALLBACK_CASES: CaseStudy[] = [
   {
     slug: "insurance",
     tags: ["AI", "AUTOMATION", "INSURANCE"],
@@ -79,24 +100,79 @@ const CASES: CaseStudy[] = [
   },
 ];
 
+function mapApiProjectToCase(project: ApiProject): CaseStudy {
+  // Tags come back from the API as a single string (e.g. "AI, AUTOMATION");
+  // split on comma/whitespace and uppercase so they render as #TAGS.
+  const tags = project.category
+    ? project.category
+        .split(/[,\s]+/)
+        .map((t) => t.trim().toUpperCase())
+        .filter(Boolean)
+    : [];
+
+  return {
+    slug: String(project.id),
+    tags,
+    title: project.title,
+    client: project.title,
+    region: project.year ?? "—",
+    flag: "",
+    techStack: project.description ?? "—",
+    timeline: project.year ?? "—",
+    // The current API doesn't return a results bullet list; leave it
+    // empty and let the card hide the Results block when empty.
+    results: [],
+    ctaHref: project.liveUrl || project.live_url || "/work",
+    image: project.image ?? undefined,
+  };
+}
+
 export function Cases() {
+  // Seed with the mock so SSR + first paint always show full content.
+  // The fetch below upgrades to live data on the client if the endpoint
+  // is reachable and returns a non-empty list.
+  const [cases, setCases] = useState<CaseStudy[]>(FALLBACK_CASES);
+
+  useEffect(() => {
+    let cancelled = false;
+    const fetchCases = async () => {
+      try {
+        const response = await fetch(`${baseURL}/api/work/projects`);
+        if (!response.ok) return; // keep fallback
+        const data: ApiProject[] = await response.json();
+        if (cancelled) return;
+        if (Array.isArray(data) && data.length > 0) {
+          setCases(data.map(mapApiProjectToCase));
+        }
+      } catch {
+        // Network error or invalid JSON — keep fallback silently.
+      }
+    };
+    fetchCases();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   return (
     <section
       data-nav-bg="light"
       className="brand-section-light px-5 lg:px-10 pt-20 pb-24 lg:pt-32 lg:pb-32"
     >
-      <p className="brand-eyebrow text-brand-ink-muted mb-8">{INTRO.eyebrow}</p>
+      <p className="brand-eyebrow text-brand-ink-muted mb-8">
+        <Scramble>{INTRO.eyebrow}</Scramble>
+      </p>
 
       <h2 className="font-bricolage text-brand-display text-brand-ink max-w-[34ch]">
-        {INTRO.title}
+        <StaggerText>{INTRO.title}</StaggerText>
       </h2>
 
       <div className="mt-16 lg:mt-24">
-        {CASES.map((c, i) => (
+        {cases.map((c, i) => (
           <CaseCard
             key={c.slug}
             data={c}
-            isLast={i === CASES.length - 1}
+            isLast={i === cases.length - 1}
           />
         ))}
       </div>
@@ -154,12 +230,22 @@ function CaseCard({ data, isLast }: { data: CaseStudy; isLast: boolean }) {
       className="sticky top-20 lg:top-24 bg-brand-bone rounded-t-3xl pt-8 lg:pt-10 pb-8 lg:pb-10 shadow-[0_-8px_24px_-12px_rgba(8,13,16,0.08)]"
     >
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-start">
-        {/* Case image (placeholder) */}
+        {/* Case image — real preview when the API supplied one, gradient
+            placeholder with the client name as fallback. */}
         <div className="lg:col-span-5">
           <div className="aspect-[5/4] rounded-2xl overflow-hidden bg-gradient-to-br from-stone-300 via-stone-400 to-stone-600 relative">
-            <div className="absolute inset-0 flex items-center justify-center font-bricolage text-2xl uppercase tracking-[0.18em] text-brand-bone/70">
-              {data.client}
-            </div>
+            {data.image ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={data.image}
+                alt={data.client}
+                className="absolute inset-0 h-full w-full object-cover"
+              />
+            ) : (
+              <div className="absolute inset-0 flex items-center justify-center font-bricolage text-2xl uppercase tracking-[0.18em] text-brand-bone/70">
+                {data.client}
+              </div>
+            )}
           </div>
         </div>
 
@@ -206,20 +292,24 @@ function CaseCard({ data, isLast }: { data: CaseStudy; isLast: boolean }) {
             </div>
           </div>
 
-          {/* Results */}
-          <div className="pt-4 border-t border-brand-ink/10">
-            <p className="brand-eyebrow text-brand-ink-muted mb-2">Results</p>
-            <ul className="space-y-1.5">
-              {data.results.map((r) => (
-                <li
-                  key={r}
-                  className="font-albert text-sm lg:text-base text-brand-ink"
-                >
-                  {r}
-                </li>
-              ))}
-            </ul>
-          </div>
+          {/* Results — only rendered if the case has actual result
+              bullets, otherwise the section is hidden to keep the card
+              tidy (the API doesn't currently return them). */}
+          {data.results.length > 0 && (
+            <div className="pt-4 border-t border-brand-ink/10">
+              <p className="brand-eyebrow text-brand-ink-muted mb-2">Results</p>
+              <ul className="space-y-1.5">
+                {data.results.map((r) => (
+                  <li
+                    key={r}
+                    className="font-albert text-sm lg:text-base text-brand-ink"
+                  >
+                    {r}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
 
           {/* CTA */}
           <div className="mt-1">

@@ -87,3 +87,7 @@ ecosystem.config.js
 next-env.d.ts
 
 *storybook.log
+skills-lock.json
+.agents/skills/agentation/SKILL.md
+
+landing-source/

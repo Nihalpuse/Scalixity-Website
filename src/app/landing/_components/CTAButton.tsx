@@ -19,7 +19,7 @@ type CTAButtonProps = {
 };
 
 const REST_BY_VARIANT: Record<Variant, string> = {
-  primary: "bg-brand-orange text-brand-bone",
+  primary: "bg-brand-purple text-brand-bone",
   secondary: "bg-brand-bone-faint text-brand-bone border border-brand-bone-faint",
   ghost: "bg-brand-bone text-brand-ink",
   dark: "bg-brand-ink text-brand-bone",
@@ -28,8 +28,8 @@ const REST_BY_VARIANT: Record<Variant, string> = {
 const REVEAL_BY_VARIANT: Record<Variant, string> = {
   primary: "bg-brand-bone",
   secondary: "bg-brand-bone",
-  ghost: "bg-brand-orange",
-  dark: "bg-brand-orange",
+  ghost: "bg-brand-purple",
+  dark: "bg-brand-purple",
 };
 
 const HOVER_TEXT_BY_VARIANT: Record<Variant, string> = {

@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { CTAButton } from "./CTAButton";
+import { Scramble } from "./Scramble";
+import { StaggerText } from "./StaggerText";
 
 const EYEBROW = "Key industries";
 const TITLE = "Our areas of expertise";
@@ -94,10 +96,12 @@ export function Industries() {
       data-nav-bg="light"
       className="brand-section-light px-5 lg:px-10 pt-20 pb-24 lg:pt-32 lg:pb-32"
     >
-      <p className="brand-eyebrow text-brand-ink-muted mb-8">{EYEBROW}</p>
+      <p className="brand-eyebrow text-brand-ink-muted mb-8">
+        <Scramble>{EYEBROW}</Scramble>
+      </p>
 
       <h2 className="font-bricolage text-brand-display text-brand-ink mb-10 lg:mb-12">
-        {TITLE}
+        <StaggerText>{TITLE}</StaggerText>
       </h2>
 
       {/* Tabs */}
@@ -176,7 +180,7 @@ export function Industries() {
 function BulletItem({ children }: { children: React.ReactNode }) {
   return (
     <li className="flex gap-3 font-albert text-sm lg:text-base text-brand-ink leading-snug">
-      <span aria-hidden="true" className="text-brand-orange mt-[2px] shrink-0">
+      <span aria-hidden="true" className="text-brand-purple mt-[2px] shrink-0">
         ▸
       </span>
       <span>{children}</span>

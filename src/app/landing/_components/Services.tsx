@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import { CTAButton } from "./CTAButton";
+import { Scramble } from "./Scramble";
+import { StaggerText } from "./StaggerText";
 
 // Services adapted from src/app/components/growth-partner + process on
 // the existing Scalixity landing.
@@ -175,10 +177,10 @@ export function Services() {
       {/* Intro */}
       <div className="px-5 lg:px-10 pt-20 lg:pt-32 pb-12 lg:pb-20">
         <p className="brand-eyebrow text-brand-bone-muted mb-8">
-          {INTRO.eyebrow}
+          <Scramble>{INTRO.eyebrow}</Scramble>
         </p>
         <h2 className="font-bricolage text-brand-display text-brand-bone max-w-[20ch]">
-          {INTRO.title}
+          <StaggerText>{INTRO.title}</StaggerText>
         </h2>
         <p className="mt-8 lg:mt-12 font-albert text-brand-body-lg text-brand-bone-muted max-w-2xl">
           {INTRO.description}
@@ -221,7 +223,7 @@ export function Services() {
                 }}
               >
                 <h3 className="font-bricolage text-brand-display text-brand-bone max-w-[20ch] mb-10 lg:mb-12">
-                  {cohort.title}
+                  <StaggerText>{cohort.title}</StaggerText>
                 </h3>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 border-t border-brand-bone-faint">

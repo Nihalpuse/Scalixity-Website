@@ -137,7 +137,7 @@ function ItemsList({ items }: { items: NavSubItem[] }) {
         <li key={item.label}>
           <Link
             href={item.href}
-            className="font-bricolage text-2xl text-brand-ink hover:text-brand-orange transition-colors duration-200 ease-brand-out"
+            className="font-bricolage text-2xl text-brand-ink hover:text-brand-purple transition-colors duration-200 ease-brand-out"
           >
             {item.label}
           </Link>

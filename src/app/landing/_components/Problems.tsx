@@ -2,6 +2,8 @@
 
 import { useEffect, useRef } from "react";
 import { CTAButton } from "./CTAButton";
+import { Scramble } from "./Scramble";
+import { StaggerText } from "./StaggerText";
 
 // Adapted from src/app/components/scalixity-blends + growth-partner —
 // the existing site's "you don't need a developer team, you need a
@@ -49,10 +51,12 @@ export function Problems() {
       data-nav-bg="light"
       className="brand-section-light px-5 lg:px-10 pt-20 pb-24 lg:pt-32 lg:pb-32"
     >
-      <p className="brand-eyebrow text-brand-ink-muted mb-8">{EYEBROW}</p>
+      <p className="brand-eyebrow text-brand-ink-muted mb-8">
+        <Scramble>{EYEBROW}</Scramble>
+      </p>
 
       <h2 className="font-bricolage text-brand-display text-brand-ink max-w-[22ch]">
-        {TITLE}
+        <StaggerText>{TITLE}</StaggerText>
       </h2>
 
       <div className="mt-20 lg:mt-28">
@@ -122,30 +126,25 @@ function ProblemRow({ row, isLast }: { row: Problem; isLast: boolean }) {
   return (
     <div
       ref={ref}
-      className="sticky top-20 lg:top-24 bg-brand-bone py-12 lg:py-16 border-t border-brand-ink/10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start"
+      className="sticky top-20 lg:top-24 bg-brand-bone py-12 lg:py-16 border-t border-brand-ink/10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start"
     >
       {/* Problem statement (narrow, left) */}
-      <div className="lg:col-span-3">
-        <p className="font-albert text-brand-body text-brand-ink leading-relaxed">
+      <div className="lg:col-span-4">
+        <p className="font-albert text-lg lg:text-xl text-brand-ink leading-relaxed">
           {row.problem}
         </p>
       </div>
 
-      {/* Solution + CTA (wide, center) */}
-      <div className="lg:col-span-6">
-        <p className="font-albert text-brand-body-lg text-brand-ink leading-relaxed">
+      {/* Solution + CTA (wide, right) */}
+      <div className="lg:col-span-8">
+        <p className="font-albert text-xl lg:text-2xl text-brand-ink leading-relaxed">
           {row.solution}
         </p>
-        <div className="mt-8">
+        <div className="mt-10">
           <CTAButton href={row.ctaHref} variant="primary" onLight>
             {row.ctaLabel}
           </CTAButton>
         </div>
-      </div>
-
-      {/* Portrait video placeholder (right) */}
-      <div className="lg:col-span-3">
-        <div className="aspect-[9/14] w-full rounded-2xl bg-brand-ink" />
       </div>
     </div>
   );

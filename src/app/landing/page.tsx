@@ -5,8 +5,10 @@ import { CurvedDivider } from "./_components/CurvedDivider";
 import { ClientWins } from "./_components/ClientWins";
 import { Problems } from "./_components/Problems";
 import { Services } from "./_components/Services";
+import { Process } from "./_components/Process";
 import { Cases } from "./_components/Cases";
 import { Industries } from "./_components/Industries";
+import { GlobalImpact } from "./_components/GlobalImpact";
 import { WhyChooseUs } from "./_components/WhyChooseUs";
 import { Testimonials } from "./_components/Testimonials";
 import { ContactForm } from "./_components/ContactForm";
@@ -48,9 +50,13 @@ export default function LandingPage() {
 
         <CurvedDivider fromColor="ink" className="-mt-px relative z-10" />
 
+        <Process />
+
         <Cases />
 
         <Industries />
+
+        <GlobalImpact />
 
         <WhyChooseUs />
 

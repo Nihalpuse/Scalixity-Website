@@ -1,3 +1,6 @@
+import { Scramble } from "./Scramble";
+import { StaggerText } from "./StaggerText";
+
 // Adapted from src/app/components/what-we-offer — Scalixity's 6
 // differentiators trimmed to 4 cards for this 2×2 layout.
 const EYEBROW = "Why choose us?";
@@ -38,10 +41,12 @@ export function WhyChooseUs() {
       data-nav-bg="light"
       className="brand-section-light px-5 lg:px-10 pt-20 pb-24 lg:pt-32 lg:pb-32"
     >
-      <p className="brand-eyebrow text-brand-ink-muted mb-8">{EYEBROW}</p>
+      <p className="brand-eyebrow text-brand-ink-muted mb-8">
+        <Scramble>{EYEBROW}</Scramble>
+      </p>
 
       <h2 className="font-bricolage text-brand-display text-brand-ink mb-12 lg:mb-16">
-        {TITLE}
+        <StaggerText>{TITLE}</StaggerText>
       </h2>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-5">

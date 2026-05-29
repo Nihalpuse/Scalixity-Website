@@ -1,3 +1,6 @@
+import { Scramble } from "./Scramble";
+import { StaggerText } from "./StaggerText";
+
 // Testimonials ported from src/app/components/testimonials. Card-size
 // distribution (photo / quote / minimal) keeps the masonry rhythm from
 // the screenshot reference.
@@ -66,9 +69,11 @@ export function Testimonials() {
       {/* Header row */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 mb-10 lg:mb-14">
         <div className="lg:col-span-8">
-          <p className="brand-eyebrow text-brand-ink-muted mb-6">{EYEBROW}</p>
+          <p className="brand-eyebrow text-brand-ink-muted mb-6">
+            <Scramble>{EYEBROW}</Scramble>
+          </p>
           <h2 className="font-bricolage text-brand-display text-brand-ink leading-tight max-w-[20ch]">
-            {TITLE}
+            <StaggerText>{TITLE}</StaggerText>
           </h2>
         </div>
 
@@ -101,14 +106,14 @@ function RatingCard({ rating }: { rating: Rating }) {
         {/* Platform logo placeholder */}
         <div
           aria-hidden="true"
-          className="h-8 w-8 rounded-full bg-gradient-to-br from-brand-orange to-brand-red shrink-0"
+          className="h-8 w-8 rounded-full bg-gradient-to-br from-brand-purple to-brand-red shrink-0"
         />
         <span className="font-bricolage text-2xl lg:text-3xl text-brand-ink leading-none">
           {rating.score}
         </span>
       </div>
       <div
-        className="flex items-center gap-1 text-brand-orange text-base"
+        className="flex items-center gap-1 text-brand-purple text-base"
         aria-label={`${rating.stars} out of 5 stars on ${rating.platform}`}
       >
         {Array.from({ length: rating.stars }).map((_, i) => (

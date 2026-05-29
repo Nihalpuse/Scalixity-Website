@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { CTAButton } from "./CTAButton";
+import { Scramble } from "./Scramble";
+import { StaggerText } from "./StaggerText";
 
 // Placeholder copy + people lifted from the phenomenonstudio.com
 // screenshots — swap for Scalixity content once finalized.
@@ -51,9 +53,11 @@ export function ContactForm() {
       id="contact-form"
       className="bg-brand-ink text-brand-bone px-5 lg:px-10 pt-20 pb-24 lg:pt-32 lg:pb-32"
     >
-      <p className="brand-eyebrow text-brand-bone-muted mb-8">{EYEBROW}</p>
+      <p className="brand-eyebrow text-brand-bone-muted mb-8">
+        <Scramble>{EYEBROW}</Scramble>
+      </p>
       <h2 className="font-bricolage text-brand-display text-brand-bone leading-tight mb-12 lg:mb-16 max-w-[18ch]">
-        {TITLE}
+        <StaggerText>{TITLE}</StaggerText>
       </h2>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
@@ -178,7 +182,7 @@ function FormInput({
       <span className="brand-eyebrow text-brand-bone-muted">
         {label}
         {required && (
-          <span aria-hidden="true" className="text-brand-orange ml-1">
+          <span aria-hidden="true" className="text-brand-purple ml-1">
             *
           </span>
         )}
@@ -221,7 +225,7 @@ function ContactBlock({
           </p>
           <a
             href={`mailto:${contact.email}`}
-            className="font-albert text-[11px] text-brand-bone underline uppercase tracking-wider block mt-2 truncate hover:text-brand-orange transition-colors"
+            className="font-albert text-[11px] text-brand-bone underline uppercase tracking-wider block mt-2 truncate hover:text-brand-purple transition-colors"
           >
             {contact.email}
           </a>
