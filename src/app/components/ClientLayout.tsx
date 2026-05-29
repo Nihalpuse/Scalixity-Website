@@ -3,6 +3,11 @@
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { PrimaryNav } from "@/src/app/landing/_components/PrimaryNav";
+import {
+  PRIMARY_NAV_LINKS,
+  PRIMARY_NAV_CTA,
+  PRIMARY_NAV_LOGO,
+} from "@/src/app/components/primary-nav-config";
 import { Footer } from "@/src/app/components/footer";
 import Chatbot from "@/src/app/components/Chatbot";
 import OnboardingPopup from "@/src/app/components/OnboardingPopup";
@@ -18,19 +23,6 @@ if (typeof window !== "undefined") {
 }
 
 // const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:5000';
-
-// Site-wide nav config for the global PrimaryNav. Uses real routes (the
-// landing page mounts its own PrimaryNav with in-page anchors instead).
-const PRIMARY_NAV_LINKS = [
-  { label: "Services", href: "/services", hasDropdown: true },
-  { label: "Industries", href: "/industries", hasDropdown: true },
-  { label: "Cases", href: "/work", hasDropdown: false },
-  { label: "Company", href: "/company", hasDropdown: true },
-  { label: "Insights", href: "/blog", hasDropdown: false },
-  { label: "Resources", href: "/resources", hasDropdown: false },
-  { label: "Contacts", href: "/contact", hasDropdown: false },
-];
-const PRIMARY_NAV_CTA = { label: "Get in touch", href: "/contact" };
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -85,7 +77,10 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
       "/dashboard/demographic", "/dashboard/technicalmetric", "/dashboard/AcquistionMatrix",
       "/dashboard/engagementmetrices", "/dashboard/home", "/dashboard/profile",
       "/dashboard/settings", "/dashboard/work", "/dashboard/contact", "/dashboard/inquiry", "/dashboard/campaign","/dashboard/services",
-      "/landing"
+      "/landing",
+      // Redesigned pages that supply their own new-design chrome (PrimaryNav +
+      // landing Footer) inside a .brand-root wrapper.
+      "/company"
     ].includes(pathname) ||
     (pathname.startsWith("/dashboard/campaign/") && (pathname.endsWith("/form") || pathname.endsWith("/responses")));
 
@@ -434,7 +429,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
       {!hideLayout && !hideHeaderOnly && (
         <div className="brand-chrome">
           <PrimaryNav
-            logoText="scalixity"
+            logoText={PRIMARY_NAV_LOGO}
             links={PRIMARY_NAV_LINKS}
             cta={PRIMARY_NAV_CTA}
           />

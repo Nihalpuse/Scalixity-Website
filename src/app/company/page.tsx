@@ -1,21 +1,49 @@
-import { Hero } from "@/src/app/components/About-us/abouthero"
-import OurJourney from "@/src/app/components/About-us/ourjourney"
-import { OurTeam } from "@/src/app/components/About-us/ourteam"
-import GlobalImpact from "@/src/app/components/About-us/globalimpact"
-import CoreValue from "@/src/app/components/About-us/corevalue"
-import { CTA } from "@/src/app/components/cta"
+import { PrimaryNav } from "@/src/app/landing/_components/PrimaryNav";
+import {
+  PRIMARY_NAV_LINKS,
+  PRIMARY_NAV_CTA,
+  PRIMARY_NAV_LOGO,
+} from "@/src/app/components/primary-nav-config";
+import { CurvedDivider } from "@/src/app/landing/_components/CurvedDivider";
+import { GlobalImpact } from "@/src/app/landing/_components/GlobalImpact";
+import { ContactForm } from "@/src/app/landing/_components/ContactForm";
+import { Footer } from "@/src/app/landing/_components/Footer";
+import { AboutHero } from "./_components/AboutHero";
+import { Journey } from "./_components/Journey";
+import { Values } from "./_components/Values";
+import { Team } from "./_components/Team";
+
+export const metadata = {
+  title: "About us — Scalixity",
+  description:
+    "Scalixity bridges the gap between complex data and actionable strategy. Meet the team building AI-driven ecosystems that propel businesses into the future.",
+};
 
 export default function CompanyPage() {
-
-
   return (
-    <div className=" text-black min-h-screen">
-      <Hero />
+    <div className="brand-root min-h-screen">
+      <PrimaryNav
+        logoText={PRIMARY_NAV_LOGO}
+        links={PRIMARY_NAV_LINKS}
+        cta={PRIMARY_NAV_CTA}
+      />
+
+      <AboutHero />
+
+      <CurvedDivider fromColor="ink" className="-mt-px relative z-10" />
+
       <GlobalImpact />
-      <OurJourney />
-      <OurTeam />
-      <CoreValue />
-      <CTA />
+      <Journey />
+      <Values />
+      <Team />
+
+      <CurvedDivider fromColor="bone" className="-mt-px relative z-10" />
+
+      <ContactForm />
+
+      <CurvedDivider fromColor="ink" className="-mt-px relative z-10" />
+
+      <Footer />
     </div>
-  )
+  );
 }
