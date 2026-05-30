@@ -23,9 +23,10 @@ type SocialLink = {
 };
 
 const SOCIALS: SocialLink[] = [
-  { platform: "LinkedIn", href: "#", Icon: LinkedInIcon },
-  { platform: "Instagram", href: "#", Icon: InstagramIcon },
-  { platform: "Facebook", href: "#", Icon: FacebookIcon },
+  { platform: "LinkedIn", href: "https://www.linkedin.com/company/scalixity", Icon: LinkedInIcon },
+  { platform: "Instagram", href: "https://www.instagram.com/scalixity/", Icon: InstagramIcon },
+  { platform: "Facebook", href: "https://www.facebook.com/profile.php?id=61579701595445", Icon: FacebookIcon },
+  // No X/Twitter profile yet.
   { platform: "X", href: "#", Icon: XIcon },
 ];
 
@@ -118,16 +119,26 @@ export function Footer() {
         {/* Socials grid */}
         <div className="lg:col-span-4">
           <div className="grid grid-cols-4 gap-2 max-w-[320px]">
-            {SOCIALS.map(({ platform, href, Icon }) => (
-              <a
-                key={platform}
-                href={href}
-                aria-label={platform}
-                className="aspect-square rounded-lg bg-brand-ink/[0.04] hover:bg-brand-ink/[0.08] transition-colors flex items-center justify-center text-brand-ink"
-              >
-                <Icon />
-              </a>
-            ))}
+            {SOCIALS.map(({ platform, href, Icon }) => {
+              const isLive = href !== "#";
+              return (
+                <a
+                  key={platform}
+                  href={href}
+                  aria-label={platform}
+                  {...(isLive
+                    ? { target: "_blank", rel: "noopener noreferrer" }
+                    : { "aria-disabled": true, tabIndex: -1 })}
+                  className={`aspect-square rounded-lg bg-brand-ink/[0.04] transition-colors flex items-center justify-center text-brand-ink ${
+                    isLive
+                      ? "hover:bg-brand-ink/[0.08]"
+                      : "opacity-40 pointer-events-none"
+                  }`}
+                >
+                  <Icon />
+                </a>
+              );
+            })}
           </div>
         </div>
 
