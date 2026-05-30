@@ -66,7 +66,7 @@ const STEPS: Step[] = [
 
 export function Process() {
   const [activeIndex, setActiveIndex] = useState(0);
-  const refs = useRef<Array<HTMLDivElement | null>>([]);
+  const refs = useRef<Array<HTMLElement | null>>([]);
 
   useEffect(() => {
     // Same probe-line pattern used in Services: pick the step whose

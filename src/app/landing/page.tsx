@@ -13,7 +13,7 @@ import { WhyChooseUs } from "./_components/WhyChooseUs";
 import { Testimonials } from "./_components/Testimonials";
 import { ContactForm } from "./_components/ContactForm";
 import { Footer } from "./_components/Footer";
-import { ZoomGuard } from "./_components/ZoomGuard";
+// import { ZoomGuard } from "./_components/ZoomGuard";
 
 export const metadata = {
   title: `${content.page.title} — Landing Preview`,

@@ -575,18 +575,6 @@ function CloseIcon() {
   );
 }
 
-function PaperPlaneIcon() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="currentColor"
-      aria-hidden="true"
-      className="w-12 h-12 lg:w-14 lg:h-14 drop-shadow-[0_4px_20px_rgba(89,1,120,0.45)]"
-    >
-      <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
-    </svg>
-  );
-}
 
 function LinkedInIcon() {
   return (

@@ -1,16 +1,11 @@
-'use client'
+import { WorkIndex } from "./_components/WorkIndex";
 
-import { CTA } from "@/src/app/components/cta";
-import { WorkHero } from "@/src/app/components/our work/workhero";
-import { WorkProjects as WorkProjectCards } from "@/src/app/components/our work/workproject";
+export const metadata = {
+  title: "Our work — Scalixity",
+  description:
+    "A selection of the products and platforms Scalixity has designed, engineered, and shipped end to end.",
+};
 
 export default function WorkPage() {
-  return (
-    <div className="w-full">
-      <WorkHero />
-      <WorkProjectCards />
-    
-      <CTA />
-    </div>
-  )
+  return <WorkIndex />;
 }

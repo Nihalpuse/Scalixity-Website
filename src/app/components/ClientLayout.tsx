@@ -80,7 +80,19 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
       "/landing",
       // Redesigned pages that supply their own new-design chrome (PrimaryNav +
       // landing Footer) inside a .brand-root wrapper.
-      "/company"
+      "/company",
+      "/work",
+      "/industries",
+      "/contact",
+      "/blog",
+      "/resources",
+      "/services",
+      "/services/AI-Chatbot",
+      "/services/ml-nlp-solutions",
+      "/services/custom-web-apps",
+      "/services/Mobile-Application",
+      "/services/custom-dashboard",
+      "/services/ecommerce-solution"
     ].includes(pathname) ||
     (pathname.startsWith("/dashboard/campaign/") && (pathname.endsWith("/form") || pathname.endsWith("/responses")));
 

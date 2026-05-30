@@ -1,18 +1,11 @@
-'use client';
-import { BlogPosts } from "../components/blog-posts";
-import CTA from "../components/chatgpt-integration/CTA";
+import { BlogIndex } from "./_components/BlogIndex";
+
+export const metadata = {
+  title: "Insights — Scalixity",
+  description:
+    "Latest insights and articles on AI, blockchain, and the technologies shaping modern products.",
+};
 
 export default function BlogPage() {
-    return (
-        <div className="bg-[#FFF2D5] pt-20">
-      <div className="container mx-auto px-4">
-        <h1 className="text-4xl md:text-5xl font-bold text-center pt-12 text-black">Latest Insights & Articles</h1>
-        <p className="text-xl text-center text-gray-900 mb-12">Explore cutting-edge AI and blockchain topics, handpicked for you</p>
-      </div>
-        <div>
-            <BlogPosts />
-            <CTA />
-        </div>
-        </div>
-    );
+  return <BlogIndex />;
 }
