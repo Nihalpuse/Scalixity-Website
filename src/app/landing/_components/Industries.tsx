@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CTAButton } from "./CTAButton";
 import { Scramble } from "./Scramble";
 import { StaggerText } from "./StaggerText";
@@ -15,74 +15,80 @@ type Industry = {
   challenges: string[];
   solutions: string[];
   ctaHref: string;
+  /** Looping clip in /public/landing/industries shown for this tab. */
+  video?: string;
 };
 
 // Industries ported from src/app/components/success-stories. FinTech
 // added for variety. Replace with deeper positioning copy when available.
 const INDUSTRIES: Industry[] = [
   {
-    key: "insurance",
-    label: "Insurance",
-    title: "AI-driven platforms for risk and claims",
+    key: "saas",
+    label: "SaaS",
+    title: "Scalable platforms for growth-focused teams",
     challenges: [
-      "Slow claim settlement processes that frustrate customers",
-      "Manual fraud detection that can't keep up with volume",
-      "Legacy systems that resist integration",
+      "High churn from poor and fragmented UX",
+      "Scaling product features without compromising speed",
+      "Converting freemium users into paying subscribers",
     ],
     solutions: [
-      "Automated claim triage that cuts settlement time in half",
-      "Real-time fraud detection powered by machine learning",
-      "API-first integrations with existing core systems",
+      "Streamlined flows to improve activation and retention",
+      "Modular UX and design systems to scale features faster",
+      "Clean billing and plan management UX to improve conversion",
     ],
     ctaHref: "/work",
+    video: "/landing/industries/tinyvid_optimized_1_c3e89d72e9ca2837d9e85643956c8544.mp4",
   },
   {
     key: "healthcare",
     label: "Healthcare",
-    title: "HIPAA-compliant platforms for clinical workflows",
+    title: "HIPAA-compliant design and development for health tech products",
     challenges: [
-      "Document review bottlenecks that delay patient care",
-      "Compliance overhead that slows innovation",
-      "Fragmented EHR data that's hard to act on",
+      "UX complexity in health tracking, patient records, and telehealth",
+      "Data privacy and HIPAA compliance",
+      "Building trust with patients and practitioners",
     ],
     solutions: [
-      "OCR-powered automation for clinical documentation",
-      "HIPAA-first architectures baked into every feature",
-      "Unified data pipelines that surface insights, not just records",
+      "Patient-first UX that simplifies complex workflows",
+      "Secure infrastructure aligned with regulatory standards",
+      "Clean, professional UI that builds user trust",
     ],
     ctaHref: "/work",
+    video: "/landing/industries/tinyvid_optimized_2_original-7d5a927fb8e1aed94b2f0dadb537fe63.mp4",
   },
   {
-    key: "manufacturing",
-    label: "Manufacturing",
-    title: "Engineered platforms for production at scale",
+    key: "edtech",
+    label: "EdTech",
+    title: "Digital learning platforms that engage and scale",
     challenges: [
-      "Slow CAD-to-BOM estimation that bottlenecks bids",
-      "Quality control that depends on manual inspection",
-      "Disconnected shop-floor data with no central view",
+      "Low engagement in self-paced learning environments",
+      "Accessibility compliance (ADA, WCAG)",
+      "Performance under high concurrent user loads",
     ],
     solutions: [
-      "Automated BOM extraction from CAD files in minutes",
-      "Computer-vision quality checks that scale beyond humans",
-      "Real-time production dashboards for plant-level decisions",
+      "Gamified UX to keep learners motivated",
+      "Adaptive UI for different learning needs and devices",
+      "Cloud-based, scalable architecture for education at scale",
     ],
     ctaHref: "/work",
+    video: "/landing/industries/tinyvid_optimized_3_original-73b35d49f86d187eea5f51868f628bd4.mp4",
   },
   {
     key: "fintech",
     label: "Fintech",
-    title: "Trustworthy platforms for moving money",
+    title: "Secure, compliant digital products for modern finance",
     challenges: [
-      "Building user trust around money and identity",
-      "Meeting KYC and AML rules without killing conversion",
-      "Handling international payments and currencies",
+      "KYC, AML, and global compliance requirements",
+      "Drop-offs during complex onboarding and verification flows",
+      "Real-time integrations with payment and exchange systems",
     ],
     solutions: [
-      "Transparency-first UX that surfaces fees and timelines",
-      "Progressive verification that minimizes drop-off",
-      "Multi-currency UX and locale-aware flows",
+      "Frictionless onboarding and verification UX",
+      "Secure UI for transactions and money movement",
+      "API-driven architecture built for performance and scale",
     ],
     ctaHref: "/work",
+    video: "/landing/industries/tinyvid_optimized_5_original-c138f335ff5d89bfd76a54cb9b1b76f4.mp4",
   },
 ];
 
@@ -127,13 +133,13 @@ export function Industries() {
 
       {/* Active tab content */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-        {/* Industry screenshot placeholder */}
+        {/* Industry media — keyed by tab so it re-pops when the tab changes. */}
         <div className="lg:col-span-6">
-          <div className="aspect-[5/4] rounded-2xl overflow-hidden bg-gradient-to-br from-stone-200 via-stone-300 to-stone-500 relative">
-            <div className="absolute inset-0 flex items-center justify-center font-bricolage text-2xl uppercase tracking-[0.18em] text-brand-ink/40">
-              {active.label}
-            </div>
-          </div>
+          <IndustryMedia
+            key={active.key}
+            video={active.video}
+            label={active.label}
+          />
         </div>
 
         {/* Right: title + challenges/solutions + CTA */}
@@ -142,12 +148,13 @@ export function Industries() {
             {active.title}
           </h3>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 lg:gap-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-0">
             <div>
-              <p className="brand-eyebrow text-brand-ink-muted mb-4">
+              <p className="brand-eyebrow text-brand-ink-muted sm:pr-8 lg:pr-10">
                 Challenges:
               </p>
-              <ul className="space-y-3">
+              {/* Horizontal divider below the heading. */}
+              <ul className="space-y-3 mt-5 pt-5 border-t border-brand-ink/10 sm:pr-8 lg:pr-10">
                 {active.challenges.map((c) => (
                   <BulletItem key={c}>{c}</BulletItem>
                 ))}
@@ -155,10 +162,12 @@ export function Industries() {
             </div>
 
             <div>
-              <p className="brand-eyebrow text-brand-ink-muted mb-4">
+              <p className="brand-eyebrow text-brand-ink-muted sm:pl-8 lg:pl-10">
                 How we solve them
               </p>
-              <ul className="space-y-3">
+              {/* Horizontal divider below the heading + vertical divider that
+                  only spans the bullet list (so it starts below the heading). */}
+              <ul className="space-y-3 mt-5 pt-5 border-t border-brand-ink/10 sm:border-l sm:border-brand-ink/10 sm:pl-8 lg:pl-10">
                 {active.solutions.map((s) => (
                   <BulletItem key={s}>{s}</BulletItem>
                 ))}
@@ -185,5 +194,55 @@ function BulletItem({ children }: { children: React.ReactNode }) {
       </span>
       <span>{children}</span>
     </li>
+  );
+}
+
+// Same animation as the Cases images: pops in (scale + fade) when it enters
+// the viewport, and zooms slightly on hover. Mounted with key={tab} so each
+// tab switch re-runs the pop (the observer fires again on remount).
+function IndustryMedia({ video, label }: { video?: string; label: string }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [revealed, setRevealed] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setRevealed(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.25 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div
+      ref={ref}
+      className={`group aspect-[5/4] rounded-2xl overflow-hidden relative bg-gradient-to-br from-stone-200 via-stone-300 to-stone-500 transition-[transform,opacity] duration-700 ease-brand-out ${
+        revealed ? "opacity-100 scale-100" : "opacity-0 scale-90"
+      }`}
+    >
+      {video ? (
+        <video
+          src={video}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          aria-hidden="true"
+          className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 ease-brand-out group-hover:scale-105"
+        />
+      ) : (
+        <div className="absolute inset-0 flex items-center justify-center font-bricolage text-2xl uppercase tracking-[0.18em] text-brand-ink/40">
+          {label}
+        </div>
+      )}
+    </div>
   );
 }

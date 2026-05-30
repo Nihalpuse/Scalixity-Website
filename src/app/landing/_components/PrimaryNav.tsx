@@ -371,15 +371,20 @@ export function PrimaryNav({ logoText, links, cta }: PrimaryNavProps) {
       // That way when the wrapper translates off-screen, the bg goes with
       // it and the only thing that remains visible is the floating CTA
       // anchored at the header level.
-      className="fixed inset-x-0 top-0 z-50"
-      onMouseLeave={() => setOpenLabel(null)}
+      //
+      // pointer-events-none so this fixed, full-width, transparent box never
+      // intercepts clicks on the page beneath it (e.g. when the bar is hidden
+      // on scroll-down). The actual interactive layers below re-enable events
+      // with pointer-events-auto.
+      className="pointer-events-none fixed inset-x-0 top-0 z-50"
     >
       {/* Slide-out group: logo + nav links + (invisible CTA placeholder)
           + mega-menu panel. Everything here slides up together when the
           user scrolls down. The bg color also lives on this wrapper, so
           when it slides out the whole colored bar disappears. */}
       <div
-        className={`transition-[transform,background-color,color] duration-300 ease-brand-out ${headerColors} ${
+        onMouseLeave={() => setOpenLabel(null)}
+        className={`pointer-events-auto transition-[transform,background-color,color] duration-300 ease-brand-out ${headerColors} ${
           navHidden ? "-translate-y-full" : "translate-y-0"
         }`}
       >
@@ -460,7 +465,7 @@ export function PrimaryNav({ logoText, links, cta }: PrimaryNavProps) {
           translate-y on that wrapper doesn't move it. Absolutely positioned
           at the same coordinates as the in-flow placeholder above, so they
           line up pixel-perfect when the nav is fully visible. */}
-      <div className="hidden lg:block absolute top-4 right-5 lg:right-10">
+      <div className="pointer-events-auto hidden lg:block absolute top-4 right-5 lg:right-10">
         <CTAButton href={cta.href} variant={ctaVariant}>
           {cta.label}
         </CTAButton>
@@ -473,7 +478,9 @@ export function PrimaryNav({ logoText, links, cta }: PrimaryNavProps) {
         id="mobile-menu"
         aria-hidden={!mobileOpen}
         className={`lg:hidden fixed inset-0 z-[60] flex flex-col bg-brand-bone text-brand-ink transition-transform duration-300 ease-brand-out ${
-          mobileOpen ? "translate-x-0" : "translate-x-full pointer-events-none"
+          mobileOpen
+            ? "translate-x-0 pointer-events-auto"
+            : "translate-x-full pointer-events-none"
         }`}
       >
         {/* Panel header: logo + close button in a soft square. */}

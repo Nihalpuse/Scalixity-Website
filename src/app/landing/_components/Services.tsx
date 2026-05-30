@@ -18,6 +18,8 @@ type Service = {
   number: string;
   title: string;
   description: string;
+  /** Clip in /public/landing that plays on hover. */
+  video?: string;
 };
 
 type Cohort = {
@@ -38,18 +40,21 @@ const COHORTS: Cohort[] = [
         title: "Product discovery",
         description:
           "Map out user flows, model strategy, and architecture before any code is written.",
+        video: "/landing/Product-discovery.mp4",
       },
       {
         number: "02",
         title: "Design prototype",
         description:
           "Test ideas fast with interactive prototypes and visual flows.",
+        video: "/landing/Design-prototype.mp4",
       },
       {
         number: "03",
         title: "Technical workshop",
         description:
           "Validate your tech stack, AI approach, and scalability path with senior engineers.",
+        video: "/landing/Technical-workshop.mp4",
       },
     ],
   },
@@ -63,30 +68,37 @@ const COHORTS: Cohort[] = [
         title: "Custom mvp development",
         description:
           "Build production-ready AI products from prototype to deployed system.",
+        video: "/landing/Custom-MVP-development.mp4",
       },
       {
         number: "02",
         title: "Rapid mvp development",
         description:
           "Launch 50% faster with pre-built ML frameworks and lean sprints.",
+        // TODO: no exact clip — placeholder; swap when a Rapid-MVP video exists.
+        video: "/landing/compressed-video-2.mp4",
       },
       {
         number: "03",
         title: "AI chatbot development",
         description:
           "Conversational interfaces powered by RAG, fine-tuned LLMs, and your data.",
+        // TODO: no exact clip — placeholder; swap when an AI-chatbot video exists.
+        video: "/landing/cab5f51f-a135-4777-8895-398644445757.mp4",
       },
       {
         number: "04",
         title: "Web & mobile development",
         description:
           "Polished front-ends and APIs engineered for AI-first products.",
+        video: "/landing/Website-development.mp4",
       },
       {
         number: "05",
         title: "Dedicated team",
         description:
           "An embedded pod of senior engineers, designers, and ML specialists.",
+        video: "/landing/Dedicated-team.mp4",
       },
     ],
   },
@@ -100,24 +112,30 @@ const COHORTS: Cohort[] = [
         title: "AI transformation layer",
         description:
           "Add agents, predictive systems, and automation to existing products.",
+        // TODO: no exact clip — placeholder; swap when a matching video exists.
+        video: "/landing/Branding.mp4",
       },
       {
         number: "02",
         title: "Full-stack devops & infra",
         description:
           "CI/CD, security, cost optimization, and cloud deployment that scales.",
+        // TODO: no exact clip — placeholder; swap when a matching video exists.
+        video: "/landing/UX-audit.mp4",
       },
       {
         number: "03",
         title: "Product redesign",
         description:
           "Modernize legacy UX and integrate AI where it actually moves metrics.",
+        video: "/landing/Website-redesign.mp4",
       },
       {
         number: "04",
         title: "Team extension",
         description:
           "Senior designers and developers ready to ship, starting tomorrow.",
+        video: "/landing/Team-extension.mp4",
       },
     ],
   },
@@ -231,9 +249,10 @@ export function Services() {
                     const isRightCol = i % 2 === 1;
                     const isAfterFirstRow = i >= 2;
                     return (
-                      <div
+                      <ServiceCard
                         key={service.number}
-                        className={`aspect-[4/3] p-6 lg:p-8 flex flex-col justify-between ${
+                        service={service}
+                        className={`${
                           isRightCol
                             ? "sm:border-l sm:border-brand-bone-faint"
                             : ""
@@ -242,19 +261,7 @@ export function Services() {
                             ? "border-t border-brand-bone-faint"
                             : ""
                         }`}
-                      >
-                        <span className="font-bricolage text-2xl lg:text-3xl text-brand-bone-soft">
-                          {service.number}
-                        </span>
-                        <div>
-                          <h4 className="font-bricolage text-2xl lg:text-3xl text-brand-bone mb-3 leading-tight">
-                            {service.title}
-                          </h4>
-                          <p className="font-albert text-sm lg:text-base text-brand-bone-muted leading-relaxed max-w-md">
-                            {service.description}
-                          </p>
-                        </div>
-                      </div>
+                      />
                     );
                   })}
                 </div>
@@ -264,5 +271,103 @@ export function Services() {
         </div>
       </div>
     </section>
+  );
+}
+
+function ServiceCard({
+  service,
+  className,
+}: {
+  service: Service;
+  className?: string;
+}) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [hovered, setHovered] = useState(false);
+
+  const handleEnter = () => {
+    setHovered(true);
+    const v = videoRef.current;
+    if (v) {
+      v.currentTime = 0;
+      v.play().catch(() => {});
+    }
+  };
+  const handleLeave = () => {
+    setHovered(false);
+    videoRef.current?.pause();
+  };
+
+  return (
+    <div
+      onMouseEnter={handleEnter}
+      onMouseLeave={handleLeave}
+      className={`group relative aspect-[4/3] overflow-hidden transition-[border-radius] duration-300 ease-brand-out ${
+        hovered ? "rounded-2xl" : "rounded-none"
+      } ${className ?? ""}`}
+    >
+      {service.video && (
+        <video
+          ref={videoRef}
+          src={service.video}
+          muted
+          loop
+          playsInline
+          preload="none"
+          aria-hidden="true"
+          className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ease-brand-out ${
+            hovered ? "opacity-100" : "opacity-0"
+          }`}
+        />
+      )}
+
+      {/* Two stacked gradients so the title/description stay legible: dark up
+          from the bottom, dark in from the left, and darkest where they meet
+          (the bottom-left corner where the text sits). */}
+      <div
+        className={`pointer-events-none absolute inset-0 transition-opacity duration-500 ease-brand-out ${
+          hovered ? "opacity-100" : "opacity-0"
+        }`}
+      >
+        <div className="absolute inset-0 bg-gradient-to-t from-brand-ink via-brand-ink/45 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-brand-ink/85 via-brand-ink/20 to-transparent" />
+      </div>
+
+      {/* Content */}
+      <div className="relative z-[1] h-full p-6 lg:p-8 flex flex-col justify-between">
+        <span
+          className={`font-bricolage text-2xl lg:text-3xl text-brand-bone-soft transition-opacity duration-300 ${
+            hovered ? "opacity-0" : "opacity-100"
+          }`}
+        >
+          {service.number}
+        </span>
+        <div>
+          <h4 className="font-bricolage text-2xl lg:text-3xl text-brand-bone mb-3 leading-tight">
+            {service.title}
+          </h4>
+          <p className="font-albert text-sm lg:text-base text-brand-bone-muted leading-relaxed max-w-md">
+            {service.description}
+          </p>
+        </div>
+      </div>
+
+      {/* Arrow button — reveals on hover (bottom-right), per the reference. */}
+      <div
+        className={`absolute bottom-6 right-6 z-[2] transition-all duration-300 ease-brand-out ${
+          hovered ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2 pointer-events-none"
+        }`}
+      >
+        <span className="grid h-12 w-12 place-items-center rounded-xl bg-brand-bone text-brand-ink">
+          <svg
+            viewBox="0 0 18 12"
+            aria-hidden="true"
+            className="h-3.5 w-[22px] fill-none stroke-current"
+            strokeWidth="1.6"
+          >
+            <path d="M1 6h16M12 1l5 5-5 5" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </span>
+      </div>
+    </div>
   );
 }

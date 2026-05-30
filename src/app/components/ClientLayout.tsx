@@ -10,7 +10,6 @@ import {
 } from "@/src/app/components/primary-nav-config";
 import { Footer } from "@/src/app/components/footer";
 import Chatbot from "@/src/app/components/Chatbot";
-import OnboardingPopup from "@/src/app/components/OnboardingPopup";
 import { Agentation } from "agentation";
 import { v4 as uuidv4 } from "uuid";
 import Lenis from "lenis";
@@ -27,19 +26,6 @@ if (typeof window !== "undefined") {
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [country, setCountry] = useState<string | null>(null);
-  const [showOnboarding, setShowOnboarding] = useState(false);
-
-  // Check if user should see onboarding popup (only first time)
-  useEffect(() => {
-    const isLandingPage = pathname === "/";
-    const hasSeenOnboarding = localStorage.getItem("hasSeenOnboarding");
-    
-    if (isLandingPage && !hasSeenOnboarding) {
-      setTimeout(() => {
-        setShowOnboarding(true);
-      }, 1500);
-    }
-  }, [pathname]);
 
   // Initialize Lenis smooth scrolling
   useEffect(() => {
@@ -77,9 +63,9 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
       "/dashboard/demographic", "/dashboard/technicalmetric", "/dashboard/AcquistionMatrix",
       "/dashboard/engagementmetrices", "/dashboard/home", "/dashboard/profile",
       "/dashboard/settings", "/dashboard/work", "/dashboard/contact", "/dashboard/inquiry", "/dashboard/campaign","/dashboard/services",
-      "/landing",
       // Redesigned pages that supply their own new-design chrome (PrimaryNav +
       // landing Footer) inside a .brand-root wrapper.
+      "/",
       "/company",
       "/work",
       "/industries",
@@ -436,7 +422,6 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
   return (
     <>
-      {showOnboarding && <OnboardingPopup onClose={() => setShowOnboarding(false)} />}
       <Chatbot />
       {!hideLayout && !hideHeaderOnly && (
         <div className="brand-chrome">

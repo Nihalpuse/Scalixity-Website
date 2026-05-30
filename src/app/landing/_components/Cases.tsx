@@ -63,6 +63,7 @@ const FALLBACK_CASES: CaseStudy[] = [
       "Higher customer satisfaction scores",
     ],
     ctaHref: "/work",
+    image: "/landing/cases/Case-preview-2-2.png.webp",
   },
   {
     slug: "healthcare",
@@ -80,6 +81,7 @@ const FALLBACK_CASES: CaseStudy[] = [
       "HIPAA-compliant pipeline end to end",
     ],
     ctaHref: "/work",
+    image: "/landing/cases/Case-preview-10.png.webp",
   },
   {
     slug: "manufacturing",
@@ -97,6 +99,7 @@ const FALLBACK_CASES: CaseStudy[] = [
       "Scalable engineering estimation pipeline",
     ],
     ctaHref: "/work",
+    image: "/landing/cases/Case-Preview-mob.png.webp",
   },
 ];
 
@@ -182,6 +185,26 @@ export function Cases() {
 
 function CaseCard({ data, isLast }: { data: CaseStudy; isLast: boolean }) {
   const ref = useRef<HTMLDivElement>(null);
+  const imageWrapRef = useRef<HTMLDivElement>(null);
+  const [revealed, setRevealed] = useState(false);
+
+  // Pop the image in — scale up from the center + fade — the first time it
+  // enters the viewport.
+  useEffect(() => {
+    const el = imageWrapRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setRevealed(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.25 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     if (isLast) return;
@@ -233,13 +256,18 @@ function CaseCard({ data, isLast }: { data: CaseStudy; isLast: boolean }) {
         {/* Case image — real preview when the API supplied one, gradient
             placeholder with the client name as fallback. */}
         <div className="lg:col-span-5">
-          <div className="aspect-[5/4] rounded-2xl overflow-hidden bg-gradient-to-br from-stone-300 via-stone-400 to-stone-600 relative">
+          <div
+            ref={imageWrapRef}
+            className={`group aspect-[5/4] rounded-2xl overflow-hidden bg-gradient-to-br from-stone-300 via-stone-400 to-stone-600 relative transition-[transform,opacity] duration-700 ease-brand-out ${
+              revealed ? "opacity-100 scale-100" : "opacity-0 scale-90"
+            }`}
+          >
             {data.image ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img
                 src={data.image}
                 alt={data.client}
-                className="absolute inset-0 h-full w-full object-cover"
+                className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 ease-brand-out group-hover:scale-105"
               />
             ) : (
               <div className="absolute inset-0 flex items-center justify-center font-bricolage text-2xl uppercase tracking-[0.18em] text-brand-bone/70">
