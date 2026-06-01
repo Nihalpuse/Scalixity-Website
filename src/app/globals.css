@@ -781,6 +781,59 @@ button:active, .button-primary:active, .button-secondary:active {
   animation: paper-plane-trail 1.8s ease-out forwards;
 }
 
+/* ========================================================================
+   International phone input (react-phone-number-input) — themed to match the
+   dark contact form fields. Scoped to .brand-phone so the library's global
+   classes only restyle our wrapper.
+   ======================================================================== */
+.brand-phone .PhoneInput {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08); /* brand-bone-faint */
+  padding-bottom: 0.75rem;
+  transition: border-color 0.2s var(--brand-ease-out);
+}
+.brand-phone .PhoneInput--focus {
+  border-bottom-color: var(--brand-bone);
+}
+.brand-phone--error .PhoneInput,
+.brand-phone--error .PhoneInput--focus {
+  border-bottom-color: var(--brand-red);
+}
+.brand-phone .PhoneInputInput {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--brand-bone);
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+.brand-phone .PhoneInputInput::placeholder {
+  color: rgba(255, 254, 253, 0.4); /* brand-bone-soft */
+  text-transform: uppercase;
+}
+.brand-phone .PhoneInputInput:disabled {
+  opacity: 0.6;
+}
+.brand-phone .PhoneInputCountry {
+  margin-right: 0.25rem;
+}
+.brand-phone .PhoneInputCountryIcon,
+.brand-phone .PhoneInputCountryIcon--border {
+  background-color: transparent;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.12);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.brand-phone .PhoneInputCountrySelectArrow {
+  color: rgba(255, 254, 253, 0.6); /* brand-bone-muted */
+  opacity: 1;
+  border-bottom-width: 1.5px;
+  border-right-width: 1.5px;
+}
+
 /* Custom animations */
 @keyframes slideDown {
   from {
