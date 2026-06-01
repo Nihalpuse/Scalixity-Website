@@ -95,7 +95,28 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
       "/services/custom-web-apps",
       "/services/Mobile-Application",
       "/services/custom-dashboard",
-      "/services/ecommerce-solution"
+      "/services/ecommerce-solution",
+      // Dynamic /services/[slug] template pages — each supplies its own
+      // new-design chrome (PrimaryNav + landing Footer) in a .brand-root wrapper.
+      "/services/web-app-design",
+      "/services/mobile-app-design",
+      "/services/website-design",
+      "/services/website-redesign",
+      "/services/branding",
+      "/services/web-development",
+      "/services/mobile-app-development",
+      "/services/website-development",
+      "/services/no-code-development",
+      "/services/blockchain-development",
+      "/services/ux-audit",
+      "/services/product-discovery",
+      "/services/technical-workshop",
+      "/services/design-prototype",
+      "/services/custom-mvp-development",
+      "/services/rapid-mvp-development",
+      "/services/dedicated-team",
+      "/services/product-redesign",
+      "/services/team-extension"
     ].includes(pathname) ||
     (pathname.startsWith("/dashboard/campaign/") && (pathname.endsWith("/form") || pathname.endsWith("/responses")));
 
