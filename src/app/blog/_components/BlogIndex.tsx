@@ -1,3 +1,6 @@
+"use client";
+
+import { useMemo, useState } from "react";
 import Link from "next/link";
 import { PrimaryNav } from "@/src/app/landing/_components/PrimaryNav";
 import {
@@ -10,61 +13,102 @@ import { ContactForm } from "@/src/app/landing/_components/ContactForm";
 import { Footer } from "@/src/app/landing/_components/Footer";
 import { Scramble } from "@/src/app/landing/_components/Scramble";
 import { StaggerText } from "@/src/app/landing/_components/StaggerText";
+import { BLOG_POSTS, type BlogPost } from "../posts";
 
-type Post = {
-  title: string;
-  excerpt: string;
-  image: string;
-  category: string;
-  date: string;
-  link: string;
-};
+const ALL = "All";
+const PER_PAGE = 6;
 
-// Posts preserved from the legacy BlogPosts component.
-const POSTS: Post[] = [
-  {
-    title: "The Future of Generative AI in Business",
-    excerpt: "Explore how generative AI is reshaping industries and creating new opportunities for innovation.",
-    image: "/images/generativeai.svg",
-    category: "Artificial Intelligence",
-    date: "May 15, 2024",
-    link: "/blog/future-of-generative-ai",
-  },
-  {
-    title: "Blockchain in Supply Chain: A Game Changer",
-    excerpt: "Discover how blockchain technology is revolutionizing supply chain management and increasing transparency.",
-    image: "/images/blockchain.svg",
-    category: "Blockchain",
-    date: "June 2, 2024",
-    link: "/blog/blockchain-in-supply-chain",
-  },
-  {
-    title: "AI-Driven Predictive Maintenance in Manufacturing",
-    excerpt: "Learn how AI is transforming equipment maintenance, reducing downtime, and cutting costs in the manufacturing sector.",
-    image: "/images/ai.svg",
-    category: "AI in Manufacturing",
-    date: "June 20, 2024",
-    link: "/blog/ai-predictive-maintenance",
-  },
-];
-
-function Meta({ category, date, tone = "ink" }: { category: string; date: string; tone?: "ink" | "bone" }) {
-  const muted = tone === "bone" ? "text-brand-bone-soft" : "text-brand-ink-soft";
+function ArticleCard({ post }: { post: BlogPost }) {
+  const href = `/blog/${post.slug}`;
   return (
-    <div className="flex items-center gap-3 brand-eyebrow">
-      <span className={tone === "bone" ? "text-brand-bone-muted" : "text-brand-ink-muted"}>
-        {category}
-      </span>
-      <span className={muted} aria-hidden="true">
-        •
-      </span>
-      <span className={muted}>{date}</span>
-    </div>
+    <article className="flex h-full flex-col">
+      <Link
+        href={href}
+        className="group block overflow-hidden rounded-2xl bg-brand-ink/[0.04]"
+      >
+        <div className="relative aspect-[5/4] overflow-hidden">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={post.image}
+            alt={post.title}
+            className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 ease-brand-out group-hover:scale-105"
+          />
+        </div>
+      </Link>
+
+      {/* Author + meta */}
+      <div className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-2">
+        <span className="grid h-6 w-6 place-items-center rounded-full bg-brand-ink/[0.06] text-brand-purple text-sm leading-none">
+          ✻
+        </span>
+        <span className="brand-eyebrow text-brand-ink">{post.author}</span>
+        <span className="brand-eyebrow text-brand-ink-soft" aria-hidden="true">
+          •
+        </span>
+        <span className="brand-eyebrow text-brand-ink-muted">{post.date}</span>
+        <span className="brand-eyebrow text-brand-ink-soft" aria-hidden="true">
+          •
+        </span>
+        <span className="brand-eyebrow text-brand-ink-muted">
+          {post.readTime}
+        </span>
+      </div>
+
+      <h3 className="mt-4 font-bricolage text-2xl lg:text-3xl text-brand-ink leading-tight">
+        <Link
+          href={href}
+          className="hover:text-brand-purple transition-colors duration-200 ease-brand-out"
+        >
+          {post.title}
+        </Link>
+      </h3>
+
+      {/* Reserve ≥2 lines and grow to fill, so the separator + tag align
+          across cards of differing title/excerpt lengths. */}
+      <p className="mt-3 grow font-albert text-base text-brand-ink-muted leading-relaxed min-h-[3.25rem]">
+        {post.excerpt}
+      </p>
+
+      <div className="mt-6 pt-6 border-t border-brand-ink/10">
+        <span className="inline-flex items-center rounded-md bg-brand-ink/[0.05] px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-brand-ink">
+          {post.category}
+        </span>
+      </div>
+    </article>
   );
 }
 
 export function BlogIndex() {
-  const [featured, ...rest] = POSTS;
+  const categories = useMemo(
+    () => [ALL, ...Array.from(new Set(BLOG_POSTS.map((p) => p.category)))],
+    []
+  );
+  const [filter, setFilter] = useState(ALL);
+  const [page, setPage] = useState(1);
+
+  const filtered = useMemo(
+    () =>
+      filter === ALL
+        ? BLOG_POSTS
+        : BLOG_POSTS.filter((p) => p.category === filter),
+    [filter]
+  );
+
+  const pageCount = Math.max(1, Math.ceil(filtered.length / PER_PAGE));
+  const current = Math.min(page, pageCount);
+  const visible = filtered.slice((current - 1) * PER_PAGE, current * PER_PAGE);
+
+  const selectFilter = (c: string) => {
+    setFilter(c);
+    setPage(1); // new filter → back to the first page
+  };
+
+  const goTo = (p: number) => {
+    setPage(p);
+    if (typeof window !== "undefined") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
 
   return (
     <div className="brand-root min-h-screen">
@@ -74,88 +118,85 @@ export function BlogIndex() {
         cta={PRIMARY_NAV_CTA}
       />
 
-      {/* Hero (dark) */}
-      <section className="relative bg-brand-ink text-brand-bone">
-        <div className="px-5 pt-40 pb-24 lg:px-10 lg:pt-48 lg:pb-32">
-          <p className="brand-eyebrow text-brand-bone-muted mb-8">
-            <Scramble>Insights</Scramble>
-          </p>
-          <h1 className="font-bricolage text-brand-display text-brand-bone max-w-[16ch]">
-            <StaggerText>Latest insights &amp; articles</StaggerText>
-          </h1>
-          <p className="font-albert text-brand-body-lg text-brand-bone-muted max-w-2xl mt-8">
-            Cutting-edge AI and blockchain topics, handpicked for you.
-          </p>
-        </div>
-      </section>
-
-      <CurvedDivider fromColor="ink" className="-mt-px relative z-10" />
-
-      {/* Posts (light) */}
+      {/* Articles (light) — "Expert articles" hero + category tabs + grid */}
       <section
         data-nav-bg="light"
-        className="brand-section-light px-5 lg:px-10 pt-20 pb-24 lg:pt-32 lg:pb-32"
+        className="brand-section-light px-5 lg:px-10 pt-36 pb-24 lg:pt-48 lg:pb-32"
       >
-        {/* Featured post */}
-        <Link
-          href={featured.link}
-          className="group block rounded-2xl bg-brand-ink text-brand-bone overflow-hidden mb-5 lg:mb-6"
-        >
-          <div className="grid grid-cols-1 lg:grid-cols-2">
-            <div className="relative aspect-[16/10] lg:aspect-auto lg:min-h-[360px] overflow-hidden bg-brand-bone/[0.06]">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={featured.image}
-                alt={featured.title}
-                className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 ease-brand-out group-hover:scale-105"
-              />
-            </div>
-            <div className="p-8 lg:p-12 flex flex-col justify-center gap-5">
-              <Meta category={featured.category} date={featured.date} tone="bone" />
-              <h2 className="font-bricolage text-brand-h3 text-brand-bone leading-tight">
-                {featured.title}
-              </h2>
-              <p className="font-albert text-brand-body-lg text-brand-bone-muted leading-relaxed">
-                {featured.excerpt}
-              </p>
-              <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.14em] text-brand-bone">
-                Read article
-                <svg viewBox="0 0 18 12" aria-hidden="true" className="h-3 w-[18px] fill-none stroke-current transition-transform duration-300 ease-brand-out group-hover:translate-x-1" strokeWidth="1.6">
-                  <path d="M1 6h16M12 1l5 5-5 5" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </span>
-            </div>
-          </div>
-        </Link>
+        <p className="brand-eyebrow text-brand-ink-muted mb-8">
+          <Scramble>Insights</Scramble>
+        </p>
+        <h1 className="font-bricolage text-brand-ink leading-[0.95] tracking-[-0.02em] text-[clamp(2.75rem,8vw,7rem)]">
+          <StaggerText>Expert articles</StaggerText>
+        </h1>
 
-        {/* Remaining posts */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-6">
-          {rest.map((post) => (
-            <Link
-              key={post.link}
-              href={post.link}
-              className="group rounded-2xl bg-brand-ink/[0.04] overflow-hidden flex flex-col transition-colors duration-300 ease-brand-out hover:bg-brand-ink/[0.06]"
-            >
-              <div className="relative aspect-[16/10] overflow-hidden bg-brand-ink/[0.06]">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={post.image}
-                  alt={post.title}
-                  className="h-full w-full object-cover transition-transform duration-500 ease-brand-out group-hover:scale-105"
-                />
-              </div>
-              <div className="p-6 lg:p-8 flex flex-col gap-4 flex-grow">
-                <Meta category={post.category} date={post.date} />
-                <h3 className="font-bricolage text-xl lg:text-2xl text-brand-ink leading-tight">
-                  {post.title}
-                </h3>
-                <p className="font-albert text-brand-body text-brand-ink-muted leading-relaxed flex-grow">
-                  {post.excerpt}
-                </p>
-              </div>
-            </Link>
+        {/* Category filter tabs */}
+        <div className="mt-12 lg:mt-16 flex gap-2 overflow-x-auto scrollbar-hide">
+          {categories.map((c) => {
+            const isActive = c === filter;
+            return (
+              <button
+                key={c}
+                type="button"
+                onClick={() => selectFilter(c)}
+                className={`shrink-0 px-6 py-3 rounded-lg text-xs uppercase tracking-[0.12em] font-semibold transition-colors ${
+                  isActive
+                    ? "bg-brand-ink text-brand-bone"
+                    : "bg-brand-ink/[0.05] text-brand-ink hover:bg-brand-ink/10"
+                }`}
+              >
+                {c}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Article grid */}
+        <div className="mt-12 lg:mt-16 grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-16 lg:gap-x-12 lg:gap-y-20">
+          {visible.map((post) => (
+            <ArticleCard key={post.slug} post={post} />
           ))}
         </div>
+
+        {/* Pagination */}
+        {pageCount > 1 && (
+          <nav
+            aria-label="Blog pagination"
+            className="mt-16 lg:mt-24 flex items-center justify-center gap-2"
+          >
+            <PagerButton
+              ariaLabel="Previous page"
+              disabled={current === 1}
+              onClick={() => goTo(current - 1)}
+            >
+              <Arrow dir="left" />
+            </PagerButton>
+
+            {Array.from({ length: pageCount }, (_, i) => i + 1).map((p) => (
+              <button
+                key={p}
+                type="button"
+                onClick={() => goTo(p)}
+                aria-current={p === current ? "page" : undefined}
+                className={`h-11 min-w-[2.75rem] px-3 rounded-lg text-sm font-semibold transition-colors ${
+                  p === current
+                    ? "bg-brand-ink text-brand-bone"
+                    : "bg-brand-ink/[0.05] text-brand-ink hover:bg-brand-ink/10"
+                }`}
+              >
+                {p}
+              </button>
+            ))}
+
+            <PagerButton
+              ariaLabel="Next page"
+              disabled={current === pageCount}
+              onClick={() => goTo(current + 1)}
+            >
+              <Arrow dir="right" />
+            </PagerButton>
+          </nav>
+        )}
       </section>
 
       <CurvedDivider fromColor="bone" className="-mt-px relative z-10" />
@@ -166,5 +207,44 @@ export function BlogIndex() {
 
       <Footer />
     </div>
+  );
+}
+
+function PagerButton({
+  children,
+  onClick,
+  disabled,
+  ariaLabel,
+}: {
+  children: React.ReactNode;
+  onClick: () => void;
+  disabled?: boolean;
+  ariaLabel: string;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      disabled={disabled}
+      aria-label={ariaLabel}
+      className="grid h-11 w-11 place-items-center rounded-lg bg-brand-ink/[0.05] text-brand-ink transition-colors hover:bg-brand-ink/10 disabled:opacity-30 disabled:pointer-events-none"
+    >
+      {children}
+    </button>
+  );
+}
+
+function Arrow({ dir }: { dir: "left" | "right" }) {
+  return (
+    <svg
+      viewBox="0 0 18 12"
+      aria-hidden="true"
+      className={`h-3 w-[18px] fill-none stroke-current ${
+        dir === "left" ? "rotate-180" : ""
+      }`}
+      strokeWidth="1.6"
+    >
+      <path d="M1 6h16M12 1l5 5-5 5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
   );
 }

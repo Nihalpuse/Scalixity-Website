@@ -104,7 +104,7 @@ const DROPDOWN_DATA: Record<string, NavDropdownData> = {
   Company: {
     kind: "flat",
     items: [
-      { label: "About us", href: "/company" },
+      { label: "About us", href: "/about" },
       { label: "Careers", href: "/careers" },
       { label: "Contact", href: "/contact" },
       { label: "Blog", href: "/blog" },
@@ -112,7 +112,7 @@ const DROPDOWN_DATA: Record<string, NavDropdownData> = {
     cta: {
       title: "Want to know what we're about?",
       buttonLabel: "Read our story",
-      buttonHref: "/company",
+      buttonHref: "/about",
     },
     preview: "/images/company.webp",
   },
