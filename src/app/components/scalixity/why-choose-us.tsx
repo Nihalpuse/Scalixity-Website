@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import Link from "next/link";
 import { motion, useInView } from "framer-motion";
 import { Building2, PoundSterling, TrendingUp, Clock } from "lucide-react";
 import { Button } from "@/src/app/components/ui/button";
@@ -203,7 +204,7 @@ export default function WhyChooseUs() {
                       asChild
                       className="w-full sm:w-auto bg-[#A8B2E7] hover:bg-[#A8B2E7] text-black border border-black px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold rounded-full transition-all duration-300 hover:shadow-lg"
                     >
-                      <a href="/blog/future-of-generative-ai">Explore more</a>
+                      <Link href="/blog/future-of-generative-ai">Explore more</Link>
                     </Button>
                   </div>
                 </div>
