@@ -12,21 +12,16 @@ import { WhyChooseUs } from "./WhyChooseUs";
 import { Testimonials } from "./Testimonials";
 import { ContactForm } from "./ContactForm";
 import { Footer } from "./Footer";
+import {
+  PRIMARY_NAV_LINKS,
+  PRIMARY_NAV_CTA,
+  PRIMARY_NAV_LOGO,
+} from "@/src/app/components/primary-nav-config";
 
-// Inlined from the former landing-source/landing-content.json (a gitignored
-// working file, so it couldn't be a build dependency). Only the nav, hero, and
-// page metadata ever read from it — every other section is self-contained.
-const NAV_LINKS = [
-  { label: "Services", href: "#services", hasDropdown: true },
-  { label: "Industries", href: "#industries", hasDropdown: true },
-  { label: "Cases", href: "#cases", hasDropdown: false },
-  { label: "Company", href: "#company", hasDropdown: true },
-  { label: "Insights", href: "/blog", hasDropdown: false },
-  { label: "Resources", href: "/resources", hasDropdown: false },
-  { label: "Contacts", href: "#contact-form", hasDropdown: false },
-];
-const NAV_CTA = { label: "Get in touch", href: "#contact-form" };
-
+// Hero copy inlined from the former landing-source/landing-content.json (a
+// gitignored working file). The nav uses the shared route-based config so the
+// top-level links go to real pages (/services, /industries, …) like the rest
+// of the site, rather than in-page anchors.
 const HERO_CTAS: { label: string; href: string; variant?: "primary" | "secondary" }[] = [
   { label: "Let's talk", href: "#contact-form", variant: "primary" },
   { label: "View our cases", href: "#cases", variant: "secondary" },
@@ -35,7 +30,11 @@ const HERO_CTAS: { label: string; href: string; variant?: "primary" | "secondary
 export function LandingView() {
   return (
     <div className="brand-root min-h-screen">
-      <PrimaryNav logoText="scalixity" links={NAV_LINKS} cta={NAV_CTA} />
+      <PrimaryNav
+        logoText={PRIMARY_NAV_LOGO}
+        links={PRIMARY_NAV_LINKS}
+        cta={PRIMARY_NAV_CTA}
+      />
 
       <Hero
         eyebrow="AI solutions for data-driven companies"

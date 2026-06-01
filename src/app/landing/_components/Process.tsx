@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Scramble } from "./Scramble";
 import { StaggerText } from "./StaggerText";
+import { useActiveOnScroll } from "./useActiveOnScroll";
 
 // Step content ported from src/app/components/process on the existing
 // Scalixity landing. Same 7-step methodology, refit for the new design
@@ -65,53 +66,7 @@ const STEPS: Step[] = [
 ];
 
 export function Process() {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const refs = useRef<Array<HTMLElement | null>>([]);
-
-  useEffect(() => {
-    // Same probe-line pattern used in Services: pick the step whose
-    // vertical range contains a horizontal line 40% from the viewport
-    // top. Steps fully above count as recently-passed; steps fully
-    // below haven't been reached yet.
-    const update = () => {
-      const probe = window.innerHeight * 0.4;
-      let active = 0;
-
-      for (let i = 0; i < STEPS.length; i++) {
-        const el = refs.current[i];
-        if (!el) continue;
-        const rect = el.getBoundingClientRect();
-        if (rect.bottom < probe) {
-          active = i;
-        } else if (rect.top <= probe) {
-          active = i;
-          break;
-        } else {
-          break;
-        }
-      }
-
-      setActiveIndex(active);
-    };
-
-    let ticking = false;
-    const onScroll = () => {
-      if (ticking) return;
-      ticking = true;
-      requestAnimationFrame(() => {
-        update();
-        ticking = false;
-      });
-    };
-
-    update();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-    };
-  }, []);
+  const { activeIndex, setRef } = useActiveOnScroll(STEPS.length);
 
   const activeNumber = String(activeIndex + 1).padStart(2, "0");
 
@@ -153,9 +108,7 @@ export function Process() {
           {STEPS.map((step, i) => (
             <article
               key={step.title}
-              ref={(el) => {
-                refs.current[i] = el;
-              }}
+              ref={setRef(i)}
               className="border-t border-brand-ink/10 pt-6 lg:pt-8"
             >
               {/* Inline number badge — visible on mobile only, replaces

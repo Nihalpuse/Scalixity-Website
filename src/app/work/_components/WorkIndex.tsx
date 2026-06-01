@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { PrimaryNav } from "@/src/app/landing/_components/PrimaryNav";
 import {
   PRIMARY_NAV_LINKS,
@@ -16,25 +16,95 @@ import { StaggerText } from "@/src/app/landing/_components/StaggerText";
 
 const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5000";
 
-type Project = {
-  id: number;
+// Rich case shape powering the phenomenon-style project cards. The thin
+// `/api/work/projects` endpoint only returns title/description/image/
+// liveUrl, so the missing fields (tags, region, tech stack, timeline,
+// results) fall back to sensible defaults at map time and the curated
+// FALLBACK_CASES seed the first render.
+type Quote = { author: string; role?: string; text: string };
+
+type CaseStudy = {
+  slug: string;
+  categories: string[];
+  tags: string[];
   title: string;
-  description: string;
-  image: string;
-  liveUrl?: string | null;
+  client: string;
+  region: string;
+  techStack: string;
+  timeline: string;
+  results: string[];
+  ctaHref: string;
+  image?: string;
+  quote?: Quote;
 };
 
 type ApiProject = {
   id: number;
   title: string;
   description?: string | null;
-  image: string;
+  image?: string | null;
   liveUrl?: string | null;
   live_url?: string | null;
+  category?: string | null;
+  year?: string | null;
 };
 
-// Real featured case preserved from the legacy WorkProjects (the second
-// "Nakshatra" item there was placeholder, so it's dropped).
+// Curated Scalixity cases used as the seed render and the fallback when the
+// API is unreachable or empty.
+const FALLBACK_CASES: CaseStudy[] = [
+  {
+    slug: "insurance",
+    categories: ["AI", "Web apps"],
+    tags: ["AI", "AUTOMATION", "INSURANCE"],
+    title: "AI-powered claim settlement for a leading insurance provider",
+    client: "Insurance",
+    region: "India",
+    techStack: "Python, TensorFlow, AWS",
+    timeline: "8 months",
+    results: [
+      "40% reduced claim settlement time",
+      "Automated document review pipeline",
+      "Higher customer satisfaction scores",
+    ],
+    ctaHref: "/contact",
+    image: "/landing/cases/Case-preview-2-2.png.webp",
+  },
+  {
+    slug: "healthcare",
+    categories: ["AI"],
+    tags: ["AI", "OCR", "HEALTHCARE"],
+    title: "Medical claim accuracy and automation for a healthcare network",
+    client: "Healthcare",
+    region: "USA",
+    techStack: "Python, OCR, AWS",
+    timeline: "10 months",
+    results: [
+      "95% accuracy in medical claims processing",
+      "70% reduction in manual review effort",
+      "HIPAA-compliant pipeline end to end",
+    ],
+    ctaHref: "/contact",
+    image: "/landing/cases/Case-preview-10.png.webp",
+  },
+  {
+    slug: "manufacturing",
+    categories: ["AI", "Web apps"],
+    tags: ["AI", "COMPUTER VISION", "MANUFACTURING"],
+    title: "CAD-to-BOM automation for a global manufacturing leader",
+    client: "Manufacturing",
+    region: "Germany",
+    techStack: "Python, Computer Vision, AWS",
+    timeline: "6 months",
+    results: [
+      "70% faster CAD-to-BOM estimates",
+      "Multi-million-dollar annual cost savings",
+      "Scalable engineering estimation pipeline",
+    ],
+    ctaHref: "/contact",
+    image: "/landing/cases/Case-Preview-mob.png.webp",
+  },
+];
+
 const FEATURED = {
   title: "AOIN — Ecommerce platform",
   description:
@@ -43,49 +113,53 @@ const FEATURED = {
     "https://app.supademo.com/embed/cmielh911b27wb7b43c4nsisn?v_email=EMAIL&embed_v=2&utm_source=embed",
 };
 
-function ArrowExternal() {
-  return (
-    <svg
-      viewBox="0 0 18 18"
-      aria-hidden="true"
-      className="h-4 w-4 fill-none stroke-current"
-      strokeWidth="1.8"
-    >
-      <path d="M5 13L13 5M6 5h7v7" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
+function mapApiProjectToCase(project: ApiProject): CaseStudy {
+  const categories = project.category
+    ? project.category
+        .split(/[,/]+/)
+        .map((t) => t.trim())
+        .filter(Boolean)
+    : [];
+  return {
+    slug: String(project.id),
+    categories,
+    tags: project.category
+      ? project.category
+          .split(/[,/]+/)
+          .map((t) => t.trim().toUpperCase())
+          .filter(Boolean)
+      : [],
+    title: project.title,
+    client: project.title,
+    region: project.year ?? "—",
+    techStack: project.description ?? "—",
+    timeline: project.year ?? "—",
+    results: [],
+    ctaHref: project.liveUrl || project.live_url || "/contact",
+    image: project.image ?? undefined,
+  };
 }
 
+const ALL = "All projects";
+
 export function WorkIndex() {
-  const [projects, setProjects] = useState<Project[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [cases, setCases] = useState<CaseStudy[]>(FALLBACK_CASES);
+  const [filter, setFilter] = useState<string>(ALL);
   const [showDemo, setShowDemo] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
     const run = async () => {
       try {
-        setLoading(true);
-        setError(null);
         const res = await fetch(`${baseURL}/api/work/projects`);
-        if (!res.ok) throw new Error("Failed to fetch projects");
+        if (!res.ok) return; // keep fallback
         const data: ApiProject[] = await res.json();
-        const mapped: Project[] = data
-          .map((p) => ({
-            id: p.id,
-            title: p.title,
-            description: p.description || "",
-            image: p.image,
-            liveUrl: p.liveUrl || p.live_url || null,
-          }))
-          .reverse();
-        if (!cancelled) setProjects(mapped);
-      } catch (err) {
-        if (!cancelled)
-          setError(err instanceof Error ? err.message : "Failed to load projects");
-      } finally {
-        if (!cancelled) setLoading(false);
+        if (cancelled) return;
+        if (Array.isArray(data) && data.length > 0) {
+          setCases(data.map(mapApiProjectToCase).reverse());
+        }
+      } catch {
+        // network/JSON error — keep fallback silently
       }
     };
     run();
@@ -94,16 +168,15 @@ export function WorkIndex() {
     };
   }, []);
 
-  // Deep-link support: /work#aoin-project scrolls to the featured case.
-  useEffect(() => {
-    if (typeof window !== "undefined" && window.location.hash === "#aoin-project") {
-      setTimeout(() => {
-        document
-          .getElementById("aoin-project")
-          ?.scrollIntoView({ behavior: "smooth", block: "start" });
-      }, 100);
-    }
-  }, [loading]);
+  // Tabs: "All projects" + the unique categories actually present in the
+  // data, so the filter bar never shows an empty tab.
+  const categories = Array.from(
+    new Set(cases.flatMap((c) => c.categories))
+  ).sort();
+  const filters = [ALL, ...categories];
+
+  const visible =
+    filter === ALL ? cases : cases.filter((c) => c.categories.includes(filter));
 
   return (
     <div className="brand-root min-h-screen">
@@ -113,112 +186,60 @@ export function WorkIndex() {
         cta={PRIMARY_NAV_CTA}
       />
 
-      {/* Hero (dark) */}
-      <section className="relative bg-brand-ink text-brand-bone">
-        <div className="px-5 pt-40 pb-24 lg:px-10 lg:pt-48 lg:pb-32">
-          <p className="brand-eyebrow text-brand-bone-muted mb-8">
-            <Scramble>Selected work</Scramble>
-          </p>
-          <h1 className="font-bricolage text-brand-display text-brand-bone max-w-[16ch]">
-            <StaggerText>Digital solutions we&apos;ve engineered</StaggerText>
-          </h1>
-          <p className="font-albert text-brand-body-lg text-brand-bone-muted max-w-2xl mt-8">
-            A selection of the products and platforms we&apos;ve designed,
-            engineered, and shipped end to end.
-          </p>
-          <div className="mt-10 flex flex-wrap gap-3">
-            <CTAButton href="/contact" variant="primary">
-              Start a project
-            </CTAButton>
-            <CTAButton href="/" variant="secondary">
-              Explore Scalixity
-            </CTAButton>
-          </div>
-        </div>
-      </section>
-
-      <CurvedDivider fromColor="ink" className="-mt-px relative z-10" />
-
-      {/* Projects grid (light) */}
+      {/* Hero + listing (light) — big "Explore our projects" headline */}
       <section
         data-nav-bg="light"
-        className="brand-section-light px-5 lg:px-10 pt-20 pb-24 lg:pt-32 lg:pb-32"
+        className="brand-section-light px-5 lg:px-10 pt-36 pb-24 lg:pt-48 lg:pb-32"
       >
-        <p className="brand-eyebrow text-brand-ink-muted mb-6 lg:mb-8">
-          <Scramble>Projects</Scramble>
-        </p>
-        <h2 className="font-bricolage text-brand-display text-brand-ink mb-12 lg:mb-16 max-w-[18ch]">
-          <StaggerText>Things we&apos;ve shipped</StaggerText>
-        </h2>
+        <h1 className="font-bricolage text-brand-ink leading-[0.95] tracking-[-0.02em] text-[clamp(3rem,9.5vw,11rem)]">
+          <StaggerText>Explore our projects</StaggerText>
+        </h1>
 
-        {loading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-6 animate-pulse">
-            {[0, 1, 2, 3].map((i) => (
-              <div key={i} className="rounded-2xl bg-brand-ink/[0.04] overflow-hidden">
-                <div className="aspect-[16/10] bg-brand-ink/[0.06]" />
-                <div className="p-6 lg:p-8">
-                  <div className="h-5 w-2/3 rounded bg-brand-ink/[0.06] mb-4" />
-                  <div className="h-3 w-full rounded bg-brand-ink/[0.06] mb-2" />
-                  <div className="h-3 w-5/6 rounded bg-brand-ink/[0.06]" />
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : error ? (
-          <p className="font-albert text-brand-body-lg text-brand-ink-muted">
-            We couldn&apos;t load the project list right now. Please try again, or{" "}
-            <a href="/contact" className="text-brand-ink underline underline-offset-2 hover:text-brand-purple">
-              get in touch
-            </a>
-            .
-          </p>
-        ) : projects.length === 0 ? (
-          <p className="font-albert text-brand-body-lg text-brand-ink-muted">
-            New work is on the way — check back soon.
-          </p>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-6">
-            {projects.map((project) => (
-              <article
-                key={project.id}
-                className="group rounded-2xl bg-brand-ink/[0.04] overflow-hidden flex flex-col"
-              >
-                <div className="relative aspect-[16/10] overflow-hidden bg-brand-ink/[0.06]">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={project.image}
-                    alt={project.title}
-                    className="h-full w-full object-cover transition-transform duration-500 ease-brand-out group-hover:scale-105"
-                  />
-                </div>
-                <div className="p-6 lg:p-8 flex flex-col gap-3 flex-grow">
-                  <h3 className="font-bricolage text-xl lg:text-2xl text-brand-ink leading-tight">
-                    {project.title}
-                  </h3>
-                  {project.description && (
-                    <p className="font-albert text-brand-body text-brand-ink-muted leading-relaxed flex-grow">
-                      {project.description}
-                    </p>
-                  )}
-                  {project.liveUrl && (
-                    <a
-                      href={project.liveUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="mt-2 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.14em] text-brand-purple hover:text-brand-purple-hover transition-colors"
-                    >
-                      Visit live site
-                      <ArrowExternal />
-                    </a>
-                  )}
-                </div>
-              </article>
-            ))}
+        {/* Sticky filter bar. Pins flush to the top (top-0) so the bone fill
+            covers the viewport edge — no content peeks above it — while the
+            top padding drops the tabs onto the same row as the PrimaryNav's
+            always-visible "Get in touch" CTA. After scroll the nav bar slides
+            away and the tabs (left) + that CTA (right) read as one header.
+            Right padding clears the floating CTA on desktop. */}
+        {filters.length > 1 && (
+          <div className="sticky top-0 z-20 -mx-5 lg:-mx-10 pl-5 lg:pl-10 pr-5 lg:pr-48 mt-16 lg:mt-28 py-4 bg-brand-bone border-b border-brand-ink/10">
+            <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide min-h-[60px]">
+              {filters.map((f) => {
+                const isActive = f === filter;
+                return (
+                  <button
+                    key={f}
+                    type="button"
+                    onClick={() => setFilter(f)}
+                    className={`shrink-0 px-8 py-4 rounded-lg text-sm uppercase tracking-[0.12em] font-semibold transition-colors ${
+                      isActive
+                        ? "bg-brand-ink text-brand-bone"
+                        : "bg-brand-ink/[0.05] text-brand-ink hover:bg-brand-ink/10"
+                    }`}
+                  >
+                    {f}
+                  </button>
+                );
+              })}
+            </div>
           </div>
         )}
 
+        {/* Case cards */}
+        <div className="mt-12 lg:mt-16">
+          {visible.length === 0 ? (
+            <p className="font-albert text-brand-body-lg text-brand-ink-muted">
+              New work is on the way — check back soon.
+            </p>
+          ) : (
+            visible.map((c, i) => (
+              <CaseCard key={c.slug} data={c} first={i === 0} />
+            ))
+          )}
+        </div>
+
         {/* Featured case with live demo */}
-        <div id="aoin-project" className="mt-20 lg:mt-28 scroll-mt-28">
+        <div id="aoin-project" className="mt-24 lg:mt-32 scroll-mt-28">
           <p className="brand-eyebrow text-brand-ink-muted mb-6">
             <Scramble>Featured case</Scramble>
           </p>
@@ -286,7 +307,12 @@ export function WorkIndex() {
                 aria-label="Close demo"
                 className="grid h-10 w-10 place-items-center rounded-brand-btn bg-brand-ink-faint text-brand-ink transition-colors hover:bg-brand-ink/10"
               >
-                <svg viewBox="0 0 24 24" className="h-5 w-5 fill-none stroke-current" strokeWidth="1.8" aria-hidden="true">
+                <svg
+                  viewBox="0 0 24 24"
+                  className="h-5 w-5 fill-none stroke-current"
+                  strokeWidth="1.8"
+                  aria-hidden="true"
+                >
                   <path d="M5 5l14 14M19 5L5 19" strokeLinecap="round" />
                 </svg>
               </button>
@@ -304,5 +330,144 @@ export function WorkIndex() {
         </div>
       )}
     </div>
+  );
+}
+
+// Single phenomenon-style project card: image on the left, rich metadata
+// (tags, title, client/region, tech stack, timeline, results, optional
+// quote) on the right.
+function CaseCard({ data, first }: { data: CaseStudy; first: boolean }) {
+  const imageWrapRef = useRef<HTMLDivElement>(null);
+  const [revealed, setRevealed] = useState(false);
+
+  useEffect(() => {
+    const el = imageWrapRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setRevealed(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.25 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <article
+      className={
+        first
+          ? ""
+          : "mt-16 lg:mt-24 pt-16 lg:pt-24 border-t border-brand-ink/10"
+      }
+    >
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12 items-start">
+        {/* Image */}
+        <div className="lg:col-span-5">
+          <div
+            ref={imageWrapRef}
+            className={`group aspect-[4/3] rounded-2xl overflow-hidden bg-gradient-to-br from-stone-300 via-stone-400 to-stone-600 relative transition-[transform,opacity] duration-700 ease-brand-out ${
+              revealed ? "opacity-100 scale-100" : "opacity-0 scale-90"
+            }`}
+          >
+            {data.image ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={data.image}
+                alt={data.client}
+                className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 ease-brand-out group-hover:scale-105"
+              />
+            ) : (
+              <div className="absolute inset-0 flex items-center justify-center font-bricolage text-2xl uppercase tracking-[0.18em] text-brand-bone/70">
+                {data.client}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Details */}
+        <div className="lg:col-span-7 flex flex-col gap-4 lg:gap-5">
+          {data.tags.length > 0 && (
+            <p className="brand-eyebrow text-brand-ink-muted">
+              {data.tags.map((t) => `#${t}`).join(" ")}
+            </p>
+          )}
+
+          <h3 className="font-bricolage text-2xl lg:text-3xl xl:text-4xl text-brand-ink leading-tight">
+            {data.title}
+          </h3>
+
+          {/* Client + region pills */}
+          <div className="flex flex-wrap gap-2">
+            <span className="inline-flex items-center px-3 py-1.5 bg-brand-ink/5 rounded-md text-[11px] uppercase tracking-[0.12em] font-semibold text-brand-ink">
+              {data.client}
+            </span>
+            {data.region && data.region !== "—" && (
+              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-brand-ink/5 rounded-md text-[11px] uppercase tracking-[0.12em] font-semibold text-brand-ink">
+                {data.region}
+              </span>
+            )}
+          </div>
+
+          {/* Tech stack + Timeline */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 border-t border-brand-ink/10">
+            <div>
+              <p className="brand-eyebrow text-brand-ink-muted mb-2">Tech stack</p>
+              <p className="font-albert text-sm lg:text-base text-brand-ink leading-snug">
+                {data.techStack}
+              </p>
+            </div>
+            <div>
+              <p className="brand-eyebrow text-brand-ink-muted mb-2">Timeline</p>
+              <p className="font-albert text-sm lg:text-base text-brand-ink">
+                {data.timeline}
+              </p>
+            </div>
+          </div>
+
+          {/* Results — only when present */}
+          {data.results.length > 0 && (
+            <div className="pt-4 border-t border-brand-ink/10">
+              <p className="brand-eyebrow text-brand-ink-muted mb-2">Results</p>
+              <ul className="space-y-1.5">
+                {data.results.map((r) => (
+                  <li
+                    key={r}
+                    className="font-albert text-sm lg:text-base text-brand-ink"
+                  >
+                    {r}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {/* CTA */}
+          <div className="mt-1">
+            <CTAButton href={data.ctaHref} variant="primary" onLight>
+              Explore
+            </CTAButton>
+          </div>
+
+          {/* Optional client quote */}
+          {data.quote && (
+            <figure className="mt-2 rounded-2xl bg-brand-ink/[0.04] p-6 lg:p-7">
+              <blockquote className="font-albert text-base lg:text-lg text-brand-ink leading-relaxed">
+                “{data.quote.text}”
+              </blockquote>
+              <figcaption className="mt-4 font-albert text-sm text-brand-ink-muted">
+                <span className="font-semibold text-brand-ink">
+                  {data.quote.author}
+                </span>
+                {data.quote.role ? ` — ${data.quote.role}` : ""}
+              </figcaption>
+            </figure>
+          )}
+        </div>
+      </div>
+    </article>
   );
 }

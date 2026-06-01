@@ -1,25 +1,11 @@
-import { Hero } from "@/src/app/components/industries/fintech/hero"
-import { AIApplications } from "@/src/app/components/industries/fintech/ai-applications"
-import { UseCases } from "@/src/app/components/industries/fintech/use-case"
-import { Benefits } from "@/src/app/components/industries/fintech/benefits"
-import { CaseStudy } from "@/src/app/components/industries/fintech/case-studies"
-import { Process } from "@/src/app/components/industries/fintech/process"
-import { TechStack } from "@/src/app/components/industries/fintech/tech-stack"
-import { FAQ } from "@/src/app/components/industries/fintech/faq"
-import { CTA } from "@/src/app/components/industries/fintech/CTA"
-export default function FintechPage() {
-  return (
-    <main className="bg-background">
-      <Hero />
-      <AIApplications />
-      <UseCases/>
-      <Benefits />
-      <CaseStudy />
-      <Process />
-      <TechStack />
-      <FAQ />
-      <CTA />
-    </main>
-  )
-}
+import { FintechView } from "./_components/FintechView";
 
+export const metadata = {
+  title: "Fintech design agency — Scalixity",
+  description:
+    "Fintech UX and UI design that drives activation, retention, and LTV — from digital banking and payments to dashboards and compliant platforms. Design, engineering, and AI for financial products.",
+};
+
+export default function FintechPage() {
+  return <FintechView />;
+}

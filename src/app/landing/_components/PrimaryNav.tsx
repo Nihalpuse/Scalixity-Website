@@ -89,16 +89,10 @@ const DROPDOWN_DATA: Record<string, NavDropdownData> = {
   Industries: {
     kind: "flat",
     items: [
-      { label: "Insurance", href: "/industries/insurance" },
+      { label: "SaaS", href: "/industries/saas" },
       { label: "Healthcare", href: "/industries/healthcare" },
       { label: "Fintech", href: "/industries/fintech" },
-      { label: "Retail", href: "/industries/retail" },
-      { label: "SaaS", href: "/industries/saas" },
-      { label: "Manufacturing", href: "/industries/manufacturing" },
-      { label: "Construction", href: "/industries/construction" },
-      { label: "Travel", href: "/industries/travel" },
-      { label: "Food", href: "/industries/food" },
-      { label: "Fitness", href: "/industries/fitness" },
+      { label: "EdTech", href: "/industries/edtech" },
     ],
     cta: {
       title: "Ready to bring your AI idea to life?",

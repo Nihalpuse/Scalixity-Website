@@ -3,16 +3,16 @@ import { StaggerText } from "./StaggerText";
 
 // Adapted from src/app/components/what-we-offer — Scalixity's 6
 // differentiators trimmed to 4 cards for this 2×2 layout.
-const EYEBROW = "Why choose us?";
-const TITLE = "Your success is our priority";
+const DEFAULT_EYEBROW = "Why choose us?";
+const DEFAULT_TITLE = "Your success is our priority";
 
-type WhyCard = {
+export type WhyCard = {
   eyebrow: string;
   title: string;
   body: string;
 };
 
-const CARDS: WhyCard[] = [
+const DEFAULT_CARDS: WhyCard[] = [
   {
     eyebrow: "Speed without compromise",
     title: "We deliver on time, without skipping quality.",
@@ -35,22 +35,30 @@ const CARDS: WhyCard[] = [
   },
 ];
 
-export function WhyChooseUs() {
+export function WhyChooseUs({
+  eyebrow = DEFAULT_EYEBROW,
+  title = DEFAULT_TITLE,
+  cards = DEFAULT_CARDS,
+}: {
+  eyebrow?: string;
+  title?: string;
+  cards?: WhyCard[];
+} = {}) {
   return (
     <section
       data-nav-bg="light"
       className="brand-section-light px-5 lg:px-10 pt-20 pb-24 lg:pt-32 lg:pb-32"
     >
       <p className="brand-eyebrow text-brand-ink-muted mb-8">
-        <Scramble>{EYEBROW}</Scramble>
+        <Scramble>{eyebrow}</Scramble>
       </p>
 
-      <h2 className="font-bricolage text-brand-display text-brand-ink mb-12 lg:mb-16">
-        <StaggerText>{TITLE}</StaggerText>
+      <h2 className="font-bricolage text-brand-display text-brand-ink mb-12 lg:mb-16 max-w-[20ch]">
+        <StaggerText>{title}</StaggerText>
       </h2>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-5">
-        {CARDS.map((card) => (
+        {cards.map((card) => (
           <article
             key={card.title}
             className="rounded-2xl bg-brand-ink/[0.04] p-8 lg:p-10 flex flex-col gap-4 lg:gap-5"

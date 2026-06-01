@@ -54,6 +54,16 @@ export function Hero({ eyebrow, title, ctas }: HeroProps) {
         </div>
       </div>
 
+      <HeroShowreel />
+    </section>
+  );
+}
+
+// Sticky showreel on the left + scrolling subtitle / trusted-by / numbers on
+// the right. Exported so other pages (e.g. /services) can reuse the section
+// beneath their own hero copy.
+export function HeroShowreel() {
+  return (
       <div className="px-5 lg:px-10 mt-16 lg:mt-24 pb-24 lg:pb-32">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-20 items-start">
           {/* Left: sticky showreel */}
@@ -123,6 +133,5 @@ export function Hero({ eyebrow, title, ctas }: HeroProps) {
           </div>
         </div>
       </div>
-    </section>
   );
 }

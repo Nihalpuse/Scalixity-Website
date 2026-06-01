@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { CTAButton } from "./CTAButton";
 import { Scramble } from "./Scramble";
 import { StaggerText } from "./StaggerText";
+import { useActiveOnScroll } from "./useActiveOnScroll";
 
 // Services adapted from src/app/components/growth-partner + process on
 // the existing Scalixity landing.
@@ -14,7 +15,7 @@ const INTRO = {
     "Great products don't happen by accident. As an AI-first engineering partner, we help data-driven teams grow through smart strategy, AI engineering, and scalable infrastructure from day one.",
 };
 
-type Service = {
+export type Service = {
   number: string;
   title: string;
   description: string;
@@ -22,7 +23,7 @@ type Service = {
   video?: string;
 };
 
-type Cohort = {
+export type Cohort = {
   key: string;
   label: string;
   title: string;
@@ -141,67 +142,56 @@ const COHORTS: Cohort[] = [
   },
 ];
 
-export function Services() {
-  const [activeKey, setActiveKey] = useState(COHORTS[0].key);
-  const refs = useRef<Record<string, HTMLDivElement | null>>({});
+type Theme = "dark" | "light";
 
-  useEffect(() => {
-    // The "active" cohort is whichever one currently spans a probe line
-    // 40% from the viewport top. Cohorts whose bottom is above the probe
-    // count as recently-passed (so the label stays correct after scrolling
-    // past). Cohorts entirely below the probe haven't been reached yet.
-    const update = () => {
-      const probe = window.innerHeight * 0.4;
-      let active = COHORTS[0].key;
+export function Services({
+  theme = "dark",
+  eyebrow = INTRO.eyebrow,
+  title = INTRO.title,
+  description = INTRO.description,
+  cohorts = COHORTS,
+}: {
+  theme?: Theme;
+  eyebrow?: string;
+  title?: string;
+  description?: string;
+  cohorts?: Cohort[];
+} = {}) {
+  const isLight = theme === "light";
+  // Full literal class strings (Tailwind can't generate dynamically-built
+  // prefixed classes).
+  const c = {
+    section: isLight ? "brand-section-light" : "bg-brand-ink text-brand-bone",
+    eyebrow: isLight ? "text-brand-ink-muted" : "text-brand-bone-muted",
+    heading: isLight ? "text-brand-ink" : "text-brand-bone",
+    desc: isLight ? "text-brand-ink-muted" : "text-brand-bone-muted",
+    labelActive: isLight ? "text-brand-ink" : "text-brand-bone",
+    labelInactive: isLight ? "text-brand-ink-soft" : "text-brand-bone-soft",
+    topBorder: isLight
+      ? "border-t border-brand-ink/10"
+      : "border-t border-brand-bone-faint",
+    leftBorder: isLight
+      ? "sm:border-l sm:border-brand-ink/10"
+      : "sm:border-l sm:border-brand-bone-faint",
+  };
 
-      for (const cohort of COHORTS) {
-        const el = refs.current[cohort.key];
-        if (!el) continue;
-        const rect = el.getBoundingClientRect();
-        if (rect.bottom < probe) {
-          active = cohort.key;
-        } else if (rect.top <= probe) {
-          active = cohort.key;
-          break;
-        } else {
-          break;
-        }
-      }
-
-      setActiveKey(active);
-    };
-
-    let ticking = false;
-    const onScroll = () => {
-      if (ticking) return;
-      ticking = true;
-      requestAnimationFrame(() => {
-        update();
-        ticking = false;
-      });
-    };
-
-    update();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-    };
-  }, []);
+  const { activeIndex, setRef } = useActiveOnScroll(cohorts.length);
 
   return (
-    <section className="bg-brand-ink text-brand-bone">
+    <section
+      {...(isLight ? { "data-nav-bg": "light" } : {})}
+      className={c.section}
+    >
       {/* Intro */}
       <div className="px-5 lg:px-10 pt-20 lg:pt-32 pb-12 lg:pb-20">
-        <p className="brand-eyebrow text-brand-bone-muted mb-8">
-          <Scramble>{INTRO.eyebrow}</Scramble>
+        <p className={`brand-eyebrow ${c.eyebrow} mb-8`}>
+          <Scramble>{eyebrow}</Scramble>
         </p>
-        <h2 className="font-bricolage text-brand-display text-brand-bone max-w-[20ch]">
-          <StaggerText>{INTRO.title}</StaggerText>
+        <h2 className={`font-bricolage text-brand-display ${c.heading} max-w-[20ch]`}>
+          <StaggerText>{title}</StaggerText>
         </h2>
-        <p className="mt-8 lg:mt-12 font-albert text-brand-body-lg text-brand-bone-muted max-w-2xl">
-          {INTRO.description}
+        <p className={`mt-8 lg:mt-12 font-albert text-brand-body-lg ${c.desc} max-w-2xl`}>
+          {description}
         </p>
       </div>
 
@@ -211,13 +201,11 @@ export function Services() {
           {/* Left: sticky cohort nav + Explore all */}
           <aside className="lg:col-span-3 lg:sticky lg:top-24 lg:self-start lg:min-h-[80vh] flex flex-col justify-between">
             <ul className="flex flex-col gap-2 font-bricolage text-3xl lg:text-4xl">
-              {COHORTS.map((cohort) => (
+              {cohorts.map((cohort, i) => (
                 <li
                   key={cohort.key}
                   className={`transition-colors duration-300 ease-brand-out ${
-                    activeKey === cohort.key
-                      ? "text-brand-bone"
-                      : "text-brand-bone-soft"
+                    activeIndex === i ? c.labelActive : c.labelInactive
                   }`}
                 >
                   {cohort.label}
@@ -225,7 +213,7 @@ export function Services() {
               ))}
             </ul>
             <div className="mt-16 lg:mt-0">
-              <CTAButton href="/services" variant="primary">
+              <CTAButton href="/services" variant="primary" onLight={isLight}>
                 Explore all
               </CTAButton>
             </div>
@@ -233,18 +221,16 @@ export function Services() {
 
           {/* Right: cohort blocks scroll past */}
           <div className="lg:col-span-9 flex flex-col gap-24 lg:gap-32">
-            {COHORTS.map((cohort) => (
+            {cohorts.map((cohort, i) => (
               <div
                 key={cohort.key}
-                ref={(el) => {
-                  refs.current[cohort.key] = el;
-                }}
+                ref={setRef(i)}
               >
-                <h3 className="font-bricolage text-brand-display text-brand-bone max-w-[20ch] mb-10 lg:mb-12">
+                <h3 className={`font-bricolage text-brand-display ${c.heading} max-w-[20ch] mb-10 lg:mb-12`}>
                   <StaggerText>{cohort.title}</StaggerText>
                 </h3>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 border-t border-brand-bone-faint">
+                <div className={`grid grid-cols-1 sm:grid-cols-2 ${c.topBorder}`}>
                   {cohort.services.map((service, i) => {
                     const isRightCol = i % 2 === 1;
                     const isAfterFirstRow = i >= 2;
@@ -252,14 +238,9 @@ export function Services() {
                       <ServiceCard
                         key={service.number}
                         service={service}
-                        className={`${
-                          isRightCol
-                            ? "sm:border-l sm:border-brand-bone-faint"
-                            : ""
-                        } ${
-                          isAfterFirstRow
-                            ? "border-t border-brand-bone-faint"
-                            : ""
+                        theme={theme}
+                        className={`${isRightCol ? c.leftBorder : ""} ${
+                          isAfterFirstRow ? c.topBorder : ""
                         }`}
                       />
                     );
@@ -277,10 +258,21 @@ export function Services() {
 function ServiceCard({
   service,
   className,
+  theme = "dark",
 }: {
   service: Service;
   className?: string;
+  theme?: Theme;
 }) {
+  const isLight = theme === "light";
+  const solid = isLight ? "from-brand-bone" : "from-brand-ink";
+  const numColor = isLight ? "text-brand-ink-soft" : "text-brand-bone-soft";
+  const titleColor = isLight ? "text-brand-ink" : "text-brand-bone";
+  const descColor = isLight ? "text-brand-ink-muted" : "text-brand-bone-muted";
+  const arrowColor = isLight
+    ? "bg-brand-ink text-brand-bone"
+    : "bg-brand-bone text-brand-ink";
+
   const videoRef = useRef<HTMLVideoElement>(null);
   const [hovered, setHovered] = useState(false);
 
@@ -320,32 +312,28 @@ function ServiceCard({
         />
       )}
 
-      {/* Two stacked gradients so the title/description stay legible: dark up
-          from the bottom, dark in from the left, and darkest where they meet
-          (the bottom-left corner where the text sits). */}
+      {/* Solid at the bottom (behind the title/description), fading to
+          transparent above the heading so the video shows through the top. */}
       <div
-        className={`pointer-events-none absolute inset-0 transition-opacity duration-500 ease-brand-out ${
+        className={`pointer-events-none absolute inset-0 bg-gradient-to-t ${solid} from-[42%] to-transparent to-[82%] transition-opacity duration-500 ease-brand-out ${
           hovered ? "opacity-100" : "opacity-0"
         }`}
-      >
-        <div className="absolute inset-0 bg-gradient-to-t from-brand-ink via-brand-ink/45 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-r from-brand-ink/85 via-brand-ink/20 to-transparent" />
-      </div>
+      />
 
       {/* Content */}
       <div className="relative z-[1] h-full p-6 lg:p-8 flex flex-col justify-between">
         <span
-          className={`font-bricolage text-2xl lg:text-3xl text-brand-bone-soft transition-opacity duration-300 ${
+          className={`font-bricolage text-2xl lg:text-3xl ${numColor} transition-opacity duration-300 ${
             hovered ? "opacity-0" : "opacity-100"
           }`}
         >
           {service.number}
         </span>
         <div>
-          <h4 className="font-bricolage text-2xl lg:text-3xl text-brand-bone mb-3 leading-tight">
+          <h4 className={`font-bricolage text-2xl lg:text-3xl ${titleColor} mb-3 leading-tight`}>
             {service.title}
           </h4>
-          <p className="font-albert text-sm lg:text-base text-brand-bone-muted leading-relaxed max-w-md">
+          <p className={`font-albert text-sm lg:text-base ${descColor} leading-relaxed max-w-md`}>
             {service.description}
           </p>
         </div>
@@ -357,7 +345,7 @@ function ServiceCard({
           hovered ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2 pointer-events-none"
         }`}
       >
-        <span className="grid h-12 w-12 place-items-center rounded-xl bg-brand-bone text-brand-ink">
+        <span className={`grid h-12 w-12 place-items-center rounded-xl ${arrowColor}`}>
           <svg
             viewBox="0 0 18 12"
             aria-hidden="true"

@@ -11,11 +11,12 @@ import { StaggerText } from "./StaggerText";
 const EYEBROW = "AI solutions for data-driven companies";
 const TITLE = "Shipping AI is hard. Finding the right partner shouldn't be.";
 
-type Problem = {
+export type Problem = {
   problem: string;
   solution: string;
-  ctaLabel: string;
-  ctaHref: string;
+  /** CTA is optional — omit both to render a solution with no button. */
+  ctaLabel?: string;
+  ctaHref?: string;
 };
 
 const PROBLEMS: Problem[] = [
@@ -45,26 +46,42 @@ const PROBLEMS: Problem[] = [
   },
 ];
 
-export function Problems() {
+export function Problems({
+  eyebrow = EYEBROW,
+  title = TITLE,
+  description,
+  rows = PROBLEMS,
+}: {
+  eyebrow?: string;
+  title?: string;
+  description?: string;
+  rows?: Problem[];
+} = {}) {
   return (
     <section
       data-nav-bg="light"
       className="brand-section-light px-5 lg:px-10 pt-20 pb-24 lg:pt-32 lg:pb-32"
     >
       <p className="brand-eyebrow text-brand-ink-muted mb-8">
-        <Scramble>{EYEBROW}</Scramble>
+        <Scramble>{eyebrow}</Scramble>
       </p>
 
       <h2 className="font-bricolage text-brand-display text-brand-ink max-w-[22ch]">
-        <StaggerText>{TITLE}</StaggerText>
+        <StaggerText>{title}</StaggerText>
       </h2>
 
+      {description && (
+        <p className="mt-8 lg:mt-12 font-albert text-brand-body-lg text-brand-ink-muted max-w-2xl">
+          {description}
+        </p>
+      )}
+
       <div className="mt-20 lg:mt-28">
-        {PROBLEMS.map((row, i) => (
+        {rows.map((row, i) => (
           <ProblemRow
-            key={row.ctaLabel}
+            key={row.problem}
             row={row}
-            isLast={i === PROBLEMS.length - 1}
+            isLast={i === rows.length - 1}
           />
         ))}
       </div>
@@ -140,11 +157,13 @@ function ProblemRow({ row, isLast }: { row: Problem; isLast: boolean }) {
         <p className="font-albert text-xl lg:text-2xl text-brand-ink leading-relaxed">
           {row.solution}
         </p>
-        <div className="mt-10">
-          <CTAButton href={row.ctaHref} variant="primary" onLight>
-            {row.ctaLabel}
-          </CTAButton>
-        </div>
+        {row.ctaLabel && row.ctaHref && (
+          <div className="mt-10">
+            <CTAButton href={row.ctaHref} variant="primary" onLight>
+              {row.ctaLabel}
+            </CTAButton>
+          </div>
+        )}
       </div>
     </div>
   );
