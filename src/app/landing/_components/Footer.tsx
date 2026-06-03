@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { DROPDOWN_DATA } from "./PrimaryNav";
 
 // Placeholder copy from the phenomenonstudio.com screenshots — swap for
 // Scalixity content (and proper SVG logos for socials + trust badges)
@@ -67,31 +68,22 @@ const LEGAL = [
 
 const COPYRIGHT = "Scalixity © 2026";
 
-// Ported from src/app/components/growth-partner + what-we-offer +
-// process. Mix of Scalixity service offerings.
-const ALL_SERVICES = [
-  "AI Transformation",
-  "Custom Software Development",
-  "Growth Systems Engineering",
-  "Product Acceleration Pod",
-  "Full-Stack DevOps & Infra",
-  "Data & Analytics",
-  "Machine Learning Models",
-  "AI Chatbot Development",
-  "Computer Vision",
-  "Natural Language Processing",
-  "Cloud Infrastructure",
-  "API Engineering",
-  "Web Application Development",
-  "Mobile App Development",
-  "Workflow Automation",
-  "Product Discovery",
-  "MVP Development",
-  "Team Extension",
-  "Technical Consulting",
-  "Security & Compliance",
-  "Ongoing Support",
-];
+// Mirrors the PrimaryNav "Services" mega-menu (single source of truth): every
+// service flattened across its categories, de-duped by label, keeping the real
+// /services/* hrefs so the footer list stays in sync with the nav.
+const ALL_SERVICES: { label: string; href: string }[] = (() => {
+  const data = DROPDOWN_DATA.Services;
+  if (data.kind !== "categorized") return [];
+  const items = [...data.primary, ...(data.secondary ?? [])].flatMap(
+    (cat) => cat.items
+  );
+  const seen = new Set<string>();
+  return items.filter((item) => {
+    if (seen.has(item.label)) return false;
+    seen.add(item.label);
+    return true;
+  });
+})();
 
 export function Footer() {
   const [allServicesOpen, setAllServicesOpen] = useState(false);
@@ -109,7 +101,7 @@ export function Footer() {
             <a
               key={link.label}
               href={link.href}
-              className="font-bricolage text-2xl lg:text-3xl text-brand-ink hover:text-brand-purple transition-colors w-fit"
+              className="font-bricolage text-2xl lg:text-3xl text-brand-ink hover:text-brand-purple transition-colors w-fit max-lg:py-2"
             >
               {link.label}
             </a>
@@ -220,12 +212,12 @@ export function Footer() {
           <div className="px-5 lg:px-10 pb-10 lg:pb-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-1">
             {ALL_SERVICES.map((service) => (
               <a
-                key={service}
-                href="#"
+                key={service.label}
+                href={service.href}
                 className="group flex items-center justify-between gap-3 py-4 border-b border-brand-ink/10 text-xs uppercase tracking-[0.14em] font-semibold text-brand-ink hover:text-brand-purple transition-colors"
               >
                 <span className="underline underline-offset-4 decoration-brand-ink/30 group-hover:decoration-brand-purple">
-                  {service}
+                  {service.label}
                 </span>
                 <ArrowIcon />
               </a>

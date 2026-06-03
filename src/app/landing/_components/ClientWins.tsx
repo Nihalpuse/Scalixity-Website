@@ -1,11 +1,19 @@
+"use client";
+
+import { useEffect, useState, type KeyboardEvent } from "react";
 import { Scramble } from "./Scramble";
 import { StaggerText } from "./StaggerText";
+import { useIsTouch } from "./useMobileEnv";
 
 // Ported from src/app/components/trusted-companies on the existing Scalixity
 // landing. Hover-card descriptions/tags are placeholder content — replace
 // with real positioning when finalized.
 const EYEBROW = "AI solutions for data-driven companies";
 const TITLE = "Our featured client wins";
+
+// How long the dark info card stays flipped open after a tap before it
+// auto-reverts back to the logo (touch only).
+const REVEAL_MS = 3000;
 
 type ClientLogo = {
   name: string;
@@ -97,8 +105,13 @@ export function ClientWins() {
         <StaggerText>{TITLE}</StaggerText>
       </h2>
 
-      <div className="mt-20 lg:mt-28 border-t border-brand-ink/10">
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-px bg-brand-ink/10">
+      <div className="mt-20 lg:mt-28 border-t border-brand-ink/10 max-md:border-b">
+        {/* Desktop/tablet: hairline grid (cols-2 / md cols-3) via the gap-px +
+            bg trick. Phones (<md): a horizontal snap scroll-row of portrait
+            cards (phenomenonstudio.com pattern) — spaced apart with a real gap,
+            each card carrying a right-edge hairline divider, and a bottom
+            hairline (wrapper border-b) sitting the same gap below the row. */}
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-px bg-brand-ink/10 max-md:flex max-md:gap-6 max-md:bg-transparent max-md:pb-6 max-md:overflow-x-auto max-md:snap-x max-md:snap-mandatory max-md:[scrollbar-width:none] max-md:[&::-webkit-scrollbar]:hidden">
           {CLIENT_LOGOS.map((logo) => (
             <ClientCard key={logo.name} logo={logo} />
           ))}
@@ -109,23 +122,63 @@ export function ClientWins() {
 }
 
 function ClientCard({ logo }: { logo: ClientLogo }) {
+  const isTouch = useIsTouch();
+  const [open, setOpen] = useState(false);
+  // Tap-to-flip is only wired up on touch devices. On hover-capable devices the
+  // `revealed` state is never set, so the inline styles below stay `undefined`
+  // and the card renders/behaves exactly as before (hover-driven).
+  const revealed = isTouch && open;
+
+  // Auto-revert: once flipped open, the card flips back on its own after
+  // REVEAL_MS. Re-tapping toggles it (and reschedules / cancels the timer).
+  useEffect(() => {
+    if (!open) return;
+    const id = setTimeout(() => setOpen(false), REVEAL_MS);
+    return () => clearTimeout(id);
+  }, [open]);
+
+  const toggle = () => setOpen((o) => !o);
+  const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      toggle();
+    }
+  };
+
   return (
     // [perspective] on the cell establishes the 3D context so the inner card's
     // rotateY reads as a perspective tilt, not a flat skew.
-    <div className="group relative aspect-square bg-brand-bone flex items-center justify-center px-6 overflow-hidden [perspective:1200px]">
+    <div
+      className="group relative aspect-square bg-brand-bone flex items-center justify-center px-6 overflow-hidden [perspective:1200px] max-md:aspect-[3/4] max-md:w-[86%] max-md:flex-none max-md:snap-start max-md:border-r max-md:border-brand-ink/10"
+      {...(isTouch
+        ? {
+            role: "button",
+            tabIndex: 0,
+            "aria-expanded": open,
+            "aria-label": `${logo.title} — show details`,
+            onClick: toggle,
+            onKeyDown,
+          }
+        : {})}
+    >
       {/* Default state: real client logo. Per-logo size class compensates
           for PNGs with different amounts of internal padding so all the
           visible marks read at a similar weight. Fades out as the hover
-          card rotates in over the top. */}
+          card rotates in over the top. On touch, the inline opacity drives
+          the same fade when tapped. */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={logo.logoSrc}
         alt={logo.name}
+        style={revealed ? { opacity: 0 } : undefined}
         className={`${logo.logoSizeClass ?? "max-h-12 lg:max-h-16"} max-w-[80%] w-auto object-contain transition-opacity duration-200 group-hover:opacity-0`}
       />
 
-      {/* Hover state: dark info card swings in from a rotated position */}
+      {/* Hover state: dark info card swings in from a rotated position. On
+          touch, the inline style (opacity/transform) takes over when tapped,
+          overriding the resting class transform without modifying it. */}
       <div
+        style={revealed ? { opacity: 1, transform: "rotateY(0deg)" } : undefined}
         className="
           absolute inset-2 lg:inset-3 z-10
           bg-brand-ink rounded-2xl
@@ -152,8 +205,9 @@ function ClientCard({ logo }: { logo: ClientLogo }) {
             (pinegap, AnjisOverseas, NakshatraGyaan) read at a comparable
             visible size here too. brightness-0 invert forces any logo
             (light or dark) to render as solid white against the ink
-            background. */}
-        <div className="flex items-center justify-center py-2">
+            background. Hidden on phones to mirror the reference layout,
+            where the flipped card shows title/description/tags only. */}
+        <div className="flex items-center justify-center py-2 max-md:hidden">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={logo.logoSrc}
@@ -175,6 +229,27 @@ function ClientCard({ logo }: { logo: ClientLogo }) {
           )}
         </div>
       </div>
+
+      {/* Touch-only affordance (↗) so the tap-to-flip is discoverable, matching
+          the reference card. Hidden once open, never rendered where hover works. */}
+      {isTouch && !open && (
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute top-4 right-4 z-20 text-brand-ink"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            className="h-5 w-5 fill-none stroke-current"
+            strokeWidth="1.8"
+          >
+            <path
+              d="M7 17 17 7M9 7h8v8"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </span>
+      )}
     </div>
   );
 }

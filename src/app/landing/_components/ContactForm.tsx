@@ -16,6 +16,7 @@ import { CTAButton } from "./CTAButton";
 import { CountrySelect } from "./CountrySelect";
 import { Scramble } from "./Scramble";
 import { StaggerText } from "./StaggerText";
+import { usePrefersReducedMotion } from "./useMobileEnv";
 
 // Unified contact section — used both as the page hero on /contact
 // (variant="page") and as a mid-page section everywhere else
@@ -144,6 +145,7 @@ export function ContactForm({
   // moment of submit so the animation starts exactly where the user clicked.
   const [planeOrigin, setPlaneOrigin] = useState<{ x: number; y: number } | null>(null);
   const [calendarOpen, setCalendarOpen] = useState(false);
+  const reduced = usePrefersReducedMotion();
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const submitWrapRef = useRef<HTMLDivElement>(null);
@@ -506,11 +508,11 @@ export function ContactForm({
                 <div className="flex flex-col sm:flex-row sm:items-center gap-5">
                   <div
                     ref={submitWrapRef}
-                    className={`inline-flex transition-opacity duration-300 ${
+                    className={`inline-flex max-sm:w-full transition-opacity duration-300 ${
                       isSending ? "opacity-30" : "opacity-100"
                     }`}
                   >
-                    <CTAButton type="submit" variant="primary">
+                    <CTAButton type="submit" variant="primary" className="max-sm:w-full">
                       {isSending ? "Sending..." : "Submit"}
                     </CTAButton>
                   </div>
@@ -597,7 +599,7 @@ export function ContactForm({
       {/* Paper-plane animation overlay — anchored to the submit button's
           viewport center: a dotted SVG trail + the plane riding it via
           CSS offset-path. */}
-      {isSending && planeOrigin && (
+      {isSending && planeOrigin && !reduced && (
         <>
           <svg
             aria-hidden="true"

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CTAButton } from "./CTAButton";
 import { NavDropdown, type NavDropdownData } from "./NavDropdown";
 
@@ -19,8 +19,9 @@ type PrimaryNavProps = {
 };
 
 // Dropdown content adapted from src/app/components/growth-partner +
-// what-we-offer on the existing Scalixity landing.
-const DROPDOWN_DATA: Record<string, NavDropdownData> = {
+// what-we-offer on the existing Scalixity landing. Exported so the Footer's
+// "All services" list can mirror the same source of truth.
+export const DROPDOWN_DATA: Record<string, NavDropdownData> = {
   Services: {
     kind: "categorized",
     primary: [
@@ -246,6 +247,7 @@ export function PrimaryNav({ logoText, links, cta }: PrimaryNavProps) {
   const [navHidden, setNavHidden] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileSection, setMobileSection] = useState<string | null>(null);
+  const barRef = useRef<HTMLDivElement>(null);
 
   const isOpen = openLabel !== null;
   const dropdownData = openLabel ? DROPDOWN_DATA[openLabel] ?? null : null;
@@ -325,6 +327,20 @@ export function PrimaryNav({ logoText, links, cta }: PrimaryNavProps) {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Publish the nav's height as a CSS var so in-page sticky sub-bars (e.g. the
+  // Services mobile tab bar) can pin directly below the always-visible mobile
+  // nav. Additive layout hint; nothing in the nav's own rendering depends on it.
+  useEffect(() => {
+    const root = document.documentElement;
+    const apply = () => {
+      const h = barRef.current?.offsetHeight ?? 0;
+      root.style.setProperty("--nav-offset", `${h}px`);
+    };
+    apply();
+    window.addEventListener("resize", apply);
+    return () => window.removeEventListener("resize", apply);
+  }, []);
+
   // Lock body scroll while the full-screen mobile menu is open so the page
   // behind it doesn't scroll under the panel.
   useEffect(() => {
@@ -382,10 +398,13 @@ export function PrimaryNav({ logoText, links, cta }: PrimaryNavProps) {
       <div
         onMouseLeave={() => setOpenLabel(null)}
         className={`pointer-events-auto transition-[transform,background-color,color] duration-300 ease-brand-out ${headerColors} ${
-          navHidden ? "-translate-y-full" : "translate-y-0"
+          navHidden ? "lg:-translate-y-full" : "translate-y-0"
         }`}
       >
-        <div className="flex items-center justify-between px-5 py-4 lg:px-10">
+        <div
+          ref={barRef}
+          className="flex items-center justify-between px-5 py-4 lg:px-10"
+        >
           <Link
             href="/"
             className="flex items-center gap-2 text-2xl font-semibold"

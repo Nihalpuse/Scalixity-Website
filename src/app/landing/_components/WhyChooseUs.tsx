@@ -57,7 +57,7 @@ export function WhyChooseUs({
         <StaggerText>{title}</StaggerText>
       </h2>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 lg:gap-5">
         {cards.map((card) => (
           <article
             key={card.title}

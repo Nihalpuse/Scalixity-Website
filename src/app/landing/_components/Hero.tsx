@@ -41,7 +41,7 @@ export function Hero({ eyebrow, title, ctas }: HeroProps) {
           <StaggerText>{title}</StaggerText>
         </h1>
 
-        <div className="mt-10 flex flex-wrap gap-3">
+        <div className="mt-10 flex flex-wrap gap-3 max-sm:flex-col max-sm:[&>*]:w-full">
           {ctas.map((cta) => (
             <CTAButton
               key={cta.label}

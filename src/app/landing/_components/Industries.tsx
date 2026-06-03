@@ -110,8 +110,9 @@ export function Industries() {
         <StaggerText>{TITLE}</StaggerText>
       </h2>
 
-      {/* Tabs */}
-      <div className="flex flex-wrap gap-2 mb-12 lg:mb-16">
+      {/* Tabs — wrap on desktop; on mobile/tablet become a single
+          horizontally-scrollable chip row that bleeds to the screen edges. */}
+      <div className="flex flex-wrap gap-2 mb-12 lg:mb-16 max-lg:flex-nowrap max-lg:overflow-x-auto max-lg:-mx-5 max-lg:px-5 max-lg:[scrollbar-width:none] max-lg:[&::-webkit-scrollbar]:hidden">
         {INDUSTRIES.map((i) => {
           const isActive = i.key === activeKey;
           return (
@@ -119,7 +120,7 @@ export function Industries() {
               key={i.key}
               type="button"
               onClick={() => setActiveKey(i.key)}
-              className={`px-6 py-3 rounded-md text-xs lg:text-sm font-semibold tracking-[0.14em] uppercase transition-colors duration-300 ease-brand-out ${
+              className={`px-6 py-3 rounded-md text-xs lg:text-sm font-semibold tracking-[0.14em] uppercase whitespace-nowrap max-lg:shrink-0 transition-colors duration-300 ease-brand-out ${
                 isActive
                   ? "bg-brand-ink text-brand-bone"
                   : "bg-transparent text-brand-ink hover:bg-brand-ink/5"
@@ -176,7 +177,12 @@ export function Industries() {
           </div>
 
           <div>
-            <CTAButton href={active.ctaHref} variant="primary" onLight>
+            <CTAButton
+              href={active.ctaHref}
+              variant="primary"
+              onLight
+              className="max-lg:w-full"
+            >
               Explore
             </CTAButton>
           </div>
@@ -207,6 +213,11 @@ function IndustryMedia({ video, label }: { video?: string; label: string }) {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+    // Reduced-motion users skip the scale/fade pop and see the media at once.
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setRevealed(true);
+      return;
+    }
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {

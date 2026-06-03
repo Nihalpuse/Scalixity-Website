@@ -98,6 +98,18 @@ function ProblemRow({ row, isLast }: { row: Problem; isLast: boolean }) {
 
     const el = ref.current;
     if (!el) return;
+
+    // The pinned scroll-fade is a desktop-only effect. Below lg the rows
+    // render in normal static flow (max-lg:static), and reduced-motion users
+    // opt out entirely — reset opacity and bail in both cases.
+    const allowed =
+      window.matchMedia("(min-width: 1024px)").matches &&
+      !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!allowed) {
+      el.style.opacity = "1";
+      return;
+    }
+
     const next = el.nextElementSibling as HTMLElement | null;
     if (!next) return;
 
@@ -143,7 +155,7 @@ function ProblemRow({ row, isLast }: { row: Problem; isLast: boolean }) {
   return (
     <div
       ref={ref}
-      className="sticky top-20 lg:top-24 bg-brand-bone py-12 lg:py-16 border-t border-brand-ink/10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start"
+      className="sticky top-20 lg:top-24 max-lg:static bg-brand-bone py-12 lg:py-16 border-t border-brand-ink/10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start"
     >
       {/* Problem statement (narrow, left) */}
       <div className="lg:col-span-4">

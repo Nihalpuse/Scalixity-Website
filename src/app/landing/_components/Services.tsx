@@ -1,10 +1,11 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CTAButton } from "./CTAButton";
 import { Scramble } from "./Scramble";
 import { StaggerText } from "./StaggerText";
 import { useActiveOnScroll } from "./useActiveOnScroll";
+import { useIsTouch, usePrefersReducedMotion } from "./useMobileEnv";
 
 // Services adapted from src/app/components/growth-partner + process on
 // the existing Scalixity landing.
@@ -167,15 +168,28 @@ export function Services({
     desc: isLight ? "text-brand-ink-muted" : "text-brand-bone-muted",
     labelActive: isLight ? "text-brand-ink" : "text-brand-bone",
     labelInactive: isLight ? "text-brand-ink-soft" : "text-brand-bone-soft",
+    // Desktop (lg+) keeps the flush hairline grid; below lg the cards become
+    // standalone rounded cards separated by a gap (see max-lg:gap on the grid),
+    // so the dividers are scoped to lg.
     topBorder: isLight
-      ? "border-t border-brand-ink/10"
-      : "border-t border-brand-bone-faint",
+      ? "lg:border-t lg:border-brand-ink/10"
+      : "lg:border-t lg:border-brand-bone-faint",
     leftBorder: isLight
-      ? "sm:border-l sm:border-brand-ink/10"
-      : "sm:border-l sm:border-brand-bone-faint",
+      ? "lg:border-l lg:border-brand-ink/10"
+      : "lg:border-l lg:border-brand-bone-faint",
   };
 
   const { activeIndex, setRef } = useActiveOnScroll(cohorts.length);
+  const reduced = usePrefersReducedMotion();
+  // Own refs to the cohort blocks so the mobile chip row can scroll-jump to a
+  // cohort (the scroll-spy hook keeps its refs private).
+  const blockRefs = useRef<Array<HTMLDivElement | null>>([]);
+  const scrollToCohort = (i: number) => {
+    blockRefs.current[i]?.scrollIntoView({
+      behavior: reduced ? "auto" : "smooth",
+      block: "start",
+    });
+  };
 
   return (
     <section
@@ -195,22 +209,31 @@ export function Services({
         </p>
       </div>
 
-      {/* Sticky cohort layout */}
+      {/* Cohort layout */}
       <div className="px-5 lg:px-10 pb-24 lg:pb-32">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
-          {/* Left: sticky cohort nav + Explore all */}
-          <aside className="lg:col-span-3 lg:sticky lg:top-24 lg:self-start lg:min-h-[80vh] flex flex-col justify-between">
+          {/* Desktop: sticky vertical cohort nav + Explore all. Hidden on
+              mobile — phones get the sticky tab bar inside the cohort column
+              (below) and an Explore-all CTA at the foot of the section. */}
+          <aside className="max-lg:hidden lg:col-span-3 lg:sticky lg:top-24 lg:self-start lg:min-h-[80vh] flex flex-col justify-between">
             <ul className="flex flex-col gap-2 font-bricolage text-3xl lg:text-4xl">
-              {cohorts.map((cohort, i) => (
-                <li
-                  key={cohort.key}
-                  className={`transition-colors duration-300 ease-brand-out ${
-                    activeIndex === i ? c.labelActive : c.labelInactive
-                  }`}
-                >
-                  {cohort.label}
-                </li>
-              ))}
+              {cohorts.map((cohort, i) => {
+                const isActive = activeIndex === i;
+                return (
+                  <li key={cohort.key}>
+                    <button
+                      type="button"
+                      onClick={() => scrollToCohort(i)}
+                      aria-current={isActive ? "true" : undefined}
+                      className={`m-0 cursor-pointer appearance-none border-0 bg-transparent p-0 text-left font-bricolage text-3xl lg:text-4xl transition-colors duration-300 ease-brand-out ${
+                        isActive ? c.labelActive : c.labelInactive
+                      }`}
+                    >
+                      {cohort.label}
+                    </button>
+                  </li>
+                );
+              })}
             </ul>
             <div className="mt-16 lg:mt-0">
               <CTAButton href="/services" variant="primary" onLight={isLight}>
@@ -219,36 +242,92 @@ export function Services({
             </div>
           </aside>
 
-          {/* Right: cohort blocks scroll past */}
-          <div className="lg:col-span-9 flex flex-col gap-24 lg:gap-32">
-            {cohorts.map((cohort, i) => (
+          {/* Right: cohort blocks scroll past. On mobile this column also hosts
+              the sticky tab bar. */}
+          <div className="lg:col-span-9">
+            {/* Mobile sticky tab bar — underline tabs, pinned to the top of the
+                viewport while the section scrolls. The PrimaryNav auto-hides on
+                scroll-down, so while reading the section this bar is the top
+                bar; it releases once the cohort column scrolls past. */}
+            <div
+              style={{ top: "var(--nav-offset, 0px)" }}
+              className={`lg:hidden sticky z-40 -mx-5 px-5 ${
+                isLight ? "bg-brand-bone" : "bg-brand-ink"
+              }`}
+            >
               <div
-                key={cohort.key}
-                ref={setRef(i)}
+                className={`flex gap-6 overflow-x-auto border-b [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ${
+                  isLight ? "border-brand-ink/10" : "border-brand-bone-faint"
+                }`}
               >
-                <h3 className={`font-bricolage text-brand-display ${c.heading} max-w-[20ch] mb-10 lg:mb-12`}>
-                  <StaggerText>{cohort.title}</StaggerText>
-                </h3>
-
-                <div className={`grid grid-cols-1 sm:grid-cols-2 ${c.topBorder}`}>
-                  {cohort.services.map((service, i) => {
-                    const isRightCol = i % 2 === 1;
-                    const isAfterFirstRow = i >= 2;
-                    return (
-                      <ServiceCard
-                        key={service.number}
-                        service={service}
-                        theme={theme}
-                        className={`${isRightCol ? c.leftBorder : ""} ${
-                          isAfterFirstRow ? c.topBorder : ""
-                        }`}
-                      />
-                    );
-                  })}
-                </div>
+                {cohorts.map((cohort, i) => {
+                  const isActive = activeIndex === i;
+                  return (
+                    <button
+                      key={cohort.key}
+                      type="button"
+                      onClick={() => scrollToCohort(i)}
+                      aria-current={isActive ? "true" : undefined}
+                      className={`relative shrink-0 whitespace-nowrap pt-1 pb-4 font-bricolage text-base transition-colors duration-300 ease-brand-out ${
+                        isActive ? c.labelActive : c.labelInactive
+                      }`}
+                    >
+                      {cohort.label}
+                      {isActive && (
+                        <span className="absolute -bottom-px left-0 right-0 h-0.5 bg-current" />
+                      )}
+                    </button>
+                  );
+                })}
               </div>
-            ))}
+            </div>
+
+            <div className="flex flex-col gap-24 lg:gap-32 max-lg:mt-8">
+              {cohorts.map((cohort, i) => (
+                <div
+                  key={cohort.key}
+                  ref={(el) => {
+                    setRef(i)(el);
+                    blockRefs.current[i] = el;
+                  }}
+                  className="scroll-mt-24 max-lg:scroll-mt-[calc(var(--nav-offset,0px)+64px)]"
+                >
+                  <h3 className={`font-bricolage text-brand-display ${c.heading} max-w-[20ch] mb-10 lg:mb-12`}>
+                    <StaggerText>{cohort.title}</StaggerText>
+                  </h3>
+
+                  <div className={`grid grid-cols-1 sm:grid-cols-2 max-lg:gap-6 ${c.topBorder}`}>
+                    {cohort.services.map((service, i) => {
+                      const isRightCol = i % 2 === 1;
+                      const isAfterFirstRow = i >= 2;
+                      return (
+                        <ServiceCard
+                          key={service.number}
+                          service={service}
+                          theme={theme}
+                          className={`${isRightCol ? c.leftBorder : ""} ${
+                            isAfterFirstRow ? c.topBorder : ""
+                          }`}
+                        />
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
+        </div>
+
+        {/* Mobile-only Explore all (desktop has it in the sticky aside). */}
+        <div className="lg:hidden mt-12">
+          <CTAButton
+            href="/services"
+            variant="primary"
+            onLight={isLight}
+            className="w-full"
+          >
+            Explore all
+          </CTAButton>
         </div>
       </div>
     </section>
@@ -273,27 +352,53 @@ function ServiceCard({
     ? "bg-brand-ink text-brand-bone"
     : "bg-brand-bone text-brand-ink";
 
+  const cardRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [hovered, setHovered] = useState(false);
+  const [inView, setInView] = useState(false);
+  const isTouch = useIsTouch();
+  const reduced = usePrefersReducedMotion();
 
-  const handleEnter = () => {
-    setHovered(true);
+  // Touch devices can't hover, so the showreel would never play. Play it inline
+  // when the card scrolls into view instead. Gated to touch + motion-allowed so
+  // (a) desktop hover behavior is byte-identical and (b) reduced-motion users
+  // get a clean static card. Only the in-view card(s) decode, not all at once.
+  useEffect(() => {
+    if (!isTouch || reduced) return;
+    const el = cardRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([entry]) => setInView(entry.isIntersecting),
+      { threshold: 0.5 },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [isTouch, reduced]);
+
+  // "Enhanced" state = desktop hover OR touch in-view. On desktop isTouch is
+  // false, so this collapses to `hovered` and the markup matches the original.
+  const active = hovered || (isTouch && !reduced && inView);
+
+  useEffect(() => {
     const v = videoRef.current;
-    if (v) {
+    if (!v) return;
+    if (active) {
       v.currentTime = 0;
       v.play().catch(() => {});
+    } else {
+      v.pause();
     }
-  };
-  const handleLeave = () => {
-    setHovered(false);
-    videoRef.current?.pause();
-  };
+  }, [active]);
+
+  const handleEnter = () => setHovered(true);
+  const handleLeave = () => setHovered(false);
 
   return (
     <div
+      ref={cardRef}
       onMouseEnter={handleEnter}
       onMouseLeave={handleLeave}
-      className={`group relative aspect-[4/3] overflow-hidden transition-[border-radius] duration-300 ease-brand-out ${
+      className={`group relative aspect-[4/3] max-lg:aspect-[3/4] overflow-hidden transition-[border-radius] duration-300 ease-brand-out max-lg:rounded-2xl ${
         hovered ? "rounded-2xl" : "rounded-none"
       } ${className ?? ""}`}
     >
@@ -307,7 +412,7 @@ function ServiceCard({
           preload="none"
           aria-hidden="true"
           className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ease-brand-out ${
-            hovered ? "opacity-100" : "opacity-0"
+            active ? "opacity-100" : "opacity-0"
           }`}
         />
       )}
@@ -316,7 +421,7 @@ function ServiceCard({
           transparent above the heading so the video shows through the top. */}
       <div
         className={`pointer-events-none absolute inset-0 bg-gradient-to-t ${solid} from-[42%] to-transparent to-[82%] transition-opacity duration-500 ease-brand-out ${
-          hovered ? "opacity-100" : "opacity-0"
+          active ? "opacity-100" : "opacity-0"
         }`}
       />
 
@@ -324,7 +429,7 @@ function ServiceCard({
       <div className="relative z-[1] h-full p-6 lg:p-8 flex flex-col justify-between">
         <span
           className={`font-bricolage text-2xl lg:text-3xl ${numColor} transition-opacity duration-300 ${
-            hovered ? "opacity-0" : "opacity-100"
+            active ? "opacity-0" : "opacity-100"
           }`}
         >
           {service.number}
@@ -336,12 +441,21 @@ function ServiceCard({
           <p className={`font-albert text-sm lg:text-base ${descColor} leading-relaxed max-w-md`}>
             {service.description}
           </p>
+          {/* Touch devices can't hover, so the desktop arrow (below) never
+              appears. Surface a full-width white Explore CTA instead. */}
+          <div className="lg:hidden mt-5">
+            <CTAButton href="/services" variant="ghost" className="w-full">
+              Explore
+            </CTAButton>
+          </div>
         </div>
       </div>
 
-      {/* Arrow button — reveals on hover (bottom-right), per the reference. */}
+      {/* Arrow button — reveals on hover (bottom-right), per the reference.
+          Desktop-hover only: the cards don't navigate, so a permanently-visible
+          arrow on touch would imply a tap target that isn't one. */}
       <div
-        className={`absolute bottom-6 right-6 z-[2] transition-all duration-300 ease-brand-out ${
+        className={`absolute bottom-6 right-6 z-[2] max-lg:hidden transition-all duration-300 ease-brand-out ${
           hovered ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2 pointer-events-none"
         }`}
       >

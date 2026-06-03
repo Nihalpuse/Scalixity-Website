@@ -193,6 +193,11 @@ function CaseCard({ data, isLast }: { data: CaseStudy; isLast: boolean }) {
   useEffect(() => {
     const el = imageWrapRef.current;
     if (!el) return;
+    // Reduced-motion users skip the scale/fade pop and see the image at once.
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setRevealed(true);
+      return;
+    }
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
@@ -210,6 +215,18 @@ function CaseCard({ data, isLast }: { data: CaseStudy; isLast: boolean }) {
     if (isLast) return;
     const el = ref.current;
     if (!el) return;
+
+    // The pinned card-stacking fade is a desktop-only effect. Below lg the
+    // cards render in normal static flow (max-lg:static), and reduced-motion
+    // users opt out — reset opacity and bail in both cases.
+    const allowed =
+      window.matchMedia("(min-width: 1024px)").matches &&
+      !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!allowed) {
+      el.style.opacity = "1";
+      return;
+    }
+
     const next = el.nextElementSibling as HTMLElement | null;
     if (!next) return;
 
@@ -250,7 +267,7 @@ function CaseCard({ data, isLast }: { data: CaseStudy; isLast: boolean }) {
       // bg-brand-bone + rounded-t makes the card opaque so it masks the
       // previous one as it stacks; the subtle top shadow gives a visible
       // edge when the section bg is the same bone color.
-      className="sticky top-20 lg:top-24 bg-brand-bone rounded-t-3xl pt-8 lg:pt-10 pb-8 lg:pb-10 shadow-[0_-8px_24px_-12px_rgba(8,13,16,0.08)]"
+      className="sticky top-20 lg:top-24 max-lg:static bg-brand-bone rounded-t-3xl pt-8 lg:pt-10 pb-8 lg:pb-10 shadow-[0_-8px_24px_-12px_rgba(8,13,16,0.08)]"
     >
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-start">
         {/* Case image — real preview when the API supplied one, gradient
