@@ -32,7 +32,7 @@ const STATS: { value: string; label: string }[] = [
 export function Hero({ eyebrow, title, ctas }: HeroProps) {
   return (
     <section className="relative bg-brand-ink text-brand-bone">
-      <div className="px-5 pt-40 lg:px-10 lg:pt-48">
+      <div className="px-5 pt-28 lg:px-10 lg:pt-36">
         <p className="brand-eyebrow text-brand-bone-muted mb-8">
           <Scramble>{eyebrow}</Scramble>
         </p>
@@ -64,7 +64,7 @@ export function Hero({ eyebrow, title, ctas }: HeroProps) {
 // beneath their own hero copy.
 export function HeroShowreel() {
   return (
-      <div className="px-5 lg:px-10 mt-16 lg:mt-24 pb-24 lg:pb-32">
+      <div className="px-5 lg:px-10 mt-16 lg:mt-24 pb-14 lg:pb-24">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-20 items-start">
           {/* Left: sticky showreel */}
           <div className="lg:sticky lg:top-24 lg:self-start">
@@ -86,6 +86,10 @@ export function HeroShowreel() {
                   <div
                     key={name}
                     className={`py-6 pr-4 lg:pr-6 ${
+                      i % 2 === 1
+                        ? "max-md:border-l max-md:border-brand-bone-faint max-md:pl-4"
+                        : ""
+                    } ${i >= 2 ? "max-md:border-t max-md:border-brand-bone-faint" : ""} ${
                       i === 0 ? "" : "md:border-l md:border-brand-bone-faint md:pl-4 lg:pl-6"
                     }`}
                   >
@@ -106,7 +110,7 @@ export function HeroShowreel() {
               <p className="brand-eyebrow text-brand-bone-muted mb-6">
                 <Scramble>{STATS_EYEBROW}</Scramble>
               </p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 border-t border-brand-bone-faint lg:flex-1 lg:auto-rows-fr">
+              <div className="grid grid-cols-2 border-t border-brand-bone-faint lg:flex-1 lg:auto-rows-fr">
                 {STATS.map((stat, i) => {
                   const isRightCol = i % 2 === 1;
                   const isBottomRow = i >= 2;
@@ -115,11 +119,11 @@ export function HeroShowreel() {
                       key={stat.label}
                       className={`py-10 pr-4 lg:pr-6 lg:flex lg:flex-col ${
                         isRightCol
-                          ? "sm:border-l sm:border-brand-bone-faint sm:pl-6 lg:pl-10"
+                          ? "border-l border-brand-bone-faint pl-6 lg:pl-10"
                           : ""
                       } ${isBottomRow ? "border-t border-brand-bone-faint" : ""}`}
                     >
-                      <div className="font-bricolage text-5xl lg:text-6xl text-brand-bone leading-none">
+                      <div className="font-bricolage text-3xl sm:text-5xl lg:text-6xl text-brand-bone leading-none">
                         <AnimatedNumber value={stat.value} />
                       </div>
                       <p className="mt-4 font-albert text-brand-body text-brand-bone-muted max-w-[26ch]">

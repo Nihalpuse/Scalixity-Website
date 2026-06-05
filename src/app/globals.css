@@ -806,9 +806,16 @@ button:active, .button-primary:active, .button-secondary:active {
   border: none;
   outline: none;
   color: var(--brand-bone);
-  font-size: 0.875rem;
+  /* 16px on touch so iOS Safari doesn't zoom the page on focus; the desktop
+     14px design size is restored at the lg breakpoint below. */
+  font-size: 1rem;
   font-weight: 600;
   letter-spacing: 0.04em;
+}
+@media (min-width: 1024px) {
+  .brand-phone .PhoneInputInput {
+    font-size: 0.875rem;
+  }
 }
 .brand-phone .PhoneInputInput::placeholder {
   color: rgba(255, 254, 253, 0.4); /* brand-bone-soft */
@@ -822,10 +829,21 @@ button:active, .button-primary:active, .button-secondary:active {
 }
 .brand-phone .PhoneInputCountryIcon,
 .brand-phone .PhoneInputCountryIcon--border {
+  /* The library's own stylesheet isn't imported, so size the flag here —
+     without an explicit size the icon collapses to 0 and only the chevron
+     shows. 1.5:1 keeps the 3:2 flag ratio. */
+  width: 1.5rem;
+  height: 1rem;
   background-color: transparent;
   box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.12);
   border-radius: 2px;
   overflow: hidden;
+}
+.brand-phone .PhoneInputCountryIconImg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 .brand-phone .PhoneInputCountrySelectArrow {
   color: rgba(255, 254, 253, 0.6); /* brand-bone-muted */

@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState, type ComponentType } from "react";
 import { getCountryCallingCode } from "react-phone-number-input";
+import { useIsTouch } from "./useMobileEnv";
 
 // Themed replacement for react-phone-number-input's native <select>. Plugged
 // in via the library's `countrySelectComponent` prop, so it still receives the
@@ -39,10 +40,13 @@ export function CountrySelect({
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [highlight, setHighlight] = useState(0);
+  const isTouch = useIsTouch();
 
   const rootRef = useRef<HTMLDivElement>(null);
   const searchRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLUListElement>(null);
+  // Pointer-down position for tap-vs-scroll detection on the options.
+  const ptrDown = useRef<{ x: number; y: number } | null>(null);
 
   const current = options.find((o) => o.value === value);
 
@@ -66,12 +70,18 @@ export function CountrySelect({
       }
     };
     document.addEventListener("mousedown", onDoc);
-    const t = setTimeout(() => searchRef.current?.focus(), 0);
+    // Auto-focus the search on pointer devices only. On touch, popping the
+    // keyboard would cover the list (and on iOS zoom the page), so the first
+    // option tap goes to dismissing the keyboard / mis-registers instead of
+    // selecting — which read as "the dropdown won't close".
+    const t = isTouch
+      ? undefined
+      : setTimeout(() => searchRef.current?.focus(), 0);
     return () => {
       document.removeEventListener("mousedown", onDoc);
-      clearTimeout(t);
+      if (t) clearTimeout(t);
     };
-  }, [open]);
+  }, [open, isTouch]);
 
   // Keep the highlighted row in view.
   useEffect(() => {
@@ -146,7 +156,7 @@ export function CountrySelect({
               }}
               onKeyDown={onSearchKeyDown}
               placeholder="Search country or code"
-              className="w-full bg-transparent px-2 py-2 text-sm text-brand-bone placeholder:text-brand-bone-soft focus:outline-none"
+              className="w-full bg-transparent px-2 py-2 text-base lg:text-sm text-brand-bone placeholder:text-brand-bone-soft focus:outline-none"
             />
           </div>
 
@@ -166,7 +176,24 @@ export function CountrySelect({
                   <button
                     type="button"
                     onMouseEnter={() => setHighlight(i)}
-                    onClick={() => choose(o.value)}
+                    onPointerDown={(e) => {
+                      ptrDown.current = { x: e.clientX, y: e.clientY };
+                    }}
+                    onPointerCancel={() => {
+                      ptrDown.current = null;
+                    }}
+                    onPointerUp={(e) => {
+                      const d = ptrDown.current;
+                      ptrDown.current = null;
+                      // Select only on a near-stationary press (a tap/click) so
+                      // dragging to scroll the list doesn't pick an option.
+                      // Pointer events fire reliably on touch, where a
+                      // synthesized click can get swallowed by scroll handling —
+                      // which left the dropdown open after selecting on mobile.
+                      if (d && Math.hypot(e.clientX - d.x, e.clientY - d.y) < 12) {
+                        choose(o.value);
+                      }
+                    }}
                     className={`flex w-full items-center gap-3 px-3 py-2 text-left text-sm transition-colors ${
                       active ? "bg-white/[0.07]" : ""
                     } ${selected ? "text-brand-bone" : "text-brand-bone-muted"} hover:text-brand-bone`}

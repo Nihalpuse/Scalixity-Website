@@ -91,7 +91,7 @@ export function Footer() {
   return (
     <footer
       data-nav-bg="light"
-      className="brand-section-light pt-20 lg:pt-32"
+      className="brand-section-light pt-14 lg:pt-24"
     >
       {/* Top: nav + socials + locations */}
       <div className="px-5 lg:px-10 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 mb-16 lg:mb-20">

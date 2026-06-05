@@ -283,8 +283,8 @@ export function ContactForm({
   const Heading = variant === "page" ? "h1" : "h2";
   const sectionPad =
     variant === "page"
-      ? "pt-40 pb-24 lg:pt-48 lg:pb-32"
-      : "pt-20 pb-24 lg:pt-32 lg:pb-32";
+      ? "pt-28 pb-14 lg:pt-36 lg:pb-24"
+      : "pt-14 pb-14 lg:pt-24 lg:pb-24";
 
   return (
     <section
@@ -722,7 +722,7 @@ function FormInput({
         disabled={disabled}
         aria-invalid={!!error}
         aria-describedby={error ? errorId : undefined}
-        className={`bg-transparent text-brand-bone placeholder:text-brand-bone-soft border-b pb-3 focus:outline-none uppercase text-sm font-semibold tracking-[0.04em] transition-colors disabled:opacity-60 ${
+        className={`bg-transparent text-brand-bone placeholder:text-brand-bone-soft border-b pb-3 focus:outline-none uppercase text-base lg:text-sm font-semibold tracking-[0.04em] transition-colors disabled:opacity-60 ${
           error
             ? "border-brand-red focus:border-brand-red"
             : "border-brand-bone-faint focus:border-brand-bone"

@@ -47,7 +47,7 @@ export function WhyChooseUs({
   return (
     <section
       data-nav-bg="light"
-      className="brand-section-light px-5 lg:px-10 pt-20 pb-24 lg:pt-32 lg:pb-32"
+      className="brand-section-light px-5 lg:px-10 pt-14 pb-14 lg:pt-24 lg:pb-24"
     >
       <p className="brand-eyebrow text-brand-ink-muted mb-8">
         <Scramble>{eyebrow}</Scramble>
@@ -61,7 +61,7 @@ export function WhyChooseUs({
         {cards.map((card) => (
           <article
             key={card.title}
-            className="rounded-2xl bg-brand-ink/[0.04] p-8 lg:p-10 flex flex-col gap-4 lg:gap-5"
+            className="rounded-2xl bg-brand-ink/[0.04] p-8 lg:p-10 flex flex-col gap-2 lg:gap-3"
           >
             <p className="brand-eyebrow text-brand-ink-muted">
               {card.eyebrow}

@@ -197,7 +197,7 @@ export function Services({
       className={c.section}
     >
       {/* Intro */}
-      <div className="px-5 lg:px-10 pt-20 lg:pt-32 pb-12 lg:pb-20">
+      <div className="px-5 lg:px-10 pt-14 lg:pt-24 pb-8 lg:pb-12">
         <p className={`brand-eyebrow ${c.eyebrow} mb-8`}>
           <Scramble>{eyebrow}</Scramble>
         </p>
@@ -210,7 +210,7 @@ export function Services({
       </div>
 
       {/* Cohort layout */}
-      <div className="px-5 lg:px-10 pb-24 lg:pb-32">
+      <div className="px-5 lg:px-10 pb-14 lg:pb-24">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
           {/* Desktop: sticky vertical cohort nav + Explore all. Hidden on
               mobile — phones get the sticky tab bar inside the cohort column
