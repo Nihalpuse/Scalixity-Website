@@ -90,7 +90,7 @@ export function AboutView() {
             <p className="brand-eyebrow text-brand-bone-muted mb-8">
               Scalixity in numbers
             </p>
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-brand-bone/10 border-t border-brand-bone/10">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-brand-bone/10 border-t border-brand-bone/10">
               {HERO_STATS.map((stat) => (
                 <div
                   key={stat.label}

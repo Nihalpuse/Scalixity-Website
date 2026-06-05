@@ -116,7 +116,7 @@ export default async function ServicePage({
           {service.challenges.map((c) => (
             <div
               key={c.problem}
-              className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-12 py-8 lg:py-12 border-b border-brand-ink/10"
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-4 lg:gap-12 py-8 lg:py-12 border-b border-brand-ink/10"
             >
               <div className="lg:col-span-5">
                 <p className="font-bricolage text-xl lg:text-2xl text-brand-ink leading-snug">

@@ -26,11 +26,11 @@ export function AboutStory() {
         <StaggerText>{TITLE}</StaggerText>
       </h2>
 
-      <div className="mt-12 lg:mt-20 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12">
-        <p className="lg:col-span-4 font-albert text-brand-body-lg text-brand-ink leading-relaxed">
+      <div className="mt-12 lg:mt-20 grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-12">
+        <p className="md:col-span-4 font-albert text-brand-body-lg text-brand-ink leading-relaxed">
           In our words
         </p>
-        <div className="lg:col-span-8 flex flex-col gap-6 lg:gap-7">
+        <div className="md:col-span-8 flex flex-col gap-6 lg:gap-7">
           {PARAGRAPHS.map((p) => (
             <p
               key={p}

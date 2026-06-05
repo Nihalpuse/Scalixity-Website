@@ -259,7 +259,7 @@ export function WorkIndex() {
               />
             </button>
 
-            <div className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+            <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
               <div>
                 <h3 className="font-bricolage text-brand-h3 text-brand-bone leading-tight mb-6">
                   {FEATURED.title}
@@ -364,7 +364,7 @@ function CaseCard({ data, first }: { data: CaseStudy; first: boolean }) {
           : "mt-16 lg:mt-24 pt-16 lg:pt-24 border-t border-brand-ink/10"
       }
     >
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12 items-start">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6 lg:gap-12 items-start">
         {/* Image */}
         <div className="lg:col-span-5">
           <div

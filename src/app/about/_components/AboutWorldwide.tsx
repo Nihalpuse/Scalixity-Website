@@ -51,12 +51,12 @@ export function AboutWorldwide() {
         {REGIONS.map((r) => (
           <div
             key={r.region}
-            className="grid grid-cols-1 lg:grid-cols-12 gap-2 lg:gap-12 py-6 lg:py-8 border-b border-brand-ink/10 last:border-b-0"
+            className="grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-12 py-6 lg:py-8 border-b border-brand-ink/10 last:border-b-0"
           >
-            <h3 className="lg:col-span-4 font-bricolage text-xl lg:text-2xl text-brand-ink">
+            <h3 className="md:col-span-4 font-bricolage text-xl lg:text-2xl text-brand-ink">
               {r.region}
             </h3>
-            <p className="lg:col-span-8 font-albert text-base lg:text-lg text-brand-ink-muted leading-relaxed max-w-2xl">
+            <p className="md:col-span-8 font-albert text-base lg:text-lg text-brand-ink-muted leading-relaxed max-w-2xl">
               {r.body}
             </p>
           </div>

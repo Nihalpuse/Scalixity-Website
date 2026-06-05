@@ -95,7 +95,7 @@ export function AboutMilestones() {
 
       {/* Numbers — top divider + vertical dividers between cells, no bottom. */}
       <div className="mt-12 lg:mt-16 border-t border-brand-ink/10">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-brand-ink/10">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-brand-ink/10">
           {STATS.map((stat) => (
             <div
               key={stat.label}

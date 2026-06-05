@@ -155,7 +155,7 @@ function ProblemRow({ row, isLast }: { row: Problem; isLast: boolean }) {
   return (
     <div
       ref={ref}
-      className="sticky top-20 lg:top-24 max-lg:static bg-brand-bone py-12 lg:py-16 border-t border-brand-ink/10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start"
+      className="sticky top-20 lg:top-24 max-lg:static bg-brand-bone py-12 lg:py-16 border-t border-brand-ink/10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-16 items-start"
     >
       {/* Problem statement (narrow, left) */}
       <div className="lg:col-span-4">

@@ -116,11 +116,11 @@ export default async function BlogPostPage({
           </div>
 
           {/* Summary — left label, right lead */}
-          <div className="mt-12 lg:mt-16 grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-12">
-            <div className="lg:col-span-3">
+          <div className="mt-12 lg:mt-16 grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-12">
+            <div className="md:col-span-3">
               <p className="brand-eyebrow text-brand-ink-soft">Summary</p>
             </div>
-            <div className="lg:col-span-9">
+            <div className="md:col-span-9">
               <p className="font-albert text-xl lg:text-2xl text-brand-ink leading-snug">
                 {post.excerpt}
               </p>

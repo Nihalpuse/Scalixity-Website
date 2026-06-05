@@ -270,7 +270,7 @@ function CaseCard({ data, isLast }: { data: CaseStudy; isLast: boolean }) {
       // edge when the section bg is the same bone color.
       className="sticky top-20 lg:top-24 max-lg:static bg-brand-bone rounded-t-3xl pt-8 lg:pt-10 pb-8 lg:pb-10 shadow-[0_-8px_24px_-12px_rgba(8,13,16,0.08)]"
     >
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-start">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6 lg:gap-10 items-start">
         {/* Case image — real preview when the API supplied one, gradient
             placeholder with the client name as fallback. */}
         <div className="lg:col-span-5">

@@ -44,7 +44,7 @@ export function GlobalImpact() {
           ClientWins; works automatically across the 2-col / 4-col
           responsive switch. */}
       <div className="mt-16 lg:mt-24 border-y border-brand-ink/10">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-brand-ink/10">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-brand-ink/10">
           {STATS.map((stat) => (
             <div
               key={stat.label}

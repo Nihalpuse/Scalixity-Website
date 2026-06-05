@@ -94,7 +94,7 @@ export function Footer() {
       className="brand-section-light pt-14 lg:pt-24"
     >
       {/* Top: nav + socials + locations */}
-      <div className="px-5 lg:px-10 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 mb-16 lg:mb-20">
+      <div className="px-5 lg:px-10 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-12 gap-12 lg:gap-8 mb-16 lg:mb-20">
         {/* Nav links */}
         <nav className="lg:col-span-4 flex flex-col gap-3">
           {NAV_LINKS.map((link) => (
