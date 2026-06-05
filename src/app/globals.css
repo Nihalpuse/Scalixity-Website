@@ -863,3 +863,35 @@ button:active, .button-primary:active, .button-secondary:active {
     opacity: 1;
   }
 }
+
+/* CTA band illustration — touch-ripple at the fingertip contact point. Rings
+   scale + fade around their own center. Motion is opt-in via
+   prefers-reduced-motion: no-preference; reduced-motion users see static rings
+   (a clean tap indicator). */
+.cta-ripple {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+@keyframes cta-touch-ripple {
+  0% {
+    transform: scale(0.5);
+    opacity: 0.8;
+  }
+  80% {
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.8);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .cta-ripple {
+    animation: cta-touch-ripple 2.4s ease-out infinite;
+  }
+  .cta-ripple--delayed {
+    animation-delay: 1.2s;
+  }
+}

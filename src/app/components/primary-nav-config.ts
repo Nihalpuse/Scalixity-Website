@@ -7,9 +7,9 @@ export const PRIMARY_NAV_LINKS = [
   { label: "Services", href: "/services", hasDropdown: true },
   { label: "Industries", href: "/industries", hasDropdown: true },
   { label: "Cases", href: "/work", hasDropdown: false },
-  { label: "Company", href: "/company", hasDropdown: true },
+  { label: "Company", href: "/company", hasDropdown: false },
   { label: "Insights", href: "/blog", hasDropdown: false },
-  { label: "Contacts", href: "/contact", hasDropdown: false },
+  { label: "Contact us", href: "/contact", hasDropdown: false },
 ];
 
 export const PRIMARY_NAV_CTA = { label: "Get in touch", href: "/contact" };

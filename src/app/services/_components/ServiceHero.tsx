@@ -19,7 +19,7 @@ export function ServiceHero({
 }) {
   return (
     <section className="relative bg-brand-ink text-brand-bone">
-      <div className="px-5 pt-40 lg:px-10 lg:pt-48">
+      <div className="px-5 pt-28 lg:px-10 lg:pt-36">
         <p className="brand-eyebrow text-brand-bone-muted mb-8">
           <Scramble>{EYEBROW}</Scramble>
         </p>
@@ -32,7 +32,7 @@ export function ServiceHero({
           {description}
         </p>
 
-        <div className="mt-10 flex flex-wrap gap-3">
+        <div className="mt-10 flex flex-wrap gap-3 max-sm:flex-col max-sm:[&>*]:w-full">
           <CTAButton href="/contact" variant="primary">
             Start your project
           </CTAButton>
@@ -43,7 +43,7 @@ export function ServiceHero({
       </div>
 
       {images.length > 0 && (
-        <div className="px-5 lg:px-10 mt-16 lg:mt-24 pb-24 lg:pb-32">
+        <div className="px-5 lg:px-10 mt-16 lg:mt-24 pb-14 lg:pb-24">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5 lg:gap-6">
             {images.slice(0, 3).map((src, i) => (
               <div

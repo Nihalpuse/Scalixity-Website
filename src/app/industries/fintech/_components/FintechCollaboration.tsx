@@ -134,6 +134,7 @@ export function FintechCollaboration() {
       slides={slides}
       ctaLabel="Explore all"
       ctaHref="/services"
+      mobileTabs
     />
   );
 }

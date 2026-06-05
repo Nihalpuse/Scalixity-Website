@@ -109,9 +109,7 @@ export const DROPDOWN_DATA: Record<string, NavDropdownData> = {
     kind: "flat",
     items: [
       { label: "About us", href: "/about" },
-      { label: "Careers", href: "/careers" },
       { label: "Contact", href: "/contact" },
-      { label: "Blog", href: "/blog" },
     ],
     cta: {
       title: "Want to know what we're about?",
@@ -159,30 +157,23 @@ function CloseIcon() {
   );
 }
 
-function WhatsAppIcon() {
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5 fill-current">
-      <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.21 4.79 1.21h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm5.8 14.13c-.24.68-1.42 1.31-1.95 1.36-.5.05-1.13.07-1.83-.11-.42-.13-.96-.31-1.65-.61-2.9-1.25-4.79-4.17-4.94-4.36-.14-.19-1.18-1.57-1.18-2.99 0-1.42.74-2.12 1.01-2.41.27-.29.58-.36.78-.36.19 0 .39 0 .56.01.18.01.42-.07.66.5.24.59.82 2.04.89 2.19.07.14.12.31.02.5-.09.19-.14.31-.28.48-.14.17-.29.37-.42.5-.14.14-.28.29-.12.57.16.28.71 1.17 1.53 1.9 1.05.94 1.94 1.23 2.22 1.37.28.14.44.12.6-.07.17-.19.69-.81.87-1.09.18-.28.36-.23.61-.14.25.09 1.6.75 1.87.89.28.14.46.21.53.33.07.12.07.68-.17 1.36z" />
-    </svg>
-  );
-}
-
-function TelegramIcon() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      aria-hidden="true"
-      className="h-5 w-5 fill-none stroke-current"
-      strokeWidth="1.6"
-    >
-      <path
-        d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
+// WhatsApp / Telegram quick-contact icons — commented out for now along with
+// the buttons that used them (mobile menu footer). Re-enable together.
+// function WhatsAppIcon() {
+//   return (
+//     <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5 fill-current">
+//       <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.21 4.79 1.21h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2z" />
+//     </svg>
+//   );
+// }
+//
+// function TelegramIcon() {
+//   return (
+//     <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5 fill-none stroke-current" strokeWidth="1.6">
+//       <path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z" strokeLinecap="round" strokeLinejoin="round" />
+//     </svg>
+//   );
+// }
 
 // Expanded contents for a dropdown link inside the mobile accordion. Flat
 // dropdowns render a simple list; categorized ones group items under their
@@ -590,13 +581,14 @@ export function PrimaryNav({ logoText, links, cta }: PrimaryNavProps) {
           })}
         </nav>
 
-        {/* Footer: full-width CTA + quick-contact icon buttons. */}
+        {/* Footer: full-width CTA. Quick-contact WhatsApp / Telegram buttons
+            are commented out for now. */}
         <div className="px-5 pb-8 pt-6">
           <CTAButton href={cta.href} variant="dark" className="w-full">
             {cta.label}
           </CTAButton>
+          {/* TODO: re-enable once real WhatsApp / Telegram links exist.
           <div className="mt-4 grid grid-cols-2 gap-4">
-            {/* TODO: point these at the real WhatsApp / Telegram links. */}
             <a
               href="#"
               aria-label="Chat on WhatsApp"
@@ -612,6 +604,7 @@ export function PrimaryNav({ logoText, links, cta }: PrimaryNavProps) {
               <TelegramIcon />
             </a>
           </div>
+          */}
         </div>
       </div>
     </header>

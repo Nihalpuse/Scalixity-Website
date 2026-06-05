@@ -27,7 +27,7 @@ export function IndustryFeatures({
   return (
     <section
       data-nav-bg="light"
-      className="brand-section-light px-5 lg:px-10 pt-20 pb-24 lg:pt-32 lg:pb-32"
+      className="brand-section-light px-5 lg:px-10 pt-14 pb-14 lg:pt-24 lg:pb-24"
     >
       <p className="brand-eyebrow text-brand-ink-muted mb-8">
         <Scramble>{eyebrow}</Scramble>
@@ -46,17 +46,22 @@ export function IndustryFeatures({
           {features.map((f) => (
             <article
               key={f.title}
-              className="p-6 lg:p-8 flex flex-col gap-4 border-r border-b border-brand-ink/10"
+              className="px-0 py-6 sm:p-6 lg:p-8 flex flex-col gap-4 border-r border-b border-brand-ink/10"
             >
               {f.Icon ? (
                 <f.Icon className="h-7 w-7 text-brand-purple" />
               ) : (
-                <span
+                <svg
                   aria-hidden="true"
-                  className="font-bricolage text-2xl text-brand-purple leading-none"
+                  viewBox="0 0 24 24"
+                  className="h-7 w-7 text-brand-purple"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
                 >
-                  ✳
-                </span>
+                  <path d="M12 3.5v17M3.5 12h17M6 6l12 12M18 6 6 18" />
+                </svg>
               )}
               <div className="mt-6 lg:mt-10">
                 <h3 className="font-bricolage text-xl lg:text-2xl text-brand-ink leading-tight">

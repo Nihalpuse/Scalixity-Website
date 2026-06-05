@@ -65,6 +65,7 @@ export function HealthcareSolutions() {
       slides={slides}
       ctaLabel="Explore all"
       ctaHref="/work"
+      mobileTabs
     />
   );
 }

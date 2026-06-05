@@ -45,7 +45,7 @@ const DIFFERENTIATORS: Diff[] = [
 
 export function AboutDifference() {
   return (
-    <section className="relative bg-brand-ink text-brand-bone px-5 lg:px-10 pt-20 pb-24 lg:pt-32 lg:pb-32">
+    <section className="relative bg-brand-ink text-brand-bone px-5 lg:px-10 pt-14 pb-14 lg:pt-24 lg:pb-24">
       <p className="brand-eyebrow text-brand-bone-muted mb-8">
         <Scramble>{EYEBROW}</Scramble>
       </p>
@@ -59,7 +59,7 @@ export function AboutDifference() {
           {DIFFERENTIATORS.map((d) => (
             <article
               key={d.n}
-              className="bg-brand-ink p-7 lg:p-9 flex flex-col min-h-[280px]"
+              className="bg-brand-ink px-0 py-7 sm:p-7 lg:p-9 flex flex-col min-h-[280px]"
             >
               <span
                 aria-hidden="true"

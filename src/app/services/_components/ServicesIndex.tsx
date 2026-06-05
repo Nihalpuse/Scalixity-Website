@@ -14,6 +14,7 @@ import { Cases } from "@/src/app/landing/_components/Cases";
 import { Industries } from "@/src/app/landing/_components/Industries";
 import { Scramble } from "@/src/app/landing/_components/Scramble";
 import { StaggerText } from "@/src/app/landing/_components/StaggerText";
+import { CTAButton } from "@/src/app/landing/_components/CTAButton";
 
 const HERO_EYEBROW = "Designed for founders, built for growth";
 const HERO_TITLE = "From idea to market, we've got you covered";
@@ -32,7 +33,7 @@ export function ServicesIndex() {
       {/* Hero copy + the landing showreel section (sticky video left,
           scrolling stats / trusted-by / numbers right). */}
       <section className="relative bg-brand-ink text-brand-bone">
-        <div className="px-5 pt-40 lg:px-10 lg:pt-48">
+        <div className="px-5 pt-28 lg:px-10 lg:pt-36">
           <p className="brand-eyebrow text-brand-bone-muted mb-8">
             <Scramble>{HERO_EYEBROW}</Scramble>
           </p>
@@ -42,6 +43,14 @@ export function ServicesIndex() {
           <p className="font-albert text-brand-body-lg text-brand-bone-muted max-w-2xl mt-8">
             {HERO_DESCRIPTION}
           </p>
+          <div className="mt-10 flex flex-wrap gap-3 max-sm:flex-col max-sm:[&>*]:w-full">
+            <CTAButton href="#contact-form" variant="primary">
+              Let&apos;s talk
+            </CTAButton>
+            <CTAButton href="#cases" variant="secondary">
+              View our cases
+            </CTAButton>
+          </div>
         </div>
 
         <HeroShowreel />

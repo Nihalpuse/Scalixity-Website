@@ -32,6 +32,7 @@ export function IndustryScrollSlider({
   slides,
   ctaLabel,
   ctaHref = "/services",
+  mobileTabs = false,
 }: {
   theme?: Theme;
   eyebrow: string;
@@ -40,6 +41,12 @@ export function IndustryScrollSlider({
   slides: SliderSlide[];
   ctaLabel?: string;
   ctaHref?: string;
+  /**
+   * When true, the vertical tab list is hidden on mobile in favor of a sticky
+   * horizontal underline tab bar (pinned below the nav), mirroring the landing
+   * Services section. Desktop layout is unchanged either way.
+   */
+  mobileTabs?: boolean;
 }) {
   const isLight = theme === "light";
   const c = {
@@ -67,7 +74,7 @@ export function IndustryScrollSlider({
       className={c.section}
     >
       {/* Intro */}
-      <div className="px-5 lg:px-10 pt-20 lg:pt-32 pb-12 lg:pb-20">
+      <div className="px-5 lg:px-10 pt-14 lg:pt-24 pb-8 lg:pb-12">
         <p className={`brand-eyebrow ${c.eyebrow} mb-8`}>
           <Scramble>{eyebrow}</Scramble>
         </p>
@@ -82,9 +89,13 @@ export function IndustryScrollSlider({
       </div>
 
       {/* Sticky tabs + scrolling slides */}
-      <div className="px-5 lg:px-10 pb-24 lg:pb-32">
+      <div className="px-5 lg:px-10 pb-14 lg:pb-24">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
-          <aside className="lg:col-span-4 lg:sticky lg:top-24 lg:self-start lg:min-h-[60vh] flex flex-col justify-between">
+          <aside
+            className={`lg:col-span-4 lg:sticky lg:top-24 lg:self-start lg:min-h-[60vh] flex flex-col justify-between ${
+              mobileTabs ? "max-lg:hidden" : ""
+            }`}
+          >
             <ul className="flex flex-col gap-3 font-bricolage text-2xl lg:text-[1.75rem] leading-tight">
               {slides.map((s, i) => (
                 <li key={s.tab}>
@@ -112,19 +123,68 @@ export function IndustryScrollSlider({
             )}
           </aside>
 
-          {/* Narrow, right-aligned slides column: empty space sits in the
-              middle between the sticky tabs and the content. */}
-          <div className="flex flex-col gap-24 lg:gap-32 lg:col-span-6 lg:col-start-7">
-            {slides.map((s, i) => (
+          {/* Narrow, right-aligned slides column. On mobile this column also
+              hosts the sticky tab bar (when mobileTabs is set) so the bar pins
+              across the full column height — matching the landing Services
+              structure, which avoids the grid-row sticky jitter. */}
+          <div className="lg:col-span-6 lg:col-start-7">
+            {/* Mobile sticky tab bar — underline tabs pinned below the nav while
+                the column scrolls past. */}
+            {mobileTabs && (
               <div
-                key={s.tab}
-                id={slug(s.tab)}
-                ref={setRef(i)}
-                className="scroll-mt-24"
+                style={{ top: "var(--nav-offset, 0px)" }}
+                className={`lg:hidden sticky z-40 -mx-5 px-5 ${
+                  isLight ? "bg-brand-bone" : "bg-brand-ink"
+                }`}
               >
-                {s.content}
+                <div
+                  className={`flex gap-6 overflow-x-auto border-b [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ${
+                    isLight ? "border-brand-ink/10" : "border-brand-bone-faint"
+                  }`}
+                >
+                  {slides.map((s, i) => {
+                    const isActive = activeIndex === i;
+                    return (
+                      <button
+                        key={s.tab}
+                        type="button"
+                        onClick={() => scrollToSlide(s.tab)}
+                        aria-current={isActive ? "true" : undefined}
+                        className={`relative shrink-0 whitespace-nowrap pt-1 pb-4 font-bricolage text-base transition-colors duration-300 ease-brand-out ${
+                          isActive ? c.labelActive : c.labelInactive
+                        }`}
+                      >
+                        {s.tab}
+                        {isActive && (
+                          <span className="absolute -bottom-px left-0 right-0 h-0.5 bg-current" />
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
-            ))}
+            )}
+
+            <div
+              className={`flex flex-col gap-24 lg:gap-32 ${
+                mobileTabs ? "max-lg:mt-8" : ""
+              }`}
+            >
+              {slides.map((s, i) => (
+                <div
+                  key={s.tab}
+                  id={slug(s.tab)}
+                  ref={setRef(i)}
+                  className={`scroll-mt-24 ${
+                    mobileTabs
+                      ? "max-lg:scroll-mt-[calc(var(--nav-offset,0px)+64px)]"
+                      : ""
+                  }`}
+                >
+                  {s.content}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 

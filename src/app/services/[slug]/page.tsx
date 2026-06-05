@@ -54,7 +54,7 @@ export default async function ServicePage({
       {/* Hero (dark) — breadcrumbs, category, title, lead, CTAs, then the
           shared showreel + trusted-by + "Scalixity in numbers" block. */}
       <section className="relative bg-brand-ink text-brand-bone">
-        <div className="px-5 pt-36 lg:px-10 lg:pt-44">
+        <div className="px-5 pt-28 lg:px-10 lg:pt-36">
           <nav aria-label="Breadcrumb">
             <ol className="flex flex-wrap items-center gap-x-2 gap-y-1 brand-eyebrow text-brand-bone-muted">
               <li>
@@ -85,7 +85,7 @@ export default async function ServicePage({
             {service.heroLead}
           </p>
 
-          <div className="mt-10 flex flex-wrap items-center gap-3">
+          <div className="mt-10 flex flex-wrap items-center gap-3 max-sm:flex-col max-sm:items-stretch max-sm:[&>*]:w-full">
             <CTAButton href="/contact" variant="primary">
               Let&apos;s talk
             </CTAButton>
@@ -103,7 +103,7 @@ export default async function ServicePage({
       {/* Challenges (light) — problem → approach rows */}
       <section
         data-nav-bg="light"
-        className="brand-section-light px-5 lg:px-10 pt-20 pb-24 lg:pt-32 lg:pb-32"
+        className="brand-section-light px-5 lg:px-10 pt-14 pb-14 lg:pt-24 lg:pb-24"
       >
         <p className="brand-eyebrow text-brand-ink-muted mb-6 lg:mb-8">
           <Scramble>Challenges</Scramble>
@@ -136,7 +136,7 @@ export default async function ServicePage({
       {/* What we deliver (light) — capability cards */}
       <section
         data-nav-bg="light"
-        className="brand-section-light px-5 lg:px-10 pb-24 lg:pb-32"
+        className="brand-section-light px-5 lg:px-10 pb-14 lg:pb-24"
       >
         <div className="border-t border-brand-ink/10 pt-16 lg:pt-24">
           <p className="brand-eyebrow text-brand-ink-muted mb-6 lg:mb-8">
@@ -149,7 +149,7 @@ export default async function ServicePage({
           <div className="border-t border-brand-ink/10">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-brand-ink/10">
               {service.deliverables.map((d) => (
-                <div key={d.title} className="bg-brand-bone p-6 lg:p-8 flex flex-col min-h-[200px]">
+                <div key={d.title} className="bg-brand-bone px-0 py-6 sm:p-6 lg:p-8 flex flex-col min-h-[200px]">
                   <h3 className="font-bricolage text-xl lg:text-2xl text-brand-ink leading-tight">
                     {d.title}
                   </h3>
@@ -166,7 +166,7 @@ export default async function ServicePage({
       <CurvedDivider fromColor="bone" className="-mt-px relative z-10" />
 
       {/* Benefits (dark) — differentiators with ✻ accent */}
-      <section className="relative bg-brand-ink text-brand-bone px-5 lg:px-10 pt-20 pb-24 lg:pt-32 lg:pb-32">
+      <section className="relative bg-brand-ink text-brand-bone px-5 lg:px-10 pt-14 pb-14 lg:pt-24 lg:pb-24">
         <p className="brand-eyebrow text-brand-bone-muted mb-6 lg:mb-8">
           <Scramble>Why us</Scramble>
         </p>
@@ -179,7 +179,7 @@ export default async function ServicePage({
             {service.benefits.map((b) => (
               <article
                 key={b.title}
-                className="bg-brand-ink p-7 lg:p-9 flex flex-col min-h-[260px]"
+                className="bg-brand-ink px-0 py-7 sm:p-7 lg:p-9 flex flex-col min-h-[260px]"
               >
                 <span aria-hidden="true" className="text-brand-purple text-3xl leading-none">
                   ✻
@@ -204,7 +204,7 @@ export default async function ServicePage({
       {related.length > 0 && (
         <section
           data-nav-bg="light"
-          className="brand-section-light px-5 lg:px-10 pt-20 pb-24 lg:pt-32 lg:pb-32"
+          className="brand-section-light px-5 lg:px-10 pt-14 pb-14 lg:pt-24 lg:pb-24"
         >
           <p className="brand-eyebrow text-brand-ink-muted mb-8">Looking for more?</p>
           <div className="border-t border-brand-ink/10">
@@ -213,13 +213,13 @@ export default async function ServicePage({
                 <Link
                   key={r.slug}
                   href={`/services/${r.slug}`}
-                  className="group bg-brand-bone p-6 lg:p-8 flex flex-col min-h-[220px] transition-colors duration-200 ease-brand-out hover:bg-brand-ink/[0.02]"
+                  className="group bg-brand-bone px-0 py-6 sm:p-6 lg:p-8 flex flex-col sm:min-h-[220px] transition-colors duration-200 ease-brand-out hover:bg-brand-ink/[0.02]"
                 >
                   <span className="brand-eyebrow text-brand-ink-soft">{r.category}</span>
                   <h3 className="mt-4 font-bricolage text-xl lg:text-2xl text-brand-ink leading-tight group-hover:text-brand-purple transition-colors duration-200 ease-brand-out">
                     {r.title}
                   </h3>
-                  <span className="mt-auto pt-8 inline-flex items-center gap-2 brand-eyebrow text-brand-ink">
+                  <span className="pt-4 sm:mt-auto sm:pt-8 inline-flex items-center gap-2 brand-eyebrow text-brand-ink">
                     Explore
                     <svg
                       viewBox="0 0 18 12"

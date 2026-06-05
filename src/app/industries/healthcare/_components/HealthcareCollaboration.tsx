@@ -134,6 +134,7 @@ export function HealthcareCollaboration() {
       slides={slides}
       ctaLabel="Explore all"
       ctaHref="/services"
+      mobileTabs
     />
   );
 }

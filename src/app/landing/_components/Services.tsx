@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { CTAButton } from "./CTAButton";
 import { Scramble } from "./Scramble";
@@ -442,12 +443,22 @@ function ServiceCard({
             {service.description}
           </p>
           {/* Touch devices can't hover, so the desktop arrow (below) never
-              appears. Surface a full-width white Explore CTA instead. */}
-          <div className="lg:hidden mt-5">
-            <CTAButton href="/services" variant="ghost" className="w-full">
-              Explore
-            </CTAButton>
-          </div>
+              appears. Surface a full-width purple Explore CTA instead — a flat
+              link with no hover effect (there's no hover on touch anyway). */}
+          <Link
+            href="/services"
+            className="lg:hidden mt-5 flex w-full items-center justify-center gap-2 rounded-brand-btn bg-brand-purple px-7 py-4 text-sm font-semibold uppercase tracking-[0.14em] text-brand-bone"
+          >
+            Explore
+            <svg
+              viewBox="0 0 18 12"
+              aria-hidden="true"
+              className="h-3 w-[18px] fill-none stroke-current"
+              strokeWidth="1.6"
+            >
+              <path d="M1 6h16M12 1l5 5-5 5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </Link>
         </div>
       </div>
 

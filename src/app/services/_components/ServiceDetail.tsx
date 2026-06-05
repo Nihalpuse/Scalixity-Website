@@ -114,7 +114,7 @@ export function ServiceDetail({
 
 function ServiceDetailSkeleton() {
   return (
-    <section className="bg-brand-ink text-brand-bone px-5 lg:px-10 pt-40 pb-24 lg:pt-48 lg:pb-32">
+    <section className="bg-brand-ink text-brand-bone px-5 lg:px-10 pt-28 pb-14 lg:pt-36 lg:pb-24">
       <div className="animate-pulse">
         <div className="h-3 w-32 rounded bg-brand-bone/[0.12] mb-8" />
         <div className="h-12 w-3/4 max-w-3xl rounded bg-brand-bone/[0.12] mb-4" />
@@ -134,7 +134,7 @@ function ServiceDetailSkeleton() {
 
 function ServiceDetailError({ message }: { message: string | null }) {
   return (
-    <section className="bg-brand-ink text-brand-bone px-5 lg:px-10 pt-40 pb-32 lg:pt-48 min-h-[70vh] flex flex-col justify-center">
+    <section className="bg-brand-ink text-brand-bone px-5 lg:px-10 pt-28 pb-14 lg:pt-36 min-h-[70vh] flex flex-col justify-center">
       <p className="brand-eyebrow text-brand-bone-muted mb-6">Service unavailable</p>
       <h1 className="font-bricolage text-brand-h2 text-brand-bone max-w-[18ch] mb-6">
         We couldn&apos;t load this service
@@ -143,7 +143,7 @@ function ServiceDetailError({ message }: { message: string | null }) {
         {message || "Something went wrong."} Please try again, or get in touch and
         we&apos;ll help directly.
       </p>
-      <div className="flex flex-wrap gap-3">
+      <div className="flex flex-wrap gap-3 max-sm:flex-col max-sm:[&>*]:w-full">
         <CTAButton href="/services" variant="secondary">
           All services
         </CTAButton>

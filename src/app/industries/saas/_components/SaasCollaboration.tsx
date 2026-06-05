@@ -131,6 +131,7 @@ export function SaasCollaboration() {
       slides={slides}
       ctaLabel="Explore all"
       ctaHref="/services"
+      mobileTabs
     />
   );
 }

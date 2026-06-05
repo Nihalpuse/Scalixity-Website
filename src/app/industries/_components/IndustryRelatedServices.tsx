@@ -17,7 +17,7 @@ export function IndustryRelatedServices({
   return (
     <section
       data-nav-bg="light"
-      className="brand-section-light px-5 lg:px-10 pt-20 pb-24 lg:pt-32 lg:pb-32"
+      className="brand-section-light px-5 lg:px-10 pt-14 pb-14 lg:pt-24 lg:pb-24"
     >
       <p className="brand-eyebrow text-brand-ink-muted mb-8">
         <Scramble>{eyebrow}</Scramble>
@@ -31,7 +31,7 @@ export function IndustryRelatedServices({
           {services.map((s) => (
             <article
               key={s.title}
-              className="p-6 lg:p-8 flex flex-col border-r border-b border-brand-ink/10 min-h-[220px]"
+              className="px-0 py-6 sm:p-6 lg:p-8 flex flex-col border-r border-b border-brand-ink/10 sm:min-h-[220px]"
             >
               <h3 className="font-bricolage text-xl lg:text-2xl text-brand-ink leading-tight">
                 {s.title}
@@ -41,7 +41,7 @@ export function IndustryRelatedServices({
               </p>
               <Link
                 href={s.href}
-                className="mt-auto pt-10 inline-flex items-center gap-2 font-albert text-sm font-semibold uppercase tracking-[0.12em] text-brand-ink hover:text-brand-purple transition-colors"
+                className="pt-4 sm:mt-auto sm:pt-10 inline-flex items-center gap-2 font-albert text-sm font-semibold uppercase tracking-[0.12em] text-brand-ink hover:text-brand-purple transition-colors"
               >
                 Explore
                 <svg

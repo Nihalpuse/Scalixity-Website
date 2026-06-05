@@ -63,6 +63,7 @@ export function FintechSolutions() {
       slides={slides}
       ctaLabel="Explore all"
       ctaHref="/work"
+      mobileTabs
     />
   );
 }

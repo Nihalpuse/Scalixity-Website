@@ -134,6 +134,7 @@ export function EdtechCollaboration() {
       slides={slides}
       ctaLabel="Explore all"
       ctaHref="/services"
+      mobileTabs
     />
   );
 }

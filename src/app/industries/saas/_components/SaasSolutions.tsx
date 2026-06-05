@@ -71,6 +71,7 @@ export function SaasSolutions() {
       slides={slides}
       ctaLabel="Explore all"
       ctaHref="/work"
+      mobileTabs
     />
   );
 }

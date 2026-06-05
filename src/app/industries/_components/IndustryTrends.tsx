@@ -20,7 +20,7 @@ export function IndustryTrends({
   return (
     <section
       data-nav-bg="light"
-      className="brand-section-light px-5 lg:px-10 pt-20 pb-24 lg:pt-32 lg:pb-32"
+      className="brand-section-light px-5 lg:px-10 pt-14 pb-14 lg:pt-24 lg:pb-24"
     >
       <p className="brand-eyebrow text-brand-ink-muted mb-8">
         <Scramble>{eyebrow}</Scramble>
@@ -39,7 +39,7 @@ export function IndustryTrends({
           {trends.map((t) => (
             <article
               key={t.number}
-              className="p-6 lg:p-8 flex flex-col gap-4 border-r border-b border-brand-ink/10"
+              className="px-0 py-6 sm:p-6 lg:p-8 flex flex-col gap-4 border-r border-b border-brand-ink/10"
             >
               <span className="font-bricolage text-2xl text-brand-ink-soft leading-none">
                 {t.number}

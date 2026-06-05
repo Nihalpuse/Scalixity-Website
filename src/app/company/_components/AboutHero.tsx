@@ -11,7 +11,7 @@ const DESCRIPTION =
 export function AboutHero() {
   return (
     <section className="relative bg-brand-ink text-brand-bone">
-      <div className="px-5 pt-40 pb-24 lg:px-10 lg:pt-48 lg:pb-32">
+      <div className="px-5 pt-28 pb-14 lg:px-10 lg:pt-36 lg:pb-24">
         <p className="brand-eyebrow text-brand-bone-muted mb-8">
           <Scramble>{EYEBROW}</Scramble>
         </p>
@@ -24,7 +24,7 @@ export function AboutHero() {
           {DESCRIPTION}
         </p>
 
-        <div className="mt-10 flex flex-wrap gap-3">
+        <div className="mt-10 flex flex-wrap gap-3 max-sm:flex-col max-sm:[&>*]:w-full">
           <CTAButton href="/" variant="primary">
             Explore Scalixity
           </CTAButton>

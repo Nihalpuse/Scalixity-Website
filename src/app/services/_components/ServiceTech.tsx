@@ -32,7 +32,7 @@ export function ServiceTech({
   if (!technologies || technologies.length === 0) return null;
 
   return (
-    <section className="bg-brand-ink text-brand-bone px-5 lg:px-10 pt-20 pb-24 lg:pt-32 lg:pb-32">
+    <section className="bg-brand-ink text-brand-bone px-5 lg:px-10 pt-14 pb-14 lg:pt-24 lg:pb-24">
       <p className="brand-eyebrow text-brand-bone-muted mb-6 lg:mb-8">
         <Scramble>{EYEBROW}</Scramble>
       </p>

@@ -64,7 +64,7 @@ export function ResourcesIndex() {
 
       {/* Hero (dark) */}
       <section className="relative bg-brand-ink text-brand-bone">
-        <div className="px-5 pt-40 pb-24 lg:px-10 lg:pt-48 lg:pb-32">
+        <div className="px-5 pt-28 pb-14 lg:px-10 lg:pt-36 lg:pb-24">
           <p className="brand-eyebrow text-brand-bone-muted mb-8">
             <Scramble>Learn with us</Scramble>
           </p>
@@ -83,7 +83,7 @@ export function ResourcesIndex() {
       {/* Resource grid (light) */}
       <section
         data-nav-bg="light"
-        className="brand-section-light px-5 lg:px-10 pt-20 pb-24 lg:pt-32 lg:pb-32"
+        className="brand-section-light px-5 lg:px-10 pt-14 pb-14 lg:pt-24 lg:pb-24"
       >
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
           {RESOURCES.map((resource) => (

@@ -162,7 +162,7 @@ export default async function BlogPostPage({
       {related.length > 0 && (
         <section
           data-nav-bg="light"
-          className="brand-section-light px-5 lg:px-10 pb-24 lg:pb-32"
+          className="brand-section-light px-5 lg:px-10 pb-14 lg:pb-24"
         >
           <div className="border-t border-brand-ink/10 pt-16 lg:pt-24">
             <p className="brand-eyebrow text-brand-ink-muted mb-8">More insights</p>

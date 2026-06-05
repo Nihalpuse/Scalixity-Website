@@ -53,6 +53,7 @@ export function EdtechSolutions() {
       slides={slides}
       ctaLabel="Explore all"
       ctaHref="/work"
+      mobileTabs
     />
   );
 }

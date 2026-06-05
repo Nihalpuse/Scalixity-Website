@@ -43,7 +43,7 @@ export function EdtechView() {
 
       {/* Hero + showreel (dark) */}
       <section className="relative bg-brand-ink text-brand-bone">
-        <div className="px-5 pt-40 lg:px-10 lg:pt-48">
+        <div className="px-5 pt-28 lg:px-10 lg:pt-36">
           <p className="brand-eyebrow text-brand-bone-muted mb-8">
             <Scramble>{HERO_EYEBROW}</Scramble>
           </p>
@@ -53,7 +53,7 @@ export function EdtechView() {
           <p className="font-albert text-brand-body-lg text-brand-bone-muted max-w-2xl mt-8">
             {HERO_DESCRIPTION}
           </p>
-          <div className="mt-10 flex flex-wrap gap-3">
+          <div className="mt-10 flex flex-wrap gap-3 max-sm:flex-col max-sm:[&>*]:w-full">
             <CTAButton href="/contact" variant="primary">
               Let&apos;s talk
             </CTAButton>

@@ -159,8 +159,9 @@ export function Cases() {
 
   return (
     <section
+      id="cases"
       data-nav-bg="light"
-      className="brand-section-light px-5 lg:px-10 pt-14 pb-14 lg:pt-24 lg:pb-24"
+      className="brand-section-light px-5 lg:px-10 pt-14 pb-14 lg:pt-24 lg:pb-24 scroll-mt-24"
     >
       <p className="brand-eyebrow text-brand-ink-muted mb-8">
         <Scramble>{INTRO.eyebrow}</Scramble>
