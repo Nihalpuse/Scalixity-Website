@@ -3,11 +3,13 @@
 import { useEffect, useRef, useState } from "react";
 
 type LazyVideoProps = {
-  /** H.264 MP4 source (always required as the fallback). */
+  /** MP4 source. */
   src: string;
-  /** Optional smaller modern-codec source; offered first when present. */
-  webmSrc?: string;
-  /** First-frame image shown instantly while the clip buffers. */
+  /**
+   * First-frame image shown instantly while the clip buffers. Defaults to the
+   * src path with a `.jpg` extension (the poster the optimize-videos script
+   * emits next to each clip); pass explicitly to override or disable.
+   */
   poster?: string;
   className?: string;
   /** How far outside the viewport (px) to begin fetching. */
@@ -27,13 +29,14 @@ type LazyVideoProps = {
  */
 export function LazyVideo({
   src,
-  webmSrc,
   poster,
   className,
   rootMargin = "200px",
 }: LazyVideoProps) {
   const ref = useRef<HTMLVideoElement>(null);
   const [load, setLoad] = useState(false);
+  // Posters sit next to each clip as `<name>.jpg` (from optimize-videos.ps1).
+  const resolvedPoster = poster ?? src.replace(/\.\w+$/, ".jpg");
 
   // Begin loading once the video nears the viewport.
   useEffect(() => {
@@ -77,11 +80,10 @@ export function LazyVideo({
       loop
       playsInline
       preload="none"
-      poster={poster}
+      poster={resolvedPoster}
       aria-hidden="true"
       className={className}
     >
-      {load && webmSrc && <source src={webmSrc} type="video/webm" />}
       {load && <source src={src} type="video/mp4" />}
     </video>
   );

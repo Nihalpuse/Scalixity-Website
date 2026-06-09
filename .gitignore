@@ -10,6 +10,9 @@
 !.yarn/releases
 !.yarn/versions
 
+# video re-encode backups (originals kept locally by scripts/optimize-videos.ps1)
+/public/_video_originals
+
 # testing
 /coverage
 

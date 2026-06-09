@@ -378,6 +378,7 @@ export function Hero() {
           loop
           playsInline
           preload="auto"
+          poster="/videos/Scalixity.jpg"
           disablePictureInPicture
           controlsList="nodownload"
         >
