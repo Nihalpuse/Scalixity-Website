@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import Image from "next/image";
 import { Scramble } from "@/src/app/landing/_components/Scramble";
 import { StaggerText } from "@/src/app/landing/_components/StaggerText";
+import { useVideoPrefetch } from "@/src/app/landing/_components/useMobileEnv";
 
 const EYEBROW = "Our team";
 const TITLE = "Meet the people behind our projects";
@@ -40,11 +41,16 @@ const GROUPS: { key: string; label: string; members: Member[] }[] = [
 ];
 
 function MemberCard({ member }: { member: Member }) {
+  const cardRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [hovered, setHovered] = useState(false);
   // Falls back to the static image if the video is missing or fails to load.
   const [videoOk, setVideoOk] = useState(true);
   const hasVideo = Boolean(member.video) && videoOk;
+
+  // Buffer the hover clip once the card nears the viewport so the first hover
+  // plays instantly instead of waiting on a fetch.
+  useVideoPrefetch(cardRef, videoRef, hasVideo);
 
   const handleEnter = () => {
     if (!hasVideo) return;
@@ -63,6 +69,7 @@ function MemberCard({ member }: { member: Member }) {
 
   return (
     <article
+      ref={cardRef}
       onMouseEnter={handleEnter}
       onMouseLeave={handleLeave}
       className="group relative aspect-[4/5] overflow-hidden rounded-2xl bg-brand-ink"

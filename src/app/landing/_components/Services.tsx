@@ -6,7 +6,7 @@ import { CTAButton } from "./CTAButton";
 import { Scramble } from "./Scramble";
 import { StaggerText } from "./StaggerText";
 import { useActiveOnScroll } from "./useActiveOnScroll";
-import { useIsTouch, usePrefersReducedMotion } from "./useMobileEnv";
+import { useIsTouch, usePrefersReducedMotion, useVideoPrefetch } from "./useMobileEnv";
 
 // Services adapted from src/app/components/growth-partner + process on
 // the existing Scalixity landing.
@@ -359,6 +359,10 @@ function ServiceCard({
   const [inView, setInView] = useState(false);
   const isTouch = useIsTouch();
   const reduced = usePrefersReducedMotion();
+
+  // Buffer the clip as the card nears the viewport so the first hover is
+  // instant (preload="none" alone would fetch on hover -> visible delay).
+  useVideoPrefetch(cardRef, videoRef, !reduced);
 
   // Touch devices can't hover, so the showreel would never play. Play it inline
   // when the card scrolls into view instead. Gated to touch + motion-allowed so
