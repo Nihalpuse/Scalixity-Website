@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { CTAButton } from "./CTAButton";
+import { LazyVideo } from "./LazyVideo";
 import { Scramble } from "./Scramble";
 import { StaggerText } from "./StaggerText";
 
@@ -239,14 +240,8 @@ function IndustryMedia({ video, label }: { video?: string; label: string }) {
       }`}
     >
       {video ? (
-        <video
+        <LazyVideo
           src={video}
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="auto"
-          aria-hidden="true"
           className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 ease-brand-out group-hover:scale-105"
         />
       ) : (

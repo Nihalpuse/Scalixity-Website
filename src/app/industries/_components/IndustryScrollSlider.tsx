@@ -2,6 +2,7 @@
 
 import { type ReactNode } from "react";
 import { CTAButton } from "@/src/app/landing/_components/CTAButton";
+import { LazyVideo } from "@/src/app/landing/_components/LazyVideo";
 import { Scramble } from "@/src/app/landing/_components/Scramble";
 import { StaggerText } from "@/src/app/landing/_components/StaggerText";
 import { useActiveOnScroll } from "@/src/app/landing/_components/useActiveOnScroll";
@@ -220,16 +221,7 @@ export function SlideMedia({
       <div
         className={`mt-8 lg:mt-10 aspect-[4/3] w-full overflow-hidden rounded-2xl bg-brand-ink ${ring}`}
       >
-        <video
-          src={src}
-          muted
-          loop
-          autoPlay
-          playsInline
-          preload="none"
-          aria-hidden="true"
-          className="h-full w-full object-cover"
-        />
+        <LazyVideo src={src} className="h-full w-full object-cover" />
       </div>
     );
   }
