@@ -68,6 +68,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
       "/",
       "/company",
       "/about",
+      "/careers",
       "/work",
       "/industries",
       "/contact",

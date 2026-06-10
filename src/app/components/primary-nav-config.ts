@@ -7,7 +7,7 @@ export const PRIMARY_NAV_LINKS = [
   { label: "Services", href: "/services", hasDropdown: true },
   { label: "Industries", href: "/industries", hasDropdown: true },
   { label: "Cases", href: "/work", hasDropdown: false },
-  { label: "Company", href: "/company", hasDropdown: false },
+  { label: "Company", href: "/company", hasDropdown: true },
   { label: "Insights", href: "/blog", hasDropdown: false },
   { label: "Contact us", href: "/contact", hasDropdown: false },
 ];

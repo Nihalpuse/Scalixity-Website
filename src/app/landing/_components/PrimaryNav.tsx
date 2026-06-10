@@ -109,7 +109,7 @@ export const DROPDOWN_DATA: Record<string, NavDropdownData> = {
     kind: "flat",
     items: [
       { label: "About us", href: "/about" },
-      { label: "Contact", href: "/contact" },
+      { label: "Careers", href: "/careers" },
     ],
     cta: {
       title: "Want to know what we're about?",
