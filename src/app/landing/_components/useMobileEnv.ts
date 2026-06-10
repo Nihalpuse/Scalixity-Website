@@ -24,6 +24,26 @@ export function useIsTouch() {
   return isTouch;
 }
 
+/**
+ * True at the `lg` breakpoint and up (>= 1024px) — the same boundary the layout
+ * uses to switch from the touch/mobile design to the desktop one. Prefer this
+ * over hover/pointer media queries for deciding hover-vs-touch behaviour:
+ * touchscreen laptops mis-report `(hover: none)` / `(pointer: coarse)`, but
+ * their viewport is reliably desktop-width. Starts `false` so SSR/first render
+ * matches mobile, then flips after mount.
+ */
+export function useIsDesktop() {
+  const [isDesktop, setIsDesktop] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 1024px)");
+    const update = () => setIsDesktop(mq.matches);
+    update();
+    mq.addEventListener?.("change", update);
+    return () => mq.removeEventListener?.("change", update);
+  }, []);
+  return isDesktop;
+}
+
 /** True when the user has asked the OS to minimize motion. */
 export function usePrefersReducedMotion() {
   const [reduced, setReduced] = useState(false);

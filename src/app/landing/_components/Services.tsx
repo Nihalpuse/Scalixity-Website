@@ -6,7 +6,7 @@ import { CTAButton } from "./CTAButton";
 import { Scramble } from "./Scramble";
 import { StaggerText } from "./StaggerText";
 import { useActiveOnScroll } from "./useActiveOnScroll";
-import { usePrefersReducedMotion, useVideoPrefetch } from "./useMobileEnv";
+import { useIsDesktop, usePrefersReducedMotion, useVideoPrefetch } from "./useMobileEnv";
 
 // Services adapted from src/app/components/growth-partner + process on
 // the existing Scalixity landing.
@@ -356,18 +356,33 @@ function ServiceCard({
   const cardRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [hovered, setHovered] = useState(false);
+  const [inView, setInView] = useState(false);
+  const isDesktop = useIsDesktop();
   const reduced = usePrefersReducedMotion();
 
   // Buffer the clip as the card nears the viewport so the first hover is
   // instant (preload="none" alone would fetch on hover -> visible delay).
   useVideoPrefetch(cardRef, videoRef, !reduced);
 
-  // Hover-only: the showreel plays while the pointer is over the card and is
-  // hidden otherwise. No in-view autoplay fallback — hover media queries are
-  // unreliable on touchscreen laptops (they can report no-hover despite a
-  // trackpad), which made cards auto-play in the viewport. Touch devices that
-  // genuinely can't hover just see the static card + the "Explore" CTA below.
-  const active = hovered;
+  // Below the lg breakpoint (mobile/tablet) there's no reliable hover, so play
+  // the showreel inline while the card is in view. Keyed off viewport width,
+  // NOT a hover media query — touchscreen laptops mis-report hover and would
+  // wrongly autoplay. Skipped for reduced-motion users (clean static card).
+  useEffect(() => {
+    if (isDesktop || reduced) return;
+    const el = cardRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([entry]) => setInView(entry.isIntersecting),
+      { threshold: 0.5 },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [isDesktop, reduced]);
+
+  // Desktop/laptop: hover-only (hover ignored on mobile/tablet, which can't
+  // hover anyway). Mobile/tablet: in-view autoplay.
+  const active = isDesktop ? hovered : !reduced && inView;
 
   useEffect(() => {
     const v = videoRef.current;
