@@ -6,7 +6,7 @@ import { CTAButton } from "./CTAButton";
 import { Scramble } from "./Scramble";
 import { StaggerText } from "./StaggerText";
 import { useActiveOnScroll } from "./useActiveOnScroll";
-import { useIsTouch, usePrefersReducedMotion, useVideoPrefetch } from "./useMobileEnv";
+import { useCannotHover, usePrefersReducedMotion, useVideoPrefetch } from "./useMobileEnv";
 
 // Services adapted from src/app/components/growth-partner + process on
 // the existing Scalixity landing.
@@ -357,19 +357,20 @@ function ServiceCard({
   const videoRef = useRef<HTMLVideoElement>(null);
   const [hovered, setHovered] = useState(false);
   const [inView, setInView] = useState(false);
-  const isTouch = useIsTouch();
+  const noHover = useCannotHover();
   const reduced = usePrefersReducedMotion();
 
   // Buffer the clip as the card nears the viewport so the first hover is
   // instant (preload="none" alone would fetch on hover -> visible delay).
   useVideoPrefetch(cardRef, videoRef, !reduced);
 
-  // Touch devices can't hover, so the showreel would never play. Play it inline
-  // when the card scrolls into view instead. Gated to touch + motion-allowed so
-  // (a) desktop hover behavior is byte-identical and (b) reduced-motion users
-  // get a clean static card. Only the in-view card(s) decode, not all at once.
+  // Only devices that truly can't hover (real phones, mouse-less tablets) play
+  // the showreel inline when it scrolls into view — otherwise it would never
+  // play there. Gated on `(any-hover: none)`, NOT `(hover: none)`, so anything
+  // with a mouse/trackpad (incl. touchscreen laptops) stays hover-only. Also
+  // gated on motion-allowed so reduced-motion users get a clean static card.
   useEffect(() => {
-    if (!isTouch || reduced) return;
+    if (!noHover || reduced) return;
     const el = cardRef.current;
     if (!el) return;
     const io = new IntersectionObserver(
@@ -378,11 +379,11 @@ function ServiceCard({
     );
     io.observe(el);
     return () => io.disconnect();
-  }, [isTouch, reduced]);
+  }, [noHover, reduced]);
 
-  // "Enhanced" state = desktop hover OR touch in-view. On desktop isTouch is
-  // false, so this collapses to `hovered` and the markup matches the original.
-  const active = hovered || (isTouch && !reduced && inView);
+  // "Enhanced" state = hover OR (no-hover device + in-view). On hover-capable
+  // devices noHover is false, so this collapses to plain `hovered`.
+  const active = hovered || (noHover && !reduced && inView);
 
   useEffect(() => {
     const v = videoRef.current;
