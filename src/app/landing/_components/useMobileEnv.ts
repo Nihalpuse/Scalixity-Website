@@ -24,26 +24,6 @@ export function useIsTouch() {
   return isTouch;
 }
 
-/**
- * True ONLY when the device has no hover-capable pointer at all (real phones,
- * mouse-less tablets). Unlike `useIsTouch`'s `(hover: none)` — which reflects
- * just the *primary* pointer and so flags touchscreen laptops / 2-in-1s that
- * also have a mouse or trackpad — this uses `(any-hover: none)`, staying false
- * whenever any pointer can hover. Use it to decide whether a hover-driven
- * interaction needs a touch fallback, so hover-capable devices keep hovering.
- */
-export function useCannotHover() {
-  const [noHover, setNoHover] = useState(false);
-  useEffect(() => {
-    const mq = window.matchMedia("(any-hover: none)");
-    const update = () => setNoHover(mq.matches);
-    update();
-    mq.addEventListener?.("change", update);
-    return () => mq.removeEventListener?.("change", update);
-  }, []);
-  return noHover;
-}
-
 /** True when the user has asked the OS to minimize motion. */
 export function usePrefersReducedMotion() {
   const [reduced, setReduced] = useState(false);

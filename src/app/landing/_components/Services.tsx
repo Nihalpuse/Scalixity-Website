@@ -6,7 +6,7 @@ import { CTAButton } from "./CTAButton";
 import { Scramble } from "./Scramble";
 import { StaggerText } from "./StaggerText";
 import { useActiveOnScroll } from "./useActiveOnScroll";
-import { useCannotHover, usePrefersReducedMotion, useVideoPrefetch } from "./useMobileEnv";
+import { usePrefersReducedMotion, useVideoPrefetch } from "./useMobileEnv";
 
 // Services adapted from src/app/components/growth-partner + process on
 // the existing Scalixity landing.
@@ -356,34 +356,18 @@ function ServiceCard({
   const cardRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [hovered, setHovered] = useState(false);
-  const [inView, setInView] = useState(false);
-  const noHover = useCannotHover();
   const reduced = usePrefersReducedMotion();
 
   // Buffer the clip as the card nears the viewport so the first hover is
   // instant (preload="none" alone would fetch on hover -> visible delay).
   useVideoPrefetch(cardRef, videoRef, !reduced);
 
-  // Only devices that truly can't hover (real phones, mouse-less tablets) play
-  // the showreel inline when it scrolls into view — otherwise it would never
-  // play there. Gated on `(any-hover: none)`, NOT `(hover: none)`, so anything
-  // with a mouse/trackpad (incl. touchscreen laptops) stays hover-only. Also
-  // gated on motion-allowed so reduced-motion users get a clean static card.
-  useEffect(() => {
-    if (!noHover || reduced) return;
-    const el = cardRef.current;
-    if (!el) return;
-    const io = new IntersectionObserver(
-      ([entry]) => setInView(entry.isIntersecting),
-      { threshold: 0.5 },
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, [noHover, reduced]);
-
-  // "Enhanced" state = hover OR (no-hover device + in-view). On hover-capable
-  // devices noHover is false, so this collapses to plain `hovered`.
-  const active = hovered || (noHover && !reduced && inView);
+  // Hover-only: the showreel plays while the pointer is over the card and is
+  // hidden otherwise. No in-view autoplay fallback — hover media queries are
+  // unreliable on touchscreen laptops (they can report no-hover despite a
+  // trackpad), which made cards auto-play in the viewport. Touch devices that
+  // genuinely can't hover just see the static card + the "Explore" CTA below.
+  const active = hovered;
 
   useEffect(() => {
     const v = videoRef.current;
