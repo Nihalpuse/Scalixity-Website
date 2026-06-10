@@ -54,15 +54,18 @@ export function Perks() {
   return (
     <section
       data-nav-bg="light"
-      className="brand-section-light px-5 lg:px-10 pt-14 pb-14 lg:pt-24 lg:pb-24"
+      className="brand-section-light pt-14 pb-14 lg:pt-24 lg:pb-24"
     >
-      <p className="brand-eyebrow text-brand-ink-muted mb-6 lg:mb-8">
-        <Scramble>{EYEBROW}</Scramble>
-      </p>
+      {/* Heading keeps the page gutter; the card grid below goes full-bleed. */}
+      <div className="px-5 lg:px-10">
+        <p className="brand-eyebrow text-brand-ink-muted mb-6 lg:mb-8">
+          <Scramble>{EYEBROW}</Scramble>
+        </p>
 
-      <h2 className="font-bricolage text-brand-display text-brand-ink mb-12 lg:mb-16 max-w-[18ch]">
-        <StaggerText>{TITLE}</StaggerText>
-      </h2>
+        <h2 className="font-bricolage text-brand-display text-brand-ink mb-12 lg:mb-16 max-w-[18ch]">
+          <StaggerText>{TITLE}</StaggerText>
+        </h2>
+      </div>
 
       <div className="border-t border-brand-ink/10">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-brand-ink/10">

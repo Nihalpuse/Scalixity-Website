@@ -67,7 +67,7 @@ export function CareersHero() {
                 >
                   <AnimatedNumber
                     value={f.value}
-                    className="font-bricolage text-4xl lg:text-6xl text-brand-bone leading-none tracking-tight"
+                    className="font-bricolage text-4xl max-sm:text-3xl lg:text-6xl text-brand-bone leading-none tracking-tight"
                   />
                   <p className="mt-4 font-albert text-brand-body text-brand-bone-muted max-w-[24ch]">
                     {f.label}

@@ -6,9 +6,10 @@ import {
 } from "@/src/app/components/primary-nav-config";
 import { CurvedDivider } from "@/src/app/landing/_components/CurvedDivider";
 import { Footer } from "@/src/app/landing/_components/Footer";
-// Reuse the company core-values section verbatim — "what we stand for" is the
-// same source of truth on /company and /careers, so there's no duplicate.
-import { Values } from "@/src/app/company/_components/Values";
+import { CoreValues } from "./_components/CoreValues";
+import { KeyStrength } from "./_components/KeyStrength";
+import { OpenPositions } from "./_components/OpenPositions";
+import { ReadyToJoin } from "./_components/ReadyToJoin";
 import { CareersHero } from "./_components/CareersHero";
 import { LifeAtScalixity } from "./_components/LifeAtScalixity";
 import { Perks } from "./_components/Perks";
@@ -35,8 +36,16 @@ export default function CareersPage() {
 
       {/* Consecutive light sections stack without dividers (same as /company). */}
       <LifeAtScalixity />
-      <Values />
+      <CoreValues />
+
+      {/* Dark "Our key strength" block sits between light sections. */}
+      <CurvedDivider fromColor="bone" className="-mt-px relative z-10" />
+      <KeyStrength />
+      <CurvedDivider fromColor="ink" className="-mt-px relative z-10" />
+
       <Perks />
+      <OpenPositions />
+      <ReadyToJoin />
 
       <CurvedDivider fromColor="bone" className="-mt-px relative z-10" />
 

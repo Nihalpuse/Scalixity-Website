@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CTAButton } from "./CTAButton";
 import { Scramble } from "./Scramble";
 import { StaggerText } from "./StaggerText";
@@ -51,30 +51,64 @@ export function Problems({
   title = TITLE,
   description,
   rows = PROBLEMS,
+  stickyHeading = false,
 }: {
   eyebrow?: string;
   title?: string;
   description?: string;
   rows?: Problem[];
+  /** When true, the heading pins at the top (desktop) and the rows stack just
+   *  below it instead of at the top of the viewport. Opt-in so the default
+   *  landing layout is unchanged. */
+  stickyHeading?: boolean;
 } = {}) {
+  // Measure the heading so the rows can pin directly beneath the pinned
+  // heading regardless of how the title wraps. Desktop-only effect.
+  const headingRef = useRef<HTMLDivElement>(null);
+  const [headingH, setHeadingH] = useState(0);
+
+  useEffect(() => {
+    if (!stickyHeading) return;
+    const el = headingRef.current;
+    if (!el) return;
+    const measure = () => setHeadingH(el.offsetHeight);
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [stickyHeading]);
+
+  // Rows pin below the heading: 6rem (matches the heading's own lg:top-24 pin)
+  // + measured heading height + a small gap.
+  const rowTop = stickyHeading
+    ? `calc(6rem + ${headingH}px + 1.5rem)`
+    : undefined;
+
   return (
     <section
       data-nav-bg="light"
       className="brand-section-light px-5 lg:px-10 pt-14 pb-14 lg:pt-24 lg:pb-24"
     >
-      <p className="brand-eyebrow text-brand-ink-muted mb-8">
-        <Scramble>{eyebrow}</Scramble>
-      </p>
-
-      <h2 className="font-bricolage text-brand-display text-brand-ink max-w-[22ch]">
-        <StaggerText>{title}</StaggerText>
-      </h2>
-
-      {description && (
-        <p className="mt-8 lg:mt-12 font-albert text-brand-body-lg text-brand-ink-muted max-w-2xl">
-          {description}
+      <div
+        ref={headingRef}
+        className={
+          stickyHeading ? "lg:sticky lg:top-24 lg:z-20 bg-brand-bone" : undefined
+        }
+      >
+        <p className="brand-eyebrow text-brand-ink-muted mb-8">
+          <Scramble>{eyebrow}</Scramble>
         </p>
-      )}
+
+        <h2 className="font-bricolage text-brand-display text-brand-ink max-w-[22ch]">
+          <StaggerText>{title}</StaggerText>
+        </h2>
+
+        {description && (
+          <p className="mt-8 lg:mt-12 font-albert text-brand-body-lg text-brand-ink-muted max-w-2xl">
+            {description}
+          </p>
+        )}
+      </div>
 
       <div className="mt-20 lg:mt-28">
         {rows.map((row, i) => (
@@ -82,6 +116,7 @@ export function Problems({
             key={row.problem}
             row={row}
             isLast={i === rows.length - 1}
+            rowTop={rowTop}
           />
         ))}
       </div>
@@ -89,7 +124,17 @@ export function Problems({
   );
 }
 
-function ProblemRow({ row, isLast }: { row: Problem; isLast: boolean }) {
+function ProblemRow({
+  row,
+  isLast,
+  rowTop,
+}: {
+  row: Problem;
+  isLast: boolean;
+  /** Inline sticky `top` (desktop). When set, overrides the default lg:top-24
+   *  so the row pins below a sticky heading. */
+  rowTop?: string;
+}) {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -155,6 +200,7 @@ function ProblemRow({ row, isLast }: { row: Problem; isLast: boolean }) {
   return (
     <div
       ref={ref}
+      style={rowTop ? { top: rowTop } : undefined}
       className="sticky top-20 lg:top-24 max-lg:static bg-brand-bone py-12 lg:py-16 border-t border-brand-ink/10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-16 items-start"
     >
       {/* Problem statement (narrow, left) */}

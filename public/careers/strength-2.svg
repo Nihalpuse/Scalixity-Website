@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 552 800" role="img" aria-label="Portrait placeholder">
+  <defs>
+    <linearGradient id="s2" x1="1" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#4a0166"/>
+      <stop offset="1" stop-color="#272727"/>
+    </linearGradient>
+  </defs>
+  <rect width="552" height="800" fill="url(#s2)"/>
+  <text x="276" y="400" font-family="Arial, sans-serif" font-size="200" font-weight="700" fill="#fffefd" text-anchor="middle" dominant-baseline="central">PM</text>
+</svg>
