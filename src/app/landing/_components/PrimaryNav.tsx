@@ -59,33 +59,44 @@ export const DROPDOWN_DATA: Record<string, NavDropdownData> = {
     ],
     secondary: [
       {
-        key: "validate",
-        label: "Validate",
+        key: "launch",
+        label: "Launch",
         items: [
           { label: "Design prototype", href: "/services/design-prototype" },
           { label: "Product discovery", href: "/services/product-discovery" },
+          { label: "Rapid MVP development", href: "/services/rapid-mvp-development" },
+          { label: "Custom MVP development", href: "/services/custom-mvp-development" },
+          { label: "AI development", href: "/services/ai-development" },
+        ],
+      },
+      {
+        key: "evolve",
+        label: "Evolve",
+        items: [
+          { label: "UX audit", href: "/services/ux-audit" },
+          { label: "Product redesign", href: "/services/product-redesign" },
+          { label: "Web app design", href: "/services/web-app-design" },
+          // No dedicated "web app development" page — routes to web-development.
+          { label: "Web app development", href: "/services/web-development" },
+          { label: "Mobile app design", href: "/services/mobile-app-design" },
+          { label: "Mobile app development", href: "/services/mobile-app-development" },
+        ],
+      },
+      {
+        key: "rebrand",
+        label: "Rebrand",
+        items: [
+          { label: "Branding & identity", href: "/services/branding" },
+          { label: "Website redesign", href: "/services/website-redesign" },
           { label: "Website development", href: "/services/website-development" },
         ],
       },
       {
-        key: "build",
-        label: "Build",
+        key: "extend",
+        label: "Extend",
         items: [
-          { label: "Branding", href: "/services/branding" },
-          { label: "Technical workshop", href: "/services/technical-workshop" },
-          { label: "Custom MVP development", href: "/services/custom-mvp-development" },
-          { label: "Rapid MVP development", href: "/services/rapid-mvp-development" },
-          { label: "Dedicated team", href: "/services/dedicated-team" },
-        ],
-      },
-      {
-        key: "scale",
-        label: "Scale",
-        items: [
-          { label: "UX audit", href: "/services/ux-audit" },
-          { label: "Product redesign", href: "/services/product-redesign" },
           { label: "Team extension", href: "/services/team-extension" },
-          { label: "Website redesign", href: "/services/website-redesign" },
+          { label: "Dedicated team", href: "/services/dedicated-team" },
         ],
       },
     ],

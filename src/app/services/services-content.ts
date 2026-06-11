@@ -1953,6 +1953,109 @@ export const SERVICES_CONTENT: ServiceContent[] = [
     ],
     related: ["dedicated-team", "product-redesign", "web-development"],
   },
+
+  // ------------------------------------------------------------------- AI
+  {
+    slug: "ai-development",
+    category: "Development",
+    title: "AI development",
+    heroLead:
+      "We design, build, and ship production-grade AI — from LLM and RAG applications to predictive models and agents — engineered for reliability, cost control, and real business impact.",
+    metaDescription:
+      "AI development services by Scalixity — production-grade LLM apps, RAG systems, predictive models, and AI agents engineered for reliability and real impact.",
+    challenges: [
+      {
+        problem:
+          "Does your AI prototype work in a demo but break in production?",
+        solution:
+          "We engineer AI systems for the real world — proper data pipelines, evaluation, monitoring, and guardrails — so they stay accurate, reliable, and affordable at scale.",
+      },
+      {
+        problem: "Not sure where AI actually adds value in your product?",
+        solution:
+          "We start from the outcome, not the hype: we find where AI moves a real metric and where a simpler approach wins, so you invest in what pays off.",
+      },
+      {
+        problem: "Worried about cost, accuracy, or hallucinations?",
+        solution:
+          "We ground models in your data, add retrieval and evaluation, and tune for cost and latency — measuring quality honestly instead of guessing.",
+      },
+    ],
+    deliverTitle: "What we deliver",
+    deliverables: [
+      {
+        title: "LLM & RAG applications",
+        description:
+          "Chat, search, and assistants grounded in your data with retrieval, evaluation, and guardrails.",
+      },
+      {
+        title: "Predictive & ML models",
+        description:
+          "Forecasting, classification, and recommendation models built and validated on your data.",
+      },
+      {
+        title: "AI agents & automation",
+        description:
+          "Agents and workflows that take action across your tools, with the right human oversight.",
+      },
+      {
+        title: "Data & infrastructure",
+        description:
+          "Pipelines, vector stores, and serving infrastructure that keep AI fast, reliable, and cost-aware.",
+      },
+      {
+        title: "Evaluation & monitoring",
+        description:
+          "Quality metrics, testing, and observability so you can trust outputs and catch regressions.",
+      },
+    ],
+    benefitsTitle: "Why teams choose us",
+    benefits: [
+      {
+        title: "AI-first engineering",
+        description:
+          "AI is our core, not an add-on — practical, current expertise across the whole stack.",
+      },
+      {
+        title: "Outcome over hype",
+        description:
+          "We build where AI earns its keep and tell you honestly when it doesn't.",
+      },
+      {
+        title: "Production-ready",
+        description:
+          "Monitoring, cost controls, and evaluation built in from day one.",
+      },
+      {
+        title: "Honest about quality",
+        description:
+          "We measure accuracy and reliability openly instead of overpromising.",
+      },
+    ],
+    faqs: [
+      {
+        question: "What kinds of AI products do you build?",
+        answer:
+          "From LLM and RAG apps, chatbots, and agents to predictive models and automation — always grounded in your data and a real use case.",
+      },
+      {
+        question: "How do you handle accuracy and hallucinations?",
+        answer:
+          "We ground models in your data with retrieval, add evaluation and guardrails, and measure quality continuously so outputs stay trustworthy.",
+      },
+      {
+        question: "Can you work with our existing product and data?",
+        answer:
+          "Yes. We integrate with your stack, data, and workflows, and add the pipelines and infrastructure needed to support AI features.",
+      },
+      {
+        question: "Will AI actually pay off for us?",
+        answer:
+          "We'll give you an honest answer. We focus AI where it moves a real metric and recommend simpler approaches when they serve you better.",
+      },
+    ],
+    related: ["custom-mvp-development", "technical-workshop", "product-discovery"],
+  },
 ];
 
 export function getService(slug: string): ServiceContent | undefined {

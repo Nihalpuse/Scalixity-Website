@@ -23,6 +23,8 @@ export type Service = {
   description: string;
   /** Clip in /public/landing that plays on hover. */
   video?: string;
+  /** Maps the card to /services/<slug>; omit to fall back to the /services index. */
+  slug?: string;
 };
 
 export type Cohort = {
@@ -34,111 +36,160 @@ export type Cohort = {
 
 const COHORTS: Cohort[] = [
   {
-    key: "discover",
-    label: "Discover",
-    title: "Validate your AI idea & build a clear roadmap",
+    key: "launch",
+    label: "Launch",
+    title: "Validate your idea and ship your first AI product",
     services: [
       {
         number: "01",
-        title: "Product discovery",
-        description:
-          "Map out user flows, model strategy, and architecture before any code is written.",
-        video: "/landing/Product-discovery.mp4",
-      },
-      {
-        number: "02",
         title: "Design prototype",
+        slug: "design-prototype",
         description:
           "Test ideas fast with interactive prototypes and visual flows.",
         video: "/landing/Design-prototype.mp4",
       },
       {
-        number: "03",
-        title: "Technical workshop",
+        number: "02",
+        title: "Product discovery",
+        slug: "product-discovery",
         description:
-          "Validate your tech stack, AI approach, and scalability path with senior engineers.",
-        video: "/landing/Technical-workshop.mp4",
+          "Map out user flows, model strategy, and architecture before any code is written.",
+        video: "/landing/Product-discovery.mp4",
       },
-    ],
-  },
-  {
-    key: "build",
-    label: "Build & launch",
-    title: "Ship your AI product & gain market traction",
-    services: [
       {
-        number: "01",
-        title: "Custom mvp development",
+        number: "03",
+        title: "Rapid MVP development",
+        slug: "rapid-mvp-development",
+        description:
+          "Launch faster with pre-built ML frameworks and lean sprints.",
+        // TODO: no exact clip — placeholder; swap when a Rapid-MVP video exists.
+        video: "/landing/compressed-video-2.mp4",
+      },
+      {
+        number: "04",
+        title: "Custom MVP development",
+        slug: "custom-mvp-development",
         description:
           "Build production-ready AI products from prototype to deployed system.",
         video: "/landing/Custom-MVP-development.mp4",
       },
       {
-        number: "02",
-        title: "Rapid mvp development",
+        number: "05",
+        title: "AI development",
+        slug: "ai-development",
         description:
-          "Launch 50% faster with pre-built ML frameworks and lean sprints.",
-        // TODO: no exact clip — placeholder; swap when a Rapid-MVP video exists.
-        video: "/landing/compressed-video-2.mp4",
+          "Ship production-grade AI — LLM apps, RAG, predictive models, and agents.",
+        // Reuses the AI-themed placeholder clip; swap when a dedicated one exists.
+        video: "/landing/cab5f51f-a135-4777-8895-398644445757.mp4",
+      },
+    ],
+  },
+  {
+    key: "evolve",
+    label: "Evolve",
+    title: "Refine, redesign, and grow what you've built",
+    services: [
+      {
+        number: "01",
+        title: "UX audit",
+        slug: "ux-audit",
+        description:
+          "Find usability bottlenecks and get a prioritized plan to fix them.",
+        video: "/landing/UX-audit.mp4",
+      },
+      {
+        number: "02",
+        title: "Product redesign",
+        slug: "product-redesign",
+        description:
+          "Modernize legacy UX and integrate AI where it actually moves metrics.",
+        video: "/landing/Website-redesign.mp4",
       },
       {
         number: "03",
-        title: "AI chatbot development",
+        title: "Web app design",
+        slug: "web-app-design",
         description:
-          "Conversational interfaces powered by RAG, fine-tuned LLMs, and your data.",
-        // TODO: no exact clip — placeholder; swap when an AI-chatbot video exists.
+          "Design responsive, user-focused web platforms with strong UX/UI logic.",
         video: "/landing/cab5f51f-a135-4777-8895-398644445757.mp4",
       },
       {
         number: "04",
-        title: "Web & mobile development",
+        title: "Web app development",
+        slug: "web-development",
         description:
           "Polished front-ends and APIs engineered for AI-first products.",
         video: "/landing/Website-development.mp4",
       },
       {
         number: "05",
-        title: "Dedicated team",
+        title: "Mobile app design",
+        slug: "mobile-app-design",
         description:
-          "An embedded pod of senior engineers, designers, and ML specialists.",
-        video: "/landing/Dedicated-team.mp4",
+          "Create intuitive, performance-optimized mobile apps for iOS and Android.",
+        video: "/landing/compressed-video-2.mp4",
+      },
+      {
+        number: "06",
+        title: "Mobile app development",
+        slug: "mobile-app-development",
+        description:
+          "End-to-end development of mobile applications for iOS and Android.",
+        video: "/landing/compressed-video-2.mp4",
       },
     ],
   },
   {
-    key: "scale",
-    label: "Scale & optimize",
-    title: "Scale, optimize & reach more users",
+    key: "rebrand",
+    label: "Rebrand",
+    title: "Refresh your brand, website, and identity",
     services: [
       {
         number: "01",
-        title: "AI transformation layer",
+        title: "Branding & identity",
+        slug: "branding",
         description:
-          "Add agents, predictive systems, and automation to existing products.",
-        // TODO: no exact clip — placeholder; swap when a matching video exists.
+          "Develop a brand that resonates — visually, emotionally, and strategically.",
         video: "/landing/Branding.mp4",
       },
       {
         number: "02",
-        title: "Full-stack devops & infra",
+        title: "Website redesign",
+        slug: "website-redesign",
         description:
-          "CI/CD, security, cost optimization, and cloud deployment that scales.",
-        // TODO: no exact clip — placeholder; swap when a matching video exists.
-        video: "/landing/UX-audit.mp4",
-      },
-      {
-        number: "03",
-        title: "Product redesign",
-        description:
-          "Modernize legacy UX and integrate AI where it actually moves metrics.",
+          "Modernize your web presence with design that drives engagement and authority.",
         video: "/landing/Website-redesign.mp4",
       },
       {
-        number: "04",
+        number: "03",
+        title: "Website development",
+        slug: "website-development",
+        description:
+          "Launch a fast, scalable site that converts and supports growth.",
+        video: "/landing/Website-development.mp4",
+      },
+    ],
+  },
+  {
+    key: "extend",
+    label: "Extend",
+    title: "Add senior talent and capacity to your team",
+    services: [
+      {
+        number: "01",
         title: "Team extension",
+        slug: "team-extension",
         description:
           "Senior designers and developers ready to ship, starting tomorrow.",
         video: "/landing/Team-extension.mp4",
+      },
+      {
+        number: "02",
+        title: "Dedicated team",
+        slug: "dedicated-team",
+        description:
+          "An embedded pod of senior engineers, designers, and ML specialists.",
+        video: "/landing/Dedicated-team.mp4",
       },
     ],
   },
@@ -353,6 +404,10 @@ function ServiceCard({
     ? "bg-brand-ink text-brand-bone"
     : "bg-brand-bone text-brand-ink";
 
+  // Deep-link to the service's detail page when it has one; otherwise fall back
+  // to the /services index.
+  const href = service.slug ? `/services/${service.slug}` : "/services";
+
   const cardRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [hovered, setHovered] = useState(false);
@@ -450,7 +505,7 @@ function ServiceCard({
               appears. Surface a full-width purple Explore CTA instead — a flat
               link with no hover effect (there's no hover on touch anyway). */}
           <Link
-            href="/services"
+            href={href}
             className="lg:hidden mt-5 flex w-full items-center justify-center gap-2 rounded-brand-btn bg-brand-purple px-7 py-4 text-sm font-semibold uppercase tracking-[0.14em] text-brand-bone"
           >
             Explore
@@ -466,12 +521,21 @@ function ServiceCard({
         </div>
       </div>
 
-      {/* Arrow button — reveals on hover (bottom-right), per the reference.
-          Desktop-hover only: the cards don't navigate, so a permanently-visible
-          arrow on touch would imply a tap target that isn't one. */}
+      {/* Desktop: the whole card navigates (the hover arrow is the visual
+          affordance). Hidden on touch, where the in-card Explore button handles
+          navigation, so the two anchors never coexist at the same breakpoint. */}
+      <Link
+        href={href}
+        aria-label={`Explore ${service.title}`}
+        className="absolute inset-0 z-[2] max-lg:hidden"
+      />
+
+      {/* Arrow affordance — reveals on hover (bottom-right), per the reference.
+          Decorative (pointer-events-none) so the full-card link above receives
+          the click. Desktop-only; touch uses the in-card Explore button. */}
       <div
-        className={`absolute bottom-6 right-6 z-[2] max-lg:hidden transition-all duration-300 ease-brand-out ${
-          hovered ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2 pointer-events-none"
+        className={`pointer-events-none absolute bottom-6 right-6 z-[3] max-lg:hidden transition-all duration-300 ease-brand-out ${
+          hovered ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
         }`}
       >
         <span className={`grid h-12 w-12 place-items-center rounded-xl ${arrowColor}`}>

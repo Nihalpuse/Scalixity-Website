@@ -118,7 +118,8 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
       "/services/rapid-mvp-development",
       "/services/dedicated-team",
       "/services/product-redesign",
-      "/services/team-extension"
+      "/services/team-extension",
+      "/services/ai-development"
     ].includes(pathname) ||
     (pathname.startsWith("/dashboard/campaign/") && (pathname.endsWith("/form") || pathname.endsWith("/responses")));
 
