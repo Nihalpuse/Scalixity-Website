@@ -539,37 +539,48 @@ export function PrimaryNav({ logoText, links, cta }: PrimaryNavProps) {
               <div key={link.label} className="border-b border-brand-ink/10">
                 {link.hasDropdown ? (
                   <>
-                    <button
-                      type="button"
-                      onClick={() =>
-                        setMobileSection(expanded ? null : link.label)
-                      }
-                      aria-expanded={expanded}
-                      className="flex w-full items-center justify-between py-5 text-left"
-                    >
-                      <span className="font-bricolage text-3xl text-brand-ink">
+                    {/* The label links to the parent page; a separate chevron
+                        button toggles the submenu. Splitting them lets users
+                        actually reach /services, /industries, etc. on mobile
+                        instead of the whole row only expanding the accordion. */}
+                    <div className="flex items-center justify-between gap-2">
+                      <Link
+                        href={link.href}
+                        onClick={closeMobile}
+                        className="flex-1 py-5 font-bricolage text-3xl text-brand-ink hover:text-brand-purple transition-colors duration-200 ease-brand-out"
+                      >
                         {link.label}
                         {count > 0 && (
                           <span className="ml-2 text-brand-ink-soft">
                             {count}
                           </span>
                         )}
-                      </span>
-                      <svg
-                        viewBox="0 0 12 8"
-                        aria-hidden="true"
-                        className={`h-3 w-4 fill-none stroke-current text-brand-ink transition-transform duration-300 ease-brand-out ${
-                          expanded ? "rotate-180" : ""
-                        }`}
-                        strokeWidth="1.6"
+                      </Link>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setMobileSection(expanded ? null : link.label)
+                        }
+                        aria-expanded={expanded}
+                        aria-label={`${expanded ? "Collapse" : "Expand"} ${link.label} menu`}
+                        className="-mr-2 grid h-12 w-12 shrink-0 place-items-center text-brand-ink"
                       >
-                        <path
-                          d="M1 1l5 5 5-5"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                    </button>
+                        <svg
+                          viewBox="0 0 12 8"
+                          aria-hidden="true"
+                          className={`h-3 w-4 fill-none stroke-current transition-transform duration-300 ease-brand-out ${
+                            expanded ? "rotate-180" : ""
+                          }`}
+                          strokeWidth="1.6"
+                        >
+                          <path
+                            d="M1 1l5 5 5-5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      </button>
+                    </div>
                     <div
                       className={`overflow-hidden transition-[max-height,opacity] duration-300 ease-brand-out ${
                         expanded ? "max-h-[640px] opacity-100" : "max-h-0 opacity-0"
