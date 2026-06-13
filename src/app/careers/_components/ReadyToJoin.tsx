@@ -4,7 +4,7 @@ import { StaggerText } from "@/src/app/landing/_components/StaggerText";
 
 // Centered "Ready to join us?" CTA (mirrors the phenomenon careers closing
 // CTA — decorative mark + big centered title + button). Sits above the softer
-// "Don't see your role?" band. Scrolls to the Open Positions section.
+// "Don't see your role?" band. Routes to the contact page.
 const TITLE = "Ready to join us?";
 
 export function ReadyToJoin() {
@@ -27,8 +27,8 @@ export function ReadyToJoin() {
         </h2>
 
         <div className="mt-10 lg:mt-12">
-          <CTAButton href="#open-positions" variant="primary" onLight>
-            See open roles
+          <CTAButton href="/contact" variant="primary" onLight>
+            Get in touch
           </CTAButton>
         </div>
       </div>

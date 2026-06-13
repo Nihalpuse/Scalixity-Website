@@ -87,6 +87,10 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
       "/blog/healthcare-ai-and-privacy",
       "/blog/edge-ai-on-iot",
       "/resources",
+      // Legal pages redesigned with new-design chrome (LegalLayout).
+      "/terms",
+      "/privacy",
+      "/cookies",
       "/services",
       "/industries/saas",
       "/industries/healthcare",

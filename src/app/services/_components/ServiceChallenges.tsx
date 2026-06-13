@@ -9,13 +9,19 @@ import type { ServiceChallenge } from "../services-content";
 // Cases). Per the reference: a big punchy heading, then each card has the
 // problem on a narrow left column (small text) and the solution on a wide
 // right column (large text). Text-only — no image.
+const DEFAULT_EYEBROW = "Challenges";
 const DEFAULT_TITLE = "We solve the problems that slow your product down";
 
 export function ServiceChallenges({
+  eyebrow = DEFAULT_EYEBROW,
   title = DEFAULT_TITLE,
+  description,
   challenges,
 }: {
+  eyebrow?: string;
   title?: string;
+  /** Optional intro paragraph under the heading (e.g. for industry pages). */
+  description?: string;
   challenges: ServiceChallenge[];
 }) {
   return (
@@ -24,11 +30,16 @@ export function ServiceChallenges({
       className="brand-section-light px-5 lg:px-10 pt-14 pb-14 lg:pt-24 lg:pb-24"
     >
       <p className="brand-eyebrow text-brand-ink-muted mb-8 lg:mb-10">
-        <Scramble>Challenges</Scramble>
+        <Scramble>{eyebrow}</Scramble>
       </p>
       <h2 className="font-bricolage text-brand-display text-brand-ink max-w-[24ch] leading-[1.05]">
         <StaggerText>{title}</StaggerText>
       </h2>
+      {description && (
+        <p className="mt-6 lg:mt-8 font-albert text-brand-body-lg text-brand-ink-muted max-w-2xl leading-relaxed">
+          {description}
+        </p>
+      )}
 
       <div className="mt-12 lg:mt-20">
         {challenges.map((c, i) => (

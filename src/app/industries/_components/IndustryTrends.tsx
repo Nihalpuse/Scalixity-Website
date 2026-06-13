@@ -20,31 +20,34 @@ export function IndustryTrends({
   return (
     <section
       data-nav-bg="light"
-      className="brand-section-light px-5 lg:px-10 pt-14 pb-14 lg:pt-24 lg:pb-24"
+      className="brand-section-light pt-14 pb-14 lg:pt-24 lg:pb-24"
     >
-      <p className="brand-eyebrow text-brand-ink-muted mb-8">
-        <Scramble>{eyebrow}</Scramble>
-      </p>
-      <h2 className="font-bricolage text-brand-display text-brand-ink max-w-[22ch]">
-        <StaggerText>{title}</StaggerText>
-      </h2>
-      {description && (
-        <p className="mt-8 lg:mt-12 font-albert text-brand-body-lg text-brand-ink-muted max-w-2xl">
-          {description}
+      {/* Heading keeps the page gutter; the card grid below goes full-bleed. */}
+      <div className="px-5 lg:px-10">
+        <p className="brand-eyebrow text-brand-ink-muted mb-8">
+          <Scramble>{eyebrow}</Scramble>
         </p>
-      )}
+        <h2 className="font-bricolage text-brand-display text-brand-ink max-w-[22ch]">
+          <StaggerText>{title}</StaggerText>
+        </h2>
+        {description && (
+          <p className="mt-8 lg:mt-12 font-albert text-brand-body-lg text-brand-ink-muted max-w-2xl">
+            {description}
+          </p>
+        )}
+      </div>
 
       <div className="mt-16 lg:mt-24 border-t border-brand-ink/10 overflow-hidden">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 -mr-px -mb-px">
           {trends.map((t) => (
             <article
               key={t.number}
-              className="px-0 py-6 sm:p-6 lg:p-8 flex flex-col gap-4 border-r border-b border-brand-ink/10"
+              className="px-5 py-6 lg:px-10 lg:py-8 flex flex-col border-r border-b border-brand-ink/10"
             >
               <span className="font-bricolage text-2xl text-brand-ink-soft leading-none">
                 {t.number}
               </span>
-              <div className="mt-6 lg:mt-10">
+              <div className="mt-12 lg:mt-28">
                 <h3 className="font-bricolage text-xl lg:text-2xl text-brand-ink leading-tight">
                   {t.title}
                 </h3>

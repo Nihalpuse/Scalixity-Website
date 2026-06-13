@@ -93,7 +93,7 @@ export function IndustryScrollSlider({
       <div className="px-5 lg:px-10 pb-14 lg:pb-24">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
           <aside
-            className={`lg:col-span-4 lg:sticky lg:top-24 lg:self-start lg:min-h-[60vh] flex flex-col justify-between ${
+            className={`lg:col-span-3 lg:sticky lg:top-24 lg:self-start lg:min-h-[60vh] flex flex-col justify-between ${
               mobileTabs ? "max-lg:hidden" : ""
             }`}
           >
@@ -128,7 +128,7 @@ export function IndustryScrollSlider({
               hosts the sticky tab bar (when mobileTabs is set) so the bar pins
               across the full column height — matching the landing Services
               structure, which avoids the grid-row sticky jitter. */}
-          <div className="lg:col-span-6 lg:col-start-7">
+          <div className="lg:col-span-9 lg:col-start-4">
             {/* Mobile sticky tab bar — underline tabs pinned below the nav while
                 the column scrolls past. */}
             {mobileTabs && (

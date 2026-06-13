@@ -36,7 +36,9 @@ const HOVER_TEXT_BY_VARIANT: Record<Variant, string> = {
   primary: "hover:text-brand-ink",
   secondary: "hover:text-brand-ink",
   ghost: "hover:text-brand-bone",
-  dark: "hover:text-brand-ink",
+  // dark rests ink-bg/bone-text and its hover reveal is purple, so the
+  // text must stay bone (white) to read on the purple fill.
+  dark: "hover:text-brand-bone",
 };
 
 function Arrow({ className = "" }: { className?: string }) {

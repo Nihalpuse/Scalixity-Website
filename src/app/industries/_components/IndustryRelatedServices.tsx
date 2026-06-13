@@ -17,21 +17,24 @@ export function IndustryRelatedServices({
   return (
     <section
       data-nav-bg="light"
-      className="brand-section-light px-5 lg:px-10 pt-14 pb-14 lg:pt-24 lg:pb-24"
+      className="brand-section-light pt-14 pb-14 lg:pt-24 lg:pb-24"
     >
-      <p className="brand-eyebrow text-brand-ink-muted mb-8">
-        <Scramble>{eyebrow}</Scramble>
-      </p>
-      <h2 className="font-bricolage text-brand-display text-brand-ink mb-12 lg:mb-16 max-w-[22ch]">
-        <StaggerText>{title}</StaggerText>
-      </h2>
+      {/* Heading keeps the page gutter; the card grid below goes full-bleed. */}
+      <div className="px-5 lg:px-10">
+        <p className="brand-eyebrow text-brand-ink-muted mb-8">
+          <Scramble>{eyebrow}</Scramble>
+        </p>
+        <h2 className="font-bricolage text-brand-display text-brand-ink max-w-[22ch]">
+          <StaggerText>{title}</StaggerText>
+        </h2>
+      </div>
 
-      <div className="border-t border-brand-ink/10 overflow-hidden">
+      <div className="mt-12 lg:mt-16 border-t border-brand-ink/10 overflow-hidden">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 -mr-px -mb-px">
           {services.map((s) => (
             <article
               key={s.title}
-              className="px-0 py-6 sm:p-6 lg:p-8 flex flex-col border-r border-b border-brand-ink/10 sm:min-h-[220px]"
+              className="px-5 py-6 lg:px-10 lg:py-8 flex flex-col border-r border-b border-brand-ink/10 sm:min-h-[220px]"
             >
               <h3 className="font-bricolage text-xl lg:text-2xl text-brand-ink leading-tight">
                 {s.title}

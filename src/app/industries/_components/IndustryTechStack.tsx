@@ -127,38 +127,40 @@ export function IndustryTechStack({
   return (
     <section
       data-nav-bg="light"
-      className="brand-section-light px-5 lg:px-10 pt-14 pb-14 lg:pt-24 lg:pb-24"
+      className="brand-section-light pt-14 pb-14 lg:pt-24 lg:pb-24"
     >
-      <p className="brand-eyebrow text-brand-ink-muted mb-8">
-        <Scramble>{eyebrow}</Scramble>
-      </p>
-      <h2 className="font-bricolage text-brand-display text-brand-ink max-w-[22ch]">
-        <StaggerText>{title}</StaggerText>
-      </h2>
+      {/* Heading + tabs keep the page gutter; the grid below goes full-bleed. */}
+      <div className="px-5 lg:px-10">
+        <p className="brand-eyebrow text-brand-ink-muted mb-8">
+          <Scramble>{eyebrow}</Scramble>
+        </p>
+        <h2 className="font-bricolage text-brand-display text-brand-ink max-w-[22ch]">
+          <StaggerText>{title}</StaggerText>
+        </h2>
 
-      {/* Tab buttons */}
-      <div className="mt-10 lg:mt-12 flex flex-wrap gap-2">
-        {TABS.map((tab, i) => {
-          const isActive = i === active;
-          return (
-            <button
-              key={tab.label}
-              type="button"
-              onClick={() => setActive(i)}
-              className={`px-5 py-2.5 rounded-md text-xs uppercase tracking-[0.12em] font-semibold transition-colors ${
-                isActive
-                  ? "bg-brand-ink text-brand-bone"
-                  : "bg-brand-ink/[0.05] text-brand-ink hover:bg-brand-ink/10"
-              }`}
-            >
-              {tab.label}
-            </button>
-          );
-        })}
+        {/* Tab buttons */}
+        <div className="mt-10 lg:mt-12 flex flex-wrap gap-2">
+          {TABS.map((tab, i) => {
+            const isActive = i === active;
+            return (
+              <button
+                key={tab.label}
+                type="button"
+                onClick={() => setActive(i)}
+                className={`px-5 py-2.5 rounded-md text-xs uppercase tracking-[0.12em] font-semibold transition-colors ${
+                  isActive
+                    ? "bg-brand-ink text-brand-bone"
+                    : "bg-brand-ink/[0.05] text-brand-ink hover:bg-brand-ink/10"
+                }`}
+              >
+                {tab.label}
+              </button>
+            );
+          })}
+        </div>
       </div>
 
-      {/* Items grid — full-width top divider, interior dividers between
-          cells, no outer left/right/bottom box. */}
+      {/* Items grid — full-bleed: full-width top divider + interior dividers. */}
       <div className="mt-10 lg:mt-12 border-t border-brand-ink/10 overflow-hidden">
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 -mr-px -mb-px">
           {items.map((tech) => {
@@ -166,7 +168,7 @@ export function IndustryTechStack({
             return (
               <div
                 key={tech.name}
-                className="p-6 lg:p-8 min-h-[150px] lg:min-h-[200px] flex flex-col justify-between gap-10 border-r border-b border-brand-ink/10"
+                className="px-5 py-6 lg:px-10 lg:py-8 min-h-[150px] lg:min-h-[200px] flex flex-col justify-between gap-10 border-r border-b border-brand-ink/10"
               >
                 <Icon className="h-8 w-8 text-brand-ink/40" />
                 <span className="font-bricolage text-lg lg:text-xl text-brand-ink leading-tight">

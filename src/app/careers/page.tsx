@@ -8,12 +8,10 @@ import { CurvedDivider } from "@/src/app/landing/_components/CurvedDivider";
 import { Footer } from "@/src/app/landing/_components/Footer";
 import { CoreValues } from "./_components/CoreValues";
 import { KeyStrength } from "./_components/KeyStrength";
-import { OpenPositions } from "./_components/OpenPositions";
 import { ReadyToJoin } from "./_components/ReadyToJoin";
 import { CareersHero } from "./_components/CareersHero";
 import { LifeAtScalixity } from "./_components/LifeAtScalixity";
 import { Perks } from "./_components/Perks";
-import { CareersCTA } from "./_components/CareersCTA";
 
 export const metadata = {
   title: "Careers — Scalixity",
@@ -44,14 +42,7 @@ export default function CareersPage() {
       <CurvedDivider fromColor="ink" className="-mt-px relative z-10" />
 
       <Perks />
-      <OpenPositions />
       <ReadyToJoin />
-
-      <CurvedDivider fromColor="bone" className="-mt-px relative z-10" />
-
-      <CareersCTA />
-
-      <CurvedDivider fromColor="ink" className="-mt-px relative z-10" />
 
       <Footer />
     </div>

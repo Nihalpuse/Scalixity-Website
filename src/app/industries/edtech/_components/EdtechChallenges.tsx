@@ -1,4 +1,5 @@
-import { Problems, type Problem } from "@/src/app/landing/_components/Problems";
+import { ServiceChallenges } from "@/src/app/services/_components/ServiceChallenges";
+import type { ServiceChallenge } from "@/src/app/services/services-content";
 
 // Reuses the landing <Problems /> sticky-stack section with EdTech copy
 // and no per-row CTAs.
@@ -8,7 +9,7 @@ const TITLE =
 const DESCRIPTION =
   "From platform drop-off to admin inefficiencies, even strong educational technology solutions fail without focused UX. As an experienced edtech product designer and development provider, we dig into the friction, then rebuild with clarity, compliance, and engagement in mind.";
 
-const ROWS: Problem[] = [
+const ROWS: ServiceChallenge[] = [
   {
     problem:
       "Students start strong, but engagement drops sharply after the first module.",
@@ -31,6 +32,11 @@ const ROWS: Problem[] = [
 
 export function EdtechChallenges() {
   return (
-    <Problems eyebrow={EYEBROW} title={TITLE} description={DESCRIPTION} rows={ROWS} />
+    <ServiceChallenges
+      eyebrow={EYEBROW}
+      title={TITLE}
+      description={DESCRIPTION}
+      challenges={ROWS}
+    />
   );
 }

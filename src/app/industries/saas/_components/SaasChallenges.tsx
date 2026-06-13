@@ -1,4 +1,5 @@
-import { Problems, type Problem } from "@/src/app/landing/_components/Problems";
+import { ServiceChallenges } from "@/src/app/services/_components/ServiceChallenges";
+import type { ServiceChallenge } from "@/src/app/services/services-content";
 
 // Reuses the landing <Problems /> sticky-stack section (same fade/scroll
 // behaviour) with SaaS-specific copy and no per-row CTAs.
@@ -8,7 +9,7 @@ const TITLE =
 const DESCRIPTION =
   "SaaS design isn't a nice-to-have; it's what protects you from churn, technical debt, and costly rebuilds. We think about the hard parts so you don't have to redo them.";
 
-const ROWS: Problem[] = [
+const ROWS: ServiceChallenge[] = [
   {
     problem:
       "Honestly, our onboarding looked fine in Figma, but once we had different roles and real user data, people just dropped off.",
@@ -31,11 +32,11 @@ const ROWS: Problem[] = [
 
 export function SaasChallenges() {
   return (
-    <Problems
+    <ServiceChallenges
       eyebrow={EYEBROW}
       title={TITLE}
       description={DESCRIPTION}
-      rows={ROWS}
+      challenges={ROWS}
     />
   );
 }

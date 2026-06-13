@@ -45,21 +45,25 @@ const DIFFERENTIATORS: Diff[] = [
 
 export function AboutDifference() {
   return (
-    <section className="relative bg-brand-ink text-brand-bone px-5 lg:px-10 pt-14 pb-14 lg:pt-24 lg:pb-24">
-      <p className="brand-eyebrow text-brand-bone-muted mb-8">
-        <Scramble>{EYEBROW}</Scramble>
-      </p>
-      <h2 className="font-bricolage text-brand-display text-brand-bone mb-12 lg:mb-16 max-w-[22ch]">
-        <StaggerText>{TITLE}</StaggerText>
-      </h2>
+    <section className="relative bg-brand-ink text-brand-bone pt-14 pb-14 lg:pt-24 lg:pb-24">
+      <div className="px-5 lg:px-10">
+        <p className="brand-eyebrow text-brand-bone-muted mb-8">
+          <Scramble>{EYEBROW}</Scramble>
+        </p>
+        <h2 className="font-bricolage text-brand-display text-brand-bone mb-12 lg:mb-16 max-w-[22ch]">
+          <StaggerText>{TITLE}</StaggerText>
+        </h2>
+      </div>
 
-      {/* Top divider + vertical dividers between cells (via gap-px), no box. */}
+      {/* Full-bleed: top divider + vertical dividers between cells (via
+          gap-px), no box. Cells carry the px-5/px-10 gutter so content lines
+          up with the heading above. */}
       <div className="border-t border-brand-bone/10">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-brand-bone/10">
           {DIFFERENTIATORS.map((d) => (
             <article
               key={d.n}
-              className="bg-brand-ink px-0 py-7 sm:p-7 lg:p-9 flex flex-col min-h-[280px]"
+              className="bg-brand-ink px-5 py-7 lg:px-10 lg:py-9 flex flex-col min-h-[280px]"
             >
               <span
                 aria-hidden="true"

@@ -30,15 +30,18 @@ const VOICES: Voice[] = [
 ];
 
 export function TeamVoices() {
+  // Full-bleed: negative margins cancel the parent section's gutter so the
+  // cards span edge to edge; each cell carries the px-5/px-10 gutter back so
+  // the outer content still lines up with the heading above.
   return (
-    <div className="mt-16 lg:mt-24 border-t border-brand-ink/10">
+    <div className="mt-16 lg:mt-24 -mx-5 lg:-mx-10 border-t border-brand-ink/10">
       <div className="grid grid-cols-1 md:grid-cols-3">
         {VOICES.map((v, i) => (
           <figure
             key={v.quote}
-            className={`flex flex-col py-8 lg:py-12 md:px-8 lg:px-10 ${
+            className={`flex flex-col py-8 lg:py-12 px-5 lg:px-10 ${
               i === 0
-                ? "md:pl-0"
+                ? ""
                 : "border-t border-brand-ink/10 md:border-t-0 md:border-l md:border-brand-ink/10"
             }`}
           >

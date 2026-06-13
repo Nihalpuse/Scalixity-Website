@@ -1,4 +1,5 @@
-import { Problems, type Problem } from "@/src/app/landing/_components/Problems";
+import { ServiceChallenges } from "@/src/app/services/_components/ServiceChallenges";
+import type { ServiceChallenge } from "@/src/app/services/services-content";
 
 // Reuses the landing <Problems /> sticky-stack section with healthcare copy
 // and no per-row CTAs.
@@ -7,7 +8,7 @@ const TITLE = "When the stakes are clinical, the user experience can't be casual
 const DESCRIPTION =
   "From patient drop-off in onboarding to overloaded EHR interfaces, here's what we hear most — and how we solve it.";
 
-const ROWS: Problem[] = [
+const ROWS: ServiceChallenge[] = [
   {
     problem:
       "We tried redesigning our platform, but patient engagement didn't improve — if anything, drop-off got worse.",
@@ -30,6 +31,11 @@ const ROWS: Problem[] = [
 
 export function HealthcareChallenges() {
   return (
-    <Problems eyebrow={EYEBROW} title={TITLE} description={DESCRIPTION} rows={ROWS} />
+    <ServiceChallenges
+      eyebrow={EYEBROW}
+      title={TITLE}
+      description={DESCRIPTION}
+      challenges={ROWS}
+    />
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { Quote } from "lucide-react";
 import { Scramble } from "@/src/app/landing/_components/Scramble";
 import { StaggerText } from "@/src/app/landing/_components/StaggerText";
 
@@ -189,12 +190,16 @@ function StoryRow({ story, isLast }: { story: Story; isLast: boolean }) {
       </div>
 
       {/* Center: story + teammate quote */}
-      <div className="lg:col-span-5">
+      <div className="lg:col-span-6">
         <p className="font-albert text-xl lg:text-2xl text-brand-bone leading-relaxed">
           {story.story}
         </p>
 
-        <figure className="mt-8 lg:mt-10 rounded-2xl bg-brand-surface p-6 lg:p-7">
+        <figure className="relative mt-8 lg:mt-10 rounded-2xl bg-brand-surface p-6 lg:p-7">
+          <Quote
+            aria-hidden="true"
+            className="absolute right-6 lg:right-7 top-6 lg:top-7 h-7 w-7 fill-brand-purple/20 text-brand-purple/40"
+          />
           <div className="flex items-center gap-3">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
@@ -221,8 +226,10 @@ function StoryRow({ story, isLast }: { story: Story; isLast: boolean }) {
           desktop (top-24), so cap the portrait to the remaining viewport height
           — top offset (6rem) + row padding (2×4rem) ≈ 14rem — otherwise a tall
           portrait overflows the pinned row and its bottom is clipped by the
-          screen edge. Mobile (static row) keeps the full aspect and scrolls. */}
-      <div className="lg:col-span-4">
+          screen edge. Mobile (static row) keeps the full aspect and scrolls.
+          Narrower column (col-span-3) tightens the right-side space; the
+          aspect + max-h cap keep the portrait from growing taller. */}
+      <div className="lg:col-span-3">
         <div
           ref={imageWrapRef}
           className={`relative aspect-[0.69] max-lg:max-h-[440px] lg:max-h-[calc(100vh_-_14rem)] overflow-hidden rounded-2xl transition-opacity duration-700 ease-brand-out ${

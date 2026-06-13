@@ -7,7 +7,7 @@ import {
   type ChangeEvent,
   type FormEvent,
 } from "react";
-import { Phone, Mail, Linkedin, Instagram, Twitter } from "lucide-react";
+import { Phone, Mail } from "lucide-react";
 import { InlineWidget } from "react-calendly";
 import PhoneInput, { isValidPhoneNumber } from "react-phone-number-input";
 import { getExampleNumber, getCountryCallingCode } from "libphonenumber-js";
@@ -31,12 +31,6 @@ const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5000";
 const CALENDLY_URL = "https://calendly.com/scalixitydevops/meet";
 const PHONE = "+91 9424710030";
 const EMAIL = "info@scalixity.com";
-
-const SOCIALS = [
-  { label: "Twitter", href: "https://twitter.com/scalixity", Icon: Twitter },
-  { label: "Instagram", href: "https://www.instagram.com/scalixity", Icon: Instagram },
-  { label: "LinkedIn", href: "https://linkedin.com/company/Scalixity", Icon: Linkedin },
-];
 
 const BUDGET_OPTIONS = [
   "Up to $10K",
@@ -576,22 +570,6 @@ export function ContactForm({
             <CTAButton onClick={() => setCalendarOpen(true)} variant="ghost">
               Open calendar
             </CTAButton>
-          </div>
-
-          {/* Socials */}
-          <div className="flex gap-3">
-            {SOCIALS.map(({ label, href, Icon }) => (
-              <a
-                key={label}
-                href={href}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={label}
-                className="grid h-11 w-11 place-items-center rounded-brand-btn bg-brand-bone-faint text-brand-bone transition-colors hover:bg-brand-bone hover:text-brand-ink"
-              >
-                <Icon className="h-5 w-5" aria-hidden="true" />
-              </a>
-            ))}
           </div>
         </aside>
       </div>

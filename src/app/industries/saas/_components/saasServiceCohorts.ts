@@ -1,9 +1,9 @@
 import type { Cohort } from "@/src/app/landing/_components/Services";
 
-// SaaS-specific cohorts for the shared landing <Services /> section: same
-// component, cards, hover-video, and sticky left-rail behaviour — but the
-// Research / Design / Development grouping and copy from the SaaS page.
-// Hover clips reuse relatable assets from /public/landing.
+// SaaS "What our SaaS design practice does" cohorts. The three groups mirror
+// the PrimaryNav Services categories (Research / Design / Development) and their
+// listed services, so this section stays in sync with the nav. Hover clips
+// reuse relatable assets from /public/landing.
 export const SAAS_SERVICE_COHORTS: Cohort[] = [
   {
     key: "research",
@@ -13,14 +13,6 @@ export const SAAS_SERVICE_COHORTS: Cohort[] = [
     services: [
       {
         number: "01",
-        title: "Product discovery",
-        slug: "product-discovery",
-        description:
-          "Map out key features, user flows, and architecture to align your team and reduce risks.",
-        video: "/landing/Product-discovery.mp4",
-      },
-      {
-        number: "02",
         title: "UX audit",
         slug: "ux-audit",
         description:
@@ -28,11 +20,19 @@ export const SAAS_SERVICE_COHORTS: Cohort[] = [
         video: "/landing/UX-audit.mp4",
       },
       {
+        number: "02",
+        title: "Product discovery",
+        slug: "product-discovery",
+        description:
+          "Map out key features, user flows, and architecture to align your team and reduce risks.",
+        video: "/landing/Product-discovery.mp4",
+      },
+      {
         number: "03",
         title: "Technical workshop",
         slug: "technical-workshop",
         description:
-          "Validate your tech stack, architecture, and scalability path.",
+          "Validate your tech stack, architecture, and scalability path with senior engineers.",
         video: "/landing/Technical-workshop.mp4",
       },
     ],
@@ -45,22 +45,6 @@ export const SAAS_SERVICE_COHORTS: Cohort[] = [
     services: [
       {
         number: "01",
-        title: "Design prototype",
-        slug: "design-prototype",
-        description:
-          "Test product ideas fast with clickable user journeys and visual flows.",
-        video: "/landing/Design-prototype.mp4",
-      },
-      {
-        number: "02",
-        title: "Website design",
-        slug: "website-design",
-        description:
-          "Custom website layouts and UX/UI strategies to improve engagement and conversions.",
-        video: "/landing/Website-redesign.mp4",
-      },
-      {
-        number: "03",
         title: "Web app design",
         slug: "web-app-design",
         description:
@@ -68,7 +52,7 @@ export const SAAS_SERVICE_COHORTS: Cohort[] = [
         video: "/landing/cab5f51f-a135-4777-8895-398644445757.mp4",
       },
       {
-        number: "04",
+        number: "02",
         title: "Mobile app design",
         slug: "mobile-app-design",
         description:
@@ -76,7 +60,15 @@ export const SAAS_SERVICE_COHORTS: Cohort[] = [
         video: "/landing/compressed-video-2.mp4",
       },
       {
-        number: "05",
+        number: "03",
+        title: "Website design",
+        slug: "website-design",
+        description:
+          "Custom website layouts and UX/UI strategies to improve engagement and conversions.",
+        video: "/landing/Website-redesign.mp4",
+      },
+      {
+        number: "04",
         title: "Website redesign",
         slug: "website-redesign",
         description:
@@ -84,7 +76,7 @@ export const SAAS_SERVICE_COHORTS: Cohort[] = [
         video: "/landing/Website-redesign.mp4",
       },
       {
-        number: "06",
+        number: "05",
         title: "Branding",
         slug: "branding",
         description:
@@ -100,19 +92,19 @@ export const SAAS_SERVICE_COHORTS: Cohort[] = [
     services: [
       {
         number: "01",
-        title: "Custom MVP development",
-        slug: "custom-mvp-development",
-        description:
-          "Expand your prototype into a fully functional, production-ready product.",
-        video: "/landing/Custom-MVP-development.mp4",
-      },
-      {
-        number: "02",
         title: "Web development",
         slug: "web-development",
         description:
           "Custom web solutions, from complex platforms to interactive dashboards and scalable SaaS products, designed to boost functionality and drive growth.",
         video: "/landing/Website-development.mp4",
+      },
+      {
+        number: "02",
+        title: "Mobile app development",
+        slug: "mobile-app-development",
+        description:
+          "End-to-end development of mobile applications for iOS and Android.",
+        video: "/landing/compressed-video-2.mp4",
       },
       {
         number: "03",
@@ -124,26 +116,19 @@ export const SAAS_SERVICE_COHORTS: Cohort[] = [
       },
       {
         number: "04",
-        title: "Mobile app development",
-        slug: "mobile-app-development",
+        title: "AI development",
+        slug: "ai-development",
         description:
-          "End-to-end development of mobile applications for iOS and Android.",
-        video: "/landing/compressed-video-2.mp4",
+          "Ship production-grade AI — LLM apps, RAG, predictive models, and agents — built into your product.",
+        video: "/landing/cab5f51f-a135-4777-8895-398644445757.mp4",
       },
       {
         number: "05",
-        title: "No-code development",
-        slug: "no-code-development",
+        title: "Custom software development",
+        // No dedicated page yet — the card falls back to the /services index.
         description:
-          "Fast and cost-effective product development using no-code and low-code platforms.",
-        video: "/landing/Dedicated-team.mp4",
-      },
-      {
-        number: "06",
-        title: "AI & automation",
-        description:
-          "Add agents, predictive systems, and automation where they move real product metrics.",
-        video: "/landing/cab5f51f-a135-4777-8895-398644445757.mp4",
+          "Bespoke software built around your workflows, data, and scale — engineered for reliability and growth.",
+        video: "/landing/Custom-MVP-development.mp4",
       },
     ],
   },

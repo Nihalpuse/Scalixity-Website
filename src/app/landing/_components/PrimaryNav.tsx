@@ -43,8 +43,10 @@ export const DROPDOWN_DATA: Record<string, NavDropdownData> = {
           { label: "Web development", href: "/services/web-development" },
           { label: "Mobile app development", href: "/services/mobile-app-development" },
           { label: "Website development", href: "/services/website-development" },
-          { label: "No-code development", href: "/services/no-code-development" },
-          { label: "Blockchain development", href: "/services/blockchain-development" },
+          { label: "AI development", href: "/services/ai-development" },
+          // No dedicated "custom software development" page yet — routes to the
+          // /services index until one is created.
+          { label: "Custom software development", href: "/services" },
         ],
       },
       {

@@ -1,4 +1,5 @@
-import { Problems, type Problem } from "@/src/app/landing/_components/Problems";
+import { ServiceChallenges } from "@/src/app/services/_components/ServiceChallenges";
+import type { ServiceChallenge } from "@/src/app/services/services-content";
 
 // Reuses the landing <Problems /> sticky-stack section with fintech copy
 // and no per-row CTAs.
@@ -7,7 +8,7 @@ const TITLE = "For platforms pushing past UX roadblocks to improve performance";
 const DESCRIPTION =
   "You've got users, a vision, and maybe even early traction. But legacy UX, low engagement, or rushed execution may be holding you back. Here's how we fix that:";
 
-const ROWS: Problem[] = [
+const ROWS: ServiceChallenge[] = [
   {
     problem:
       "Our product has users… but our dashboard UX is too clunky. People drop off before they understand the value.",
@@ -30,6 +31,11 @@ const ROWS: Problem[] = [
 
 export function FintechChallenges() {
   return (
-    <Problems eyebrow={EYEBROW} title={TITLE} description={DESCRIPTION} rows={ROWS} />
+    <ServiceChallenges
+      eyebrow={EYEBROW}
+      title={TITLE}
+      description={DESCRIPTION}
+      challenges={ROWS}
+    />
   );
 }

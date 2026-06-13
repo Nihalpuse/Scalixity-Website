@@ -35,20 +35,23 @@ export function AboutTraits() {
   return (
     <section
       data-nav-bg="light"
-      className="brand-section-light px-5 lg:px-10 pt-14 pb-14 lg:pt-24 lg:pb-24"
+      className="brand-section-light pt-14 pb-14 lg:pt-24 lg:pb-24"
     >
-      <p className="brand-eyebrow text-brand-ink-muted mb-8">
-        <Scramble>{EYEBROW}</Scramble>
-      </p>
-      <h2 className="font-bricolage text-brand-display text-brand-ink mb-12 lg:mb-16 max-w-[22ch]">
-        <StaggerText>{TITLE}</StaggerText>
-      </h2>
+      <div className="px-5 lg:px-10">
+        <p className="brand-eyebrow text-brand-ink-muted mb-8">
+          <Scramble>{EYEBROW}</Scramble>
+        </p>
+        <h2 className="font-bricolage text-brand-display text-brand-ink mb-12 lg:mb-16 max-w-[22ch]">
+          <StaggerText>{TITLE}</StaggerText>
+        </h2>
+      </div>
 
-      {/* Top divider + vertical/internal dividers via gap-px, no box/bottom. */}
+      {/* Full-bleed: top divider + vertical/internal dividers via gap-px, no
+          box/bottom. Cells carry the px-5/px-10 gutter. */}
       <div className="border-t border-brand-ink/10">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-brand-ink/10">
           {TRAITS.map((t) => (
-            <div key={t.name} className="bg-brand-bone p-6 lg:p-8">
+            <div key={t.name} className="bg-brand-bone px-5 py-6 lg:px-10 lg:py-8">
               <h3 className="font-bricolage text-2xl lg:text-3xl text-brand-ink leading-tight">
                 {t.name}
               </h3>

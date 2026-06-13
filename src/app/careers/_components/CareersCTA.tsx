@@ -2,9 +2,8 @@ import { CTAButton } from "@/src/app/landing/_components/CTAButton";
 import { Scramble } from "@/src/app/landing/_components/Scramble";
 import { StaggerText } from "@/src/app/landing/_components/StaggerText";
 
-// Dark closing band (replaces the phenomenon "Ready to join us?" CTA). Points
-// at the application page so "don't see your role" routes into a general
-// (role = "General / Other") inquiry.
+// Dark closing band (replaces the phenomenon "Ready to join us?" CTA). Routes
+// interested people to the contact page so they can introduce themselves.
 const EYEBROW = "Join us";
 const TITLE = "Don't see your role? Reach out anyway.";
 const DESCRIPTION =
@@ -27,7 +26,7 @@ export function CareersCTA() {
         </p>
 
         <div className="mt-10 flex flex-wrap gap-3 max-sm:flex-col max-sm:[&>*]:w-full">
-          <CTAButton href="/careers/apply" variant="primary">
+          <CTAButton href="/contact" variant="primary">
             Introduce yourself
           </CTAButton>
         </div>

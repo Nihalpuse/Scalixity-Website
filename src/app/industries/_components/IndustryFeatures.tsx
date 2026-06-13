@@ -1,14 +1,54 @@
 import { type ComponentType } from "react";
+import {
+  LayoutDashboard,
+  Compass,
+  BarChart3,
+  Table2,
+  ShieldCheck,
+  CreditCard,
+  Bell,
+  FileText,
+  Search,
+  Users,
+  Settings2,
+  ListChecks,
+  MessagesSquare,
+  LifeBuoy,
+  Workflow,
+  SlidersHorizontal,
+} from "lucide-react";
 import { Scramble } from "@/src/app/landing/_components/Scramble";
 import { StaggerText } from "@/src/app/landing/_components/StaggerText";
+
+type FeatureIcon = ComponentType<{ className?: string; strokeWidth?: number | string }>;
 
 export type Feature = {
   title: string;
   body: string;
-  /** Optional icon component (e.g. a lucide-react icon). Falls back to an
-   *  asterisk glyph when omitted. */
-  Icon?: ComponentType<{ className?: string }>;
+  /** Optional icon component (e.g. a lucide-react icon). When omitted a big
+   *  icon is auto-assigned from DEFAULT_ICONS by position. */
+  Icon?: FeatureIcon;
 };
+
+// Big icons auto-assigned to feature cards that don't specify their own.
+const DEFAULT_ICONS: FeatureIcon[] = [
+  LayoutDashboard,
+  Compass,
+  BarChart3,
+  Table2,
+  ShieldCheck,
+  CreditCard,
+  Bell,
+  FileText,
+  Search,
+  Users,
+  Settings2,
+  ListChecks,
+  MessagesSquare,
+  LifeBuoy,
+  Workflow,
+  SlidersHorizontal,
+];
 
 // Bordered feature grid shared across industry pages (asterisk glyph +
 // title + body per cell). Top divider full-width, interior dividers, no
@@ -27,52 +67,47 @@ export function IndustryFeatures({
   return (
     <section
       data-nav-bg="light"
-      className="brand-section-light px-5 lg:px-10 pt-14 pb-14 lg:pt-24 lg:pb-24"
+      className="brand-section-light pt-14 pb-14 lg:pt-24 lg:pb-24"
     >
-      <p className="brand-eyebrow text-brand-ink-muted mb-8">
-        <Scramble>{eyebrow}</Scramble>
-      </p>
-      <h2 className="font-bricolage text-brand-display text-brand-ink max-w-[22ch]">
-        <StaggerText>{title}</StaggerText>
-      </h2>
-      {description && (
-        <p className="mt-8 lg:mt-12 font-albert text-brand-body-lg text-brand-ink-muted max-w-2xl">
-          {description}
+      {/* Heading keeps the page gutter; the card grid below goes full-bleed. */}
+      <div className="px-5 lg:px-10">
+        <p className="brand-eyebrow text-brand-ink-muted mb-8">
+          <Scramble>{eyebrow}</Scramble>
         </p>
-      )}
+        <h2 className="font-bricolage text-brand-display text-brand-ink max-w-[22ch]">
+          <StaggerText>{title}</StaggerText>
+        </h2>
+        {description && (
+          <p className="mt-8 lg:mt-12 font-albert text-brand-body-lg text-brand-ink-muted max-w-2xl">
+            {description}
+          </p>
+        )}
+      </div>
 
       <div className="mt-16 lg:mt-24 border-t border-brand-ink/10 overflow-hidden">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 -mr-px -mb-px">
-          {features.map((f) => (
-            <article
-              key={f.title}
-              className="px-0 py-6 sm:p-6 lg:p-8 flex flex-col gap-4 border-r border-b border-brand-ink/10"
-            >
-              {f.Icon ? (
-                <f.Icon className="h-7 w-7 text-brand-purple" />
-              ) : (
-                <svg
-                  aria-hidden="true"
-                  viewBox="0 0 24 24"
-                  className="h-7 w-7 text-brand-purple"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                >
-                  <path d="M12 3.5v17M3.5 12h17M6 6l12 12M18 6 6 18" />
-                </svg>
-              )}
-              <div className="mt-6 lg:mt-10">
-                <h3 className="font-bricolage text-xl lg:text-2xl text-brand-ink leading-tight">
-                  {f.title}
-                </h3>
-                <p className="mt-2 font-albert text-sm lg:text-base text-brand-ink-muted leading-relaxed">
-                  {f.body}
-                </p>
-              </div>
-            </article>
-          ))}
+          {features.map((f, i) => {
+            const Icon = f.Icon ?? DEFAULT_ICONS[i % DEFAULT_ICONS.length];
+            return (
+              <article
+                key={f.title}
+                className="px-5 py-6 lg:px-10 lg:py-8 flex flex-col border-r border-b border-brand-ink/10"
+              >
+                <Icon
+                  className="h-9 w-9 lg:h-10 lg:w-10 text-brand-purple"
+                  strokeWidth={1.5}
+                />
+                <div className="mt-12 lg:mt-28">
+                  <h3 className="font-bricolage text-xl lg:text-2xl text-brand-ink leading-tight">
+                    {f.title}
+                  </h3>
+                  <p className="mt-2 font-albert text-sm lg:text-base text-brand-ink-muted leading-relaxed">
+                    {f.body}
+                  </p>
+                </div>
+              </article>
+            );
+          })}
         </div>
       </div>
     </section>

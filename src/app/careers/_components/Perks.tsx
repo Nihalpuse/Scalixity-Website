@@ -74,12 +74,14 @@ export function Perks() {
             return (
               <div
                 key={perk.title}
-                className="bg-brand-bone p-6 lg:p-8 flex flex-col min-h-[200px]"
+                className="bg-brand-bone p-6 lg:p-8 flex flex-col min-h-[240px]"
               >
-                <span className="grid h-12 w-12 place-items-center rounded-2xl bg-brand-purple/10 text-brand-purple">
-                  <Icon className="h-5 w-5" strokeWidth={2} aria-hidden="true" />
-                </span>
-                <div className="mt-auto pt-10">
+                <Icon
+                  className="h-9 w-9 lg:h-10 lg:w-10 text-brand-purple"
+                  strokeWidth={1.5}
+                  aria-hidden="true"
+                />
+                <div className="mt-auto pt-12 lg:pt-16">
                   <h3 className="font-bricolage text-xl lg:text-2xl text-brand-ink leading-tight">
                     {perk.title}
                   </h3>

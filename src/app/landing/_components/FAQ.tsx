@@ -93,15 +93,19 @@ export function FAQ({
                 </span>
               </button>
 
+              {/* grid-rows 0fr→1fr animates the real content height for a
+                  smooth open/close (no max-height jank). */}
               <div
-                className={`overflow-hidden transition-[max-height,opacity] duration-300 ease-brand-out ${
-                  isOpen ? "max-h-[40rem] opacity-100" : "max-h-0 opacity-0"
+                className={`grid transition-[grid-template-rows,opacity] duration-300 ease-brand-out ${
+                  isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
                 }`}
               >
-                <div className="pb-6 lg:pb-8 pl-14 lg:pl-[20%] max-w-3xl">
-                  <p className="font-albert text-brand-body-lg text-brand-ink-muted leading-relaxed lg:pl-12">
-                    {faq.answer}
-                  </p>
+                <div className="overflow-hidden">
+                  <div className="pb-6 lg:pb-8 pl-14 lg:pl-[20%] max-w-3xl">
+                    <p className="font-albert text-brand-body-lg text-brand-ink-muted leading-relaxed lg:pl-12">
+                      {faq.answer}
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>

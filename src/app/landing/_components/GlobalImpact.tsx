@@ -23,11 +23,11 @@ export function GlobalImpact() {
   return (
     <section
       data-nav-bg="light"
-      className="brand-section-light px-5 lg:px-10 pt-14 pb-14 lg:pt-24 lg:pb-24"
+      className="brand-section-light pt-14 pb-14 lg:pt-24 lg:pb-24"
     >
       {/* Heading block — centered to match the original GlobalImpact's
           centered layout. */}
-      <div className="max-w-6xl mx-auto text-center">
+      <div className="max-w-6xl mx-auto text-center px-5 lg:px-10">
         <p className="brand-eyebrow text-brand-ink-muted mb-6">
           <Scramble>{EYEBROW}</Scramble>
         </p>
