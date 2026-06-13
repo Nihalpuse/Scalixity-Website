@@ -57,19 +57,20 @@ export function WhyChooseUs({
         <StaggerText>{title}</StaggerText>
       </h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 lg:gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6">
         {cards.map((card) => (
           <article
             key={card.title}
-            className="rounded-2xl bg-brand-ink/[0.04] p-8 lg:p-10 flex flex-col gap-2 lg:gap-3"
+            className="relative overflow-hidden rounded-xl bg-brand-ink/[0.04] p-5 lg:p-10 flex flex-col"
           >
-            <p className="brand-eyebrow text-brand-ink-muted">
-              {card.eyebrow}
-            </p>
-            <h3 className="font-bricolage text-2xl lg:text-3xl text-brand-ink leading-tight">
+            {/* Eyebrow (txt--control-m uppercase) */}
+            <p className="brand-eyebrow text-brand-ink-muted">{card.eyebrow}</p>
+            {/* Title (txt--lead, mt-12, mb-auto pushes the body to the bottom) */}
+            <h3 className=" mb-auto font-bricolage text-2xl lg:text-[1.875rem] text-brand-ink leading-[1.2]">
               {card.title}
             </h3>
-            <p className="font-albert text-sm lg:text-base text-brand-ink-muted leading-relaxed">
+            {/* Description (txt--m, mt-80 desktop / mt-32 mobile) */}
+            <p className="mt-8 lg:mt-20 font-albert text-base lg:text-lg text-brand-ink-muted leading-relaxed">
               {card.body}
             </p>
           </article>

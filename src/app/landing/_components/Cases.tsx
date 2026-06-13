@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { CTAButton } from "./CTAButton";
 import { Scramble } from "./Scramble";
@@ -29,7 +30,7 @@ type ApiProject = {
 const INTRO = {
   eyebrow: "Featured cases",
   title:
-    "Discover how we're driving change through innovative AI projects and measurable outcomes",
+    "Discover how we're driving change through innovative projects, strong partnerships, and measurable outcomes.",
 };
 
 type CaseStudy = {
@@ -179,6 +180,26 @@ export function Cases() {
             isLast={i === cases.length - 1}
           />
         ))}
+      </div>
+
+      {/* Explore all cases — centered link below the last card. */}
+      <div className="mt-12 lg:mt-16 flex justify-center">
+        <Link
+          href="/work"
+          className="group inline-flex items-center gap-2.5 text-sm font-semibold uppercase tracking-[0.14em] text-brand-ink transition-colors hover:text-brand-purple"
+        >
+          <span className="border-b border-brand-ink/40 pb-1 transition-colors group-hover:border-brand-purple">
+            Explore all cases
+          </span>
+          <svg
+            viewBox="0 0 18 12"
+            aria-hidden="true"
+            className="h-3 w-[18px] fill-none stroke-current transition-transform duration-200 ease-brand-out group-hover:translate-x-1"
+            strokeWidth="1.6"
+          >
+            <path d="M1 6h16M12 1l5 5-5 5" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </Link>
       </div>
     </section>
   );
