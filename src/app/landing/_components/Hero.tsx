@@ -62,13 +62,14 @@ export function Hero({ eyebrow, title, ctas }: HeroProps) {
 // Sticky showreel on the left + scrolling subtitle / trusted-by / numbers on
 // the right. Exported so other pages (e.g. /services) can reuse the section
 // beneath their own hero copy.
-export function HeroShowreel() {
+export function HeroShowreel({ videoSrc }: { videoSrc?: string } = {}) {
   return (
       <div className="px-5 lg:px-10 mt-16 lg:mt-24 pb-14 lg:pb-24">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-20 items-start">
-          {/* Left: sticky showreel */}
+          {/* Left: sticky showreel — per-service mp4 when provided, else the
+              default YouTube showreel. */}
           <div className="lg:sticky lg:top-24 lg:self-start">
-            <ShowreelPlaceholder />
+            <ShowreelPlaceholder videoSrc={videoSrc} />
           </div>
 
           {/* Right: scrolls past the sticky showreel */}

@@ -61,12 +61,12 @@ export function WhyChooseUs({
         {cards.map((card) => (
           <article
             key={card.title}
-            className="relative overflow-hidden rounded-xl bg-brand-ink/[0.04] p-5 lg:p-10 flex flex-col"
+            className="relative overflow-hidden rounded-xl bg-brand-ink/[0.03] p-5 lg:p-10 flex flex-col"
           >
             {/* Eyebrow (txt--control-m uppercase) */}
             <p className="brand-eyebrow text-brand-ink-muted">{card.eyebrow}</p>
             {/* Title (txt--lead, mt-12, mb-auto pushes the body to the bottom) */}
-            <h3 className=" mb-auto font-bricolage text-2xl lg:text-[1.875rem] text-brand-ink leading-[1.2]">
+            <h3 className=" mb-auto font-bricolage text-2xl lg:text-4xl text-brand-ink leading-[1.2]">
               {card.title}
             </h3>
             {/* Description (txt--m, mt-80 desktop / mt-32 mobile) */}

@@ -8,142 +8,82 @@ const FILL = {
   bone: "#fffefd",
 } as const;
 
-// Exact `clip-path` geometry lifted from the reference stylesheet's
-// `.clipped-bottom` rule (fixed-pixel, centered): a solid bar of the
-// "from" colour whose bottom edge carves into a centred tongue flanked by
-// two notches. The bar is 80px tall; the notch reaches 74px deep
-// (`calc(100% - 74px)` → 6px from the top), and a `border-radius` of 80px
-// on the bottom corners restores the rounded left/right edges (the
-// reference's `radius-80` / `0 0 80px 80px` on the dark sections). The
-// clip-path and border-radius compose — the visible area is their
-// intersection, so the corners round inward while the centre keeps the
-// notch.
-const DESKTOP_NOTCH = `polygon(
-  0 0,
-  100% 0,
-  100% 100%,
-  calc(50% + 93px) calc(100% - 0.74px),
-  calc(50% + 86px) calc(100% - 1.48px),
-  calc(50% + 81px) calc(100% - 2.96px),
-  calc(50% + 75px) calc(100% - 5.92px),
-  calc(50% + 68px) calc(100% - 10.36px),
-  calc(50% + 63.5px) calc(100% - 14.06px),
-  calc(50% + 58px) calc(100% - 19.24px),
-  calc(50% + 53px) calc(100% - 24.42px),
-  calc(50% + 48px) calc(100% - 30.34px),
-  calc(50% + 44px) calc(100% - 35.52px),
-  calc(50% + 40px) calc(100% - 42.18px),
-  calc(50% + 36px) calc(100% - 48.84px),
-  calc(50% + 33px) calc(100% - 55.5px),
-  calc(50% + 31px) calc(100% - 61.42px),
-  calc(50% + 29px) calc(100% - 67.34px),
-  calc(50% + 27px) calc(100% - 74px),
-  calc(50% + 22px) calc(100% - 74px),
-  calc(50% + 28px) calc(100% - 39.96px),
-  calc(50% + 29px) calc(100% - 28.12px),
-  calc(50% + 30px) 100%,
-  calc(50% - 30px) 100%,
-  calc(50% - 29px) calc(100% - 28.12px),
-  calc(50% - 28px) calc(100% - 39.96px),
-  calc(50% - 22px) calc(100% - 74px),
-  calc(50% - 27px) calc(100% - 74px),
-  calc(50% - 29px) calc(100% - 67.34px),
-  calc(50% - 31px) calc(100% - 61.42px),
-  calc(50% - 33px) calc(100% - 55.5px),
-  calc(50% - 36px) calc(100% - 48.84px),
-  calc(50% - 40px) calc(100% - 42.18px),
-  calc(50% - 44px) calc(100% - 35.52px),
-  calc(50% - 48px) calc(100% - 30.34px),
-  calc(50% - 53px) calc(100% - 24.42px),
-  calc(50% - 58px) calc(100% - 19.24px),
-  calc(50% - 63.5px) calc(100% - 14.06px),
-  calc(50% - 68px) calc(100% - 10.36px),
-  calc(50% - 75px) calc(100% - 5.92px),
-  calc(50% - 81px) calc(100% - 2.96px),
-  calc(50% - 86px) calc(100% - 1.48px),
-  calc(50% - 93px) calc(100% - 0.74px),
-  0 100%
-)`;
+// Smooth sine-wave seam, rendered as an SVG <path> filled with the "from"
+// colour. The top is a solid bar; the bottom edge is a true curve (cubic
+// béziers, not polyline segments — so no faceting/choppiness). Everything
+// below the curve is transparent, revealing the next section — the same
+// reveal the old notch used, so ink↔bone transitions keep working.
+//
+// preserveAspectRatio="none" stretches the path to the divider's full width
+// (Y stays 1:1 with the px height, so no vertical distortion).
+type Pt = [number, number];
 
-// Phone (<md) variant: the same notch at ~half scale on a shorter 40px bar
-// with 32px corners (mirrors the reference's `radius-32-mob` + compact
-// mobile clipped-bottom). At full desktop scale the ±93px notch + 80px
-// corners overwhelm a ~390px viewport (giant "ears", thin centre tongue);
-// halving the geometry keeps a compact, centred notch with flat shoulders.
-const MOBILE_NOTCH = `polygon(
-  0 0,
-  100% 0,
-  100% 100%,
-  calc(50% + 46.5px) calc(100% - 0.37px),
-  calc(50% + 43px) calc(100% - 0.74px),
-  calc(50% + 40.5px) calc(100% - 1.48px),
-  calc(50% + 37.5px) calc(100% - 2.96px),
-  calc(50% + 34px) calc(100% - 5.18px),
-  calc(50% + 31.75px) calc(100% - 7.03px),
-  calc(50% + 29px) calc(100% - 9.62px),
-  calc(50% + 26.5px) calc(100% - 12.21px),
-  calc(50% + 24px) calc(100% - 15.17px),
-  calc(50% + 22px) calc(100% - 17.76px),
-  calc(50% + 20px) calc(100% - 21.09px),
-  calc(50% + 18px) calc(100% - 24.42px),
-  calc(50% + 16.5px) calc(100% - 27.75px),
-  calc(50% + 15.5px) calc(100% - 30.71px),
-  calc(50% + 14.5px) calc(100% - 33.67px),
-  calc(50% + 13.5px) calc(100% - 37px),
-  calc(50% + 11px) calc(100% - 37px),
-  calc(50% + 14px) calc(100% - 19.98px),
-  calc(50% + 14.5px) calc(100% - 14.06px),
-  calc(50% + 15px) 100%,
-  calc(50% - 15px) 100%,
-  calc(50% - 14.5px) calc(100% - 14.06px),
-  calc(50% - 14px) calc(100% - 19.98px),
-  calc(50% - 11px) calc(100% - 37px),
-  calc(50% - 13.5px) calc(100% - 37px),
-  calc(50% - 14.5px) calc(100% - 33.67px),
-  calc(50% - 15.5px) calc(100% - 30.71px),
-  calc(50% - 16.5px) calc(100% - 27.75px),
-  calc(50% - 18px) calc(100% - 24.42px),
-  calc(50% - 20px) calc(100% - 21.09px),
-  calc(50% - 22px) calc(100% - 17.76px),
-  calc(50% - 24px) calc(100% - 15.17px),
-  calc(50% - 26.5px) calc(100% - 12.21px),
-  calc(50% - 29px) calc(100% - 9.62px),
-  calc(50% - 31.75px) calc(100% - 7.03px),
-  calc(50% - 34px) calc(100% - 5.18px),
-  calc(50% - 37.5px) calc(100% - 2.96px),
-  calc(50% - 40.5px) calc(100% - 1.48px),
-  calc(50% - 43px) calc(100% - 0.74px),
-  calc(50% - 46.5px) calc(100% - 0.37px),
-  0 100%
-)`;
+function wavePath(
+  width: number,
+  height: number,
+  amplitude: number,
+  periods: number,
+  pointsPerPeriod: number,
+): string {
+  const baseline = height / 2;
+  const n = periods * pointsPerPeriod;
+  const pts: Pt[] = [];
+  for (let i = 0; i <= n; i++) {
+    const x = (width * i) / n;
+    const y = baseline + amplitude * Math.sin((i / pointsPerPeriod) * 2 * Math.PI);
+    pts.push([x, y]);
+  }
+
+  const f = (v: number) => v.toFixed(2);
+  // Catmull-Rom → cubic bézier through the samples for a smooth curve.
+  let d = `M ${f(pts[0][0])} ${f(pts[0][1])}`;
+  for (let i = 0; i < pts.length - 1; i++) {
+    const p0 = pts[i - 1] ?? pts[i];
+    const p1 = pts[i];
+    const p2 = pts[i + 1];
+    const p3 = pts[i + 2] ?? p2;
+    const c1x = p1[0] + (p2[0] - p0[0]) / 6;
+    const c1y = p1[1] + (p2[1] - p0[1]) / 6;
+    const c2x = p2[0] - (p3[0] - p1[0]) / 6;
+    const c2y = p2[1] - (p3[1] - p1[1]) / 6;
+    d += ` C ${f(c1x)} ${f(c1y)}, ${f(c2x)} ${f(c2y)}, ${f(p2[0])} ${f(p2[1])}`;
+  }
+  // Close the top: down the right edge isn't needed — fill up to the top bar.
+  d += ` L ${width} 0 L 0 0 Z`;
+  return d;
+}
+
+// Desktop / tablet (≥768px): taller bar, more gentle periods.
+const DESKTOP_W = 1440;
+const DESKTOP_H = 80;
+const DESKTOP_PATH = wavePath(DESKTOP_W, DESKTOP_H, 18, 7, 12);
+// Phones (<768px): shorter bar, fewer periods so it stays soft, not busy.
+const MOBILE_W = 420;
+const MOBILE_H = 40;
+const MOBILE_PATH = wavePath(MOBILE_W, MOBILE_H, 9, 4, 12);
 
 export function CurvedDivider({ fromColor, className = "" }: CurvedDividerProps) {
+  const fill = FILL[fromColor];
   return (
     <>
-      {/* Desktop / tablet (≥768px): unchanged reference geometry. */}
-      <div
+      {/* Desktop / tablet (≥768px) */}
+      <svg
         aria-hidden="true"
+        viewBox={`0 0 ${DESKTOP_W} ${DESKTOP_H}`}
+        preserveAspectRatio="none"
         className={`hidden md:block w-full h-20 ${className}`}
-        style={{
-          backgroundColor: FILL[fromColor],
-          borderBottomLeftRadius: "80px",
-          borderBottomRightRadius: "80px",
-          clipPath: DESKTOP_NOTCH,
-          WebkitClipPath: DESKTOP_NOTCH,
-        }}
-      />
-      {/* Phones (<768px): compact, ~half-scale notch + 32px corners. */}
-      <div
+      >
+        <path d={DESKTOP_PATH} fill={fill} />
+      </svg>
+      {/* Phones (<768px) */}
+      <svg
         aria-hidden="true"
+        viewBox={`0 0 ${MOBILE_W} ${MOBILE_H}`}
+        preserveAspectRatio="none"
         className={`block md:hidden w-full h-10 ${className}`}
-        style={{
-          backgroundColor: FILL[fromColor],
-          borderBottomLeftRadius: "32px",
-          borderBottomRightRadius: "32px",
-          clipPath: MOBILE_NOTCH,
-          WebkitClipPath: MOBILE_NOTCH,
-        }}
-      />
+      >
+        <path d={MOBILE_PATH} fill={fill} />
+      </svg>
     </>
   );
 }

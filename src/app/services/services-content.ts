@@ -87,6 +87,7 @@ import { branding } from "./content/branding";
 import { webDevelopment } from "./content/web-development";
 import { mobileAppDevelopment } from "./content/mobile-app-development";
 import { websiteDevelopment } from "./content/website-development";
+import { customSoftwareDevelopment } from "./content/custom-software-development";
 import { noCodeDevelopment } from "./content/no-code-development";
 import { blockchainDevelopment } from "./content/blockchain-development";
 import { aiDevelopment } from "./content/ai-development";
@@ -111,6 +112,7 @@ export const SERVICES_CONTENT: ServiceContent[] = [
   webDevelopment,
   mobileAppDevelopment,
   websiteDevelopment,
+  customSoftwareDevelopment,
   noCodeDevelopment,
   blockchainDevelopment,
   aiDevelopment,

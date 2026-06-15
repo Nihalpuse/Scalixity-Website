@@ -12,6 +12,8 @@ import { Services } from "@/src/app/landing/_components/Services";
 import { FAQ } from "@/src/app/landing/_components/FAQ";
 import { Cases } from "@/src/app/landing/_components/Cases";
 import { Industries } from "@/src/app/landing/_components/Industries";
+import { Testimonials } from "@/src/app/landing/_components/Testimonials";
+import { SERVICES_PRACTICE_COHORTS } from "./servicesPracticeCohorts";
 import { Scramble } from "@/src/app/landing/_components/Scramble";
 import { StaggerText } from "@/src/app/landing/_components/StaggerText";
 import { CTAButton } from "@/src/app/landing/_components/CTAButton";
@@ -53,7 +55,7 @@ export function ServicesIndex() {
           </div>
         </div>
 
-        <HeroShowreel />
+        <HeroShowreel videoSrc="/services/services-hero.mp4" />
       </section>
 
       {/* Services cohorts (light on this page). */}
@@ -61,13 +63,26 @@ export function ServicesIndex() {
 
       <Services theme="light" />
 
+      {/* Full-cycle partner — service practice grouped by Research / Design /
+          Development (mirrors the nav), same light surface, no divider. */}
+      <Services
+        theme="light"
+        eyebrow="Design, development & strategy under one roof"
+        title="A full-cycle digital product design and development partner"
+        description="From research and strategy to design and engineering, we cover the full product lifecycle — so you get one accountable team from first idea to launch and beyond."
+        cohorts={SERVICES_PRACTICE_COHORTS}
+      />
+
       {/* Featured cases (light) — same light surface, no divider. */}
       <Cases />
 
       {/* Key industries (light) — same light surface, no divider. */}
       <Industries />
 
-      {/* FAQ (light) — after Industries. */}
+      {/* What our clients say (light) — above the FAQ. */}
+      <Testimonials />
+
+      {/* FAQ (light) — after testimonials. */}
       <FAQ />
 
       <CurvedDivider fromColor="bone" className="-mt-px relative z-10" />

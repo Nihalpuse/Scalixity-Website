@@ -44,9 +44,7 @@ export const DROPDOWN_DATA: Record<string, NavDropdownData> = {
           { label: "Mobile app development", href: "/services/mobile-app-development" },
           { label: "Website development", href: "/services/website-development" },
           { label: "AI development", href: "/services/ai-development" },
-          // No dedicated "custom software development" page yet — routes to the
-          // /services index until one is created.
-          { label: "Custom software development", href: "/services" },
+          { label: "Custom software development", href: "/services/custom-software-development" },
         ],
       },
       {
@@ -417,7 +415,7 @@ export function PrimaryNav({ logoText, links, cta }: PrimaryNavProps) {
             <span>{logoText}</span>
           </Link>
 
-          <nav className="hidden lg:flex items-center gap-8">
+          <nav className="hidden lg:flex items-center gap-10 xl:gap-14">
             {links.map((link) => {
               const isLinkActive = openLabel === link.label;
               return (
@@ -583,12 +581,18 @@ export function PrimaryNav({ logoText, links, cta }: PrimaryNavProps) {
                         </svg>
                       </button>
                     </div>
+                    {/* grid-rows 0fr→1fr animates to the submenu's natural
+                        height — no fixed max-height clamp, so long menus like
+                        Services (29 items) aren't cut off. The parent <nav>
+                        scrolls to reveal anything past the viewport. */}
                     <div
-                      className={`overflow-hidden transition-[max-height,opacity] duration-300 ease-brand-out ${
-                        expanded ? "max-h-[640px] opacity-100" : "max-h-0 opacity-0"
+                      className={`grid transition-[grid-template-rows,opacity] duration-300 ease-brand-out ${
+                        expanded ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
                       }`}
                     >
-                      <MobileSubItems data={data} onNavigate={closeMobile} />
+                      <div className="overflow-hidden">
+                        <MobileSubItems data={data} onNavigate={closeMobile} />
+                      </div>
                     </div>
                   </>
                 ) : (

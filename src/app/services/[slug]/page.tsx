@@ -25,6 +25,31 @@ import { ServiceProcess } from "../_components/ServiceProcess";
 import { LetsConnect } from "../_components/LetsConnect";
 import { SERVICES_CONTENT, getService, getRelated } from "../services-content";
 
+// Per-service hero clip (public/services/*.mp4). Filenames don't all match the
+// slug, so map them explicitly. Slugs without an entry (e.g. blockchain- /
+// no-code-development) fall back to the default YouTube showreel.
+const HERO_VIDEOS: Record<string, string> = {
+  "ai-development": "/services/ai-development.mp4",
+  branding: "/services/branding-and-identity-services.mp4",
+  "custom-mvp-development": "/services/custom-mvp.mp4",
+  "custom-software-development": "/services/custom-software.mp4",
+  "dedicated-team": "/services/dedicated-team.mp4",
+  "design-prototype": "/services/design-prototype.mp4",
+  "mobile-app-design": "/services/mobile-app-design.mp4",
+  "mobile-app-development": "/services/mobile-app-development-services.mp4",
+  "product-discovery": "/services/product-discovery.mp4",
+  "product-redesign": "/services/product-redesign.mp4",
+  "rapid-mvp-development": "/services/rapid-mvp.mp4",
+  "team-extension": "/services/team-extension.mp4",
+  "technical-workshop": "/services/tech-workshop.mp4",
+  "ux-audit": "/services/ux-audit.mp4",
+  "web-app-design": "/services/web-app-design.mp4",
+  "web-development": "/services/web-development-services.mp4",
+  "website-design": "/services/website-design-service-heros.mp4",
+  "website-development": "/services/website-development-agency.mp4",
+  "website-redesign": "/services/website-redesign-services.mp4",
+};
+
 export function generateStaticParams() {
   return SERVICES_CONTENT.map((s) => ({ slug: s.slug }));
 }
@@ -79,7 +104,7 @@ export default async function ServicePage({
           </div>
         </div>
 
-        <HeroShowreel />
+        <HeroShowreel videoSrc={HERO_VIDEOS[slug]} />
       </section>
 
       <CurvedDivider fromColor="ink" className="-mt-px relative z-10" />

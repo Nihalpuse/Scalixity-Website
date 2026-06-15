@@ -291,13 +291,15 @@ function CaseCard({ data, isLast }: { data: CaseStudy; isLast: boolean }) {
       // edge when the section bg is the same bone color.
       className="sticky top-20 lg:top-24 max-lg:static bg-brand-bone rounded-t-3xl pt-8 lg:pt-10 pb-8 lg:pb-10 shadow-[0_-8px_24px_-12px_rgba(8,13,16,0.08)]"
     >
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6 lg:gap-10 items-start">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6 lg:gap-10 items-stretch">
         {/* Case image — real preview when the API supplied one, gradient
-            placeholder with the client name as fallback. */}
-        <div className="lg:col-span-5">
+            placeholder with the client name as fallback. Equal width with the
+            content; from md+ it stretches to the content's height (md:h-full)
+            so it never overruns into the zone the next sticky card covers. */}
+        <div className="lg:col-span-6">
           <div
             ref={imageWrapRef}
-            className={`group aspect-[5/4] rounded-2xl overflow-hidden bg-gradient-to-br from-stone-300 via-stone-400 to-stone-600 relative transition-[transform,opacity] duration-700 ease-brand-out ${
+            className={`group aspect-[5/4] md:aspect-auto md:h-full md:min-h-[18rem] rounded-2xl overflow-hidden bg-gradient-to-br from-stone-300 via-stone-400 to-stone-600 relative transition-[transform,opacity] duration-700 ease-brand-out ${
               revealed ? "opacity-100 scale-100" : "opacity-0 scale-90"
             }`}
           >
@@ -317,7 +319,7 @@ function CaseCard({ data, isLast }: { data: CaseStudy; isLast: boolean }) {
         </div>
 
         {/* Right content */}
-        <div className="lg:col-span-7 flex flex-col gap-4 lg:gap-5">
+        <div className="lg:col-span-6 flex flex-col gap-4 lg:gap-5">
           {/* Tags */}
           <p className="brand-eyebrow text-brand-ink-muted">
             {data.tags.map((t) => `#${t}`).join(" ")}

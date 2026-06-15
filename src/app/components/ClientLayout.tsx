@@ -112,6 +112,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
       "/services/web-development",
       "/services/mobile-app-development",
       "/services/website-development",
+      "/services/custom-software-development",
       "/services/no-code-development",
       "/services/blockchain-development",
       "/services/ux-audit",
