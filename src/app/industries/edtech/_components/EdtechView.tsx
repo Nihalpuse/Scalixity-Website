@@ -63,7 +63,7 @@ export function EdtechView() {
           </div>
         </div>
 
-        <HeroShowreel />
+        <HeroShowreel videoSrc="/industry/edtechindustry.mp4" />
       </section>
 
       <CurvedDivider fromColor="ink" className="-mt-px relative z-10" />

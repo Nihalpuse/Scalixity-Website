@@ -93,8 +93,9 @@ export function AboutMilestones() {
         </h2>
       </div>
 
-      {/* Numbers — top divider + vertical dividers between cells, no bottom. */}
-      <div className="mt-12 lg:mt-16 border-t border-brand-ink/10">
+      {/* Numbers — full-bleed (negative margins cancel the section's px
+          gutter); top divider + vertical dividers between cells, no bottom. */}
+      <div className="mt-12 lg:mt-16 -mx-5 lg:-mx-10 border-t border-brand-ink/10">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-brand-ink/10">
           {STATS.map((stat) => (
             <div

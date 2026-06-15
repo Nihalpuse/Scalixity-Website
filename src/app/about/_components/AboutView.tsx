@@ -85,9 +85,10 @@ export function AboutView() {
             </CTAButton>
           </div>
 
-          {/* Scalixity in numbers */}
-          <div className="mt-16 lg:mt-24">
-            <p className="brand-eyebrow text-brand-bone-muted mb-8">
+          {/* Scalixity in numbers — full-bleed: negative margins cancel the
+              hero's px gutter; the eyebrow keeps it. */}
+          <div className="mt-16 lg:mt-24 -mx-5 lg:-mx-10">
+            <p className="brand-eyebrow text-brand-bone-muted mb-8 px-5 lg:px-10">
               Scalixity in numbers
             </p>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-brand-bone/10 border-t border-brand-bone/10">

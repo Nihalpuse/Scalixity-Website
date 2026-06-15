@@ -63,7 +63,7 @@ export function HealthcareView() {
           </div>
         </div>
 
-        <HeroShowreel />
+        <HeroShowreel videoSrc="/industry/healthcare-industry.mp4" />
       </section>
 
       <CurvedDivider fromColor="ink" className="-mt-px relative z-10" />

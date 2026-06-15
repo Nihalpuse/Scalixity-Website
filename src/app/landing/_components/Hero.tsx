@@ -54,7 +54,7 @@ export function Hero({ eyebrow, title, ctas }: HeroProps) {
         </div>
       </div>
 
-      <HeroShowreel />
+      <HeroShowreel videoSrc="/landing/landing-hero.mp4" />
     </section>
   );
 }

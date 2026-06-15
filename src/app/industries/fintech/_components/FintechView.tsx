@@ -63,7 +63,7 @@ export function FintechView() {
           </div>
         </div>
 
-        <HeroShowreel />
+        <HeroShowreel videoSrc="/industry/fintech-industry.mp4" />
       </section>
 
       <CurvedDivider fromColor="ink" className="-mt-px relative z-10" />
