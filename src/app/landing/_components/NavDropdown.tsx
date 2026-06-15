@@ -115,7 +115,7 @@ function FlatLayout({ data }: { data: FlatDropdown }) {
           {data.cta.title}
         </h3>
         <div>
-          <CTAButton href={data.cta.buttonHref} variant="primary">
+          <CTAButton href={data.cta.buttonHref} variant="primary" onLight>
             {data.cta.buttonLabel}
           </CTAButton>
         </div>
