@@ -11,7 +11,7 @@ import { useIsDesktop, usePrefersReducedMotion, useVideoPrefetch } from "./useMo
 // Services adapted from src/app/components/growth-partner + process on
 // the existing Scalixity landing.
 const INTRO = {
-  eyebrow: "AI solutions for data-driven companies",
+  eyebrow: "What we offer",
   title: "Tailored support from first prototype to long-term scale",
   description:
     "Great products don't happen by accident. As an AI-first engineering partner, we help data-driven teams grow through smart strategy, AI engineering, and scalable infrastructure from day one.",

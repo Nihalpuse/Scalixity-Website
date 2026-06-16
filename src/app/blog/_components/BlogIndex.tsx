@@ -126,7 +126,7 @@ export function BlogIndex() {
         <p className="brand-eyebrow text-brand-ink-muted mb-8">
           <Scramble>Insights</Scramble>
         </p>
-        <h1 className="font-bricolage text-brand-ink leading-[0.95] tracking-[-0.02em] text-[clamp(2.75rem,8vw,7rem)]">
+        <h1 className="font-bricolage text-brand-display text-brand-ink">
           <StaggerText>Expert articles</StaggerText>
         </h1>
 

@@ -7,7 +7,7 @@ import { Scramble } from "@/src/app/landing/_components/Scramble";
 // scrolls into view it plays a one-shot transition — the heading + narrative
 // crossfade from the "so far" state to the "ahead" state while the numbers
 // count up. Mirrors the phenomenon about-us odometer section.
-const EYEBROW = "Scalixity in numbers";
+const EYEBROW = "By the numbers";
 
 const HEADING_THEN = "What we've built together so far";
 const HEADING_AHEAD = "With so much more ahead";

@@ -37,7 +37,7 @@ export function LandingView() {
       />
 
       <Hero
-        eyebrow="AI solutions for data-driven companies"
+        eyebrow="Build. Ship. Scale."
         title="Your growth engine, not just your tech team"
         subtitle="At Scalixity, we redefine innovation by crafting AI solutions tailored to elevate businesses. Our approach merges data intelligence and automation, unlocking new realms of growth and efficiency."
         ctas={HERO_CTAS}

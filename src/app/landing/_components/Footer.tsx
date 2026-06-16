@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { DROPDOWN_DATA } from "./PrimaryNav";
 
 // Placeholder copy from the phenomenonstudio.com screenshots — swap for
@@ -10,6 +11,7 @@ import { DROPDOWN_DATA } from "./PrimaryNav";
 // Ported from src/app/page.tsx and the existing site routing.
 const NAV_LINKS = [
   { label: "Services", href: "#services" },
+  { label: "Industries", href: "/industries" },
   { label: "Cases", href: "/work" },
   { label: "About us", href: "/company" },
   { label: "Careers", href: "/careers" },
@@ -27,8 +29,6 @@ const SOCIALS: SocialLink[] = [
   { platform: "LinkedIn", href: "https://www.linkedin.com/company/scalixity", Icon: LinkedInIcon },
   { platform: "Instagram", href: "https://www.instagram.com/scalixity/", Icon: InstagramIcon },
   { platform: "Facebook", href: "https://www.facebook.com/profile.php?id=61579701595445", Icon: FacebookIcon },
-  // No X/Twitter profile yet.
-  { platform: "X", href: "#", Icon: XIcon },
 ];
 
 type Location = {
@@ -110,7 +110,7 @@ export function Footer() {
 
         {/* Socials grid */}
         <div className="lg:col-span-4">
-          <div className="grid grid-cols-4 gap-2 max-w-[320px]">
+          <div className="grid grid-cols-3 gap-2 max-w-[320px]">
             {SOCIALS.map(({ platform, href, Icon }) => {
               const isLive = href !== "#";
               return (
@@ -138,9 +138,9 @@ export function Footer() {
         <div className="lg:col-span-4">
           <div className="grid grid-cols-2 gap-3">
             {LOCATIONS.map((loc) => (
-              <a
+              <Link
                 key={loc.country}
-                href="#"
+                href="/about"
                 className={`rounded-lg bg-brand-ink/[0.04] hover:bg-brand-ink/[0.08] transition-colors p-5 flex flex-col justify-between gap-4 min-h-[120px] ${
                   loc.span === "full" ? "col-span-2" : ""
                 }`}
@@ -163,7 +163,7 @@ export function Footer() {
                     <ArrowIcon />
                   </div>
                 </div>
-              </a>
+              </Link>
             ))}
           </div>
         </div>
@@ -304,15 +304,3 @@ function FacebookIcon() {
   );
 }
 
-function XIcon() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="currentColor"
-      aria-hidden="true"
-      className="w-5 h-5"
-    >
-      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-    </svg>
-  );
-}

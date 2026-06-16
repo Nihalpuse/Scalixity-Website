@@ -116,7 +116,7 @@ export function WorkIndex() {
         data-nav-bg="light"
         className="brand-section-light px-5 lg:px-10 pt-36 pb-24 lg:pt-48 lg:pb-32"
       >
-        <h1 className="font-bricolage text-brand-ink leading-[0.95] tracking-[-0.02em] text-[clamp(3rem,9.5vw,11rem)]">
+        <h1 className="font-bricolage text-brand-display text-brand-ink">
           <StaggerText>Explore our projects</StaggerText>
         </h1>
 

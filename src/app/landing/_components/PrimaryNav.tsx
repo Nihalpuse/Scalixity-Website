@@ -131,15 +131,19 @@ export const DROPDOWN_DATA: Record<string, NavDropdownData> = {
   },
 };
 
-// Total number of links under a dropdown, shown as the muted count next to
-// each expandable item in the mobile menu (e.g. "Services 19").
+// Number of links under a dropdown, shown as the muted count next to each
+// expandable item in the mobile menu (e.g. "Services 21"). Categorized menus
+// repeat some services across cohorts (Launch/Evolve/Rebrand reuse services
+// from Design/Development/Research), so count UNIQUE service labels — matching
+// the Footer's de-duped "All services" list — instead of the raw item total.
 function countItems(data: NavDropdownData | undefined): number {
   if (!data) return 0;
   if (data.kind === "flat") return data.items.length;
-  return [...data.primary, ...(data.secondary ?? [])].reduce(
-    (n, c) => n + c.items.length,
-    0
-  );
+  const labels = new Set<string>();
+  for (const cat of [...data.primary, ...(data.secondary ?? [])]) {
+    for (const item of cat.items) labels.add(item.label);
+  }
+  return labels.size;
 }
 
 function MenuIcon() {
@@ -186,6 +190,38 @@ function CloseIcon() {
 //   );
 // }
 
+// A single mobile dropdown item: uppercase, bold, letter-spaced, underlined
+// label + a trailing arrow (mirrors the reference mobile menu).
+function MobileItemLink({
+  href,
+  label,
+  onNavigate,
+}: {
+  href: string;
+  label: string;
+  onNavigate: () => void;
+}) {
+  return (
+    <Link
+      href={href}
+      onClick={onNavigate}
+      className="group inline-flex items-center gap-2.5 text-sm font-bold uppercase tracking-[0.08em] text-brand-ink-muted transition-colors duration-200 ease-brand-out hover:text-brand-purple"
+    >
+      <span className="border-b border-brand-ink/40 pb-1 transition-colors duration-200 ease-brand-out group-hover:border-brand-purple">
+        {label}
+      </span>
+      <svg
+        viewBox="0 0 18 12"
+        aria-hidden="true"
+        className="h-3 w-[18px] shrink-0 fill-none stroke-current transition-transform duration-200 ease-brand-out group-hover:translate-x-1"
+        strokeWidth="1.6"
+      >
+        <path d="M1 6h16M12 1l5 5-5 5" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    </Link>
+  );
+}
+
 // Expanded contents for a dropdown link inside the mobile accordion. Flat
 // dropdowns render a simple list; categorized ones group items under their
 // category label so the structure mirrors the desktop mega-menu.
@@ -200,16 +236,10 @@ function MobileSubItems({
 
   if (data.kind === "flat") {
     return (
-      <ul className="flex flex-col gap-3 pb-5 pl-1">
+      <ul className="flex flex-col gap-4 pb-5 pl-4">
         {data.items.map((item) => (
           <li key={item.label}>
-            <Link
-              href={item.href}
-              onClick={onNavigate}
-              className="block text-lg text-brand-ink-muted hover:text-brand-purple transition-colors duration-200 ease-brand-out"
-            >
-              {item.label}
-            </Link>
+            <MobileItemLink href={item.href} label={item.label} onNavigate={onNavigate} />
           </li>
         ))}
       </ul>
@@ -218,22 +248,16 @@ function MobileSubItems({
 
   const categories = [...data.primary, ...(data.secondary ?? [])];
   return (
-    <div className="flex flex-col gap-5 pb-5 pl-1">
+    <div className="flex flex-col gap-7 pb-5">
       {categories.map((cat) => (
         <div key={cat.key}>
-          <p className="mb-2 text-xs font-semibold uppercase tracking-[0.12em] text-brand-ink-soft">
+          <p className="mb-4 text-xs font-semibold uppercase tracking-[0.12em] text-brand-ink-soft">
             {cat.label}
           </p>
-          <ul className="flex flex-col gap-2">
+          <ul className="flex flex-col gap-4 pl-4">
             {cat.items.map((item) => (
               <li key={item.label}>
-                <Link
-                  href={item.href}
-                  onClick={onNavigate}
-                  className="block text-lg text-brand-ink-muted hover:text-brand-purple transition-colors duration-200 ease-brand-out"
-                >
-                  {item.label}
-                </Link>
+                <MobileItemLink href={item.href} label={item.label} onNavigate={onNavigate} />
               </li>
             ))}
           </ul>

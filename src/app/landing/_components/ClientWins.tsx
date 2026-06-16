@@ -8,7 +8,7 @@ import { useIsTouch } from "./useMobileEnv";
 // Ported from src/app/components/trusted-companies on the existing Scalixity
 // landing. Hover-card descriptions/tags are placeholder content — replace
 // with real positioning when finalized.
-const EYEBROW = "AI solutions for data-driven companies";
+const EYEBROW = "Results & impact";
 const TITLE = "Our featured client wins";
 
 // How long the dark info card stays flipped open after a tap before it

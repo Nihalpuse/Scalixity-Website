@@ -9,7 +9,7 @@ import { useActiveOnScroll } from "./useActiveOnScroll";
 // Scalixity landing. Same 7-step methodology, refit for the new design
 // system: sticky giant number on the left, scrolling step descriptions
 // on the right.
-const EYEBROW = "AI solutions for data-driven companies";
+const EYEBROW = "How we work";
 const TITLE = "Our process, end to end";
 const DESCRIPTION =
   "A proven 7-step methodology to ship products that move real metrics — from first discovery call through ongoing optimization.";

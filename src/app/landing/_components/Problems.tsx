@@ -8,7 +8,7 @@ import { StaggerText } from "./StaggerText";
 // Adapted from src/app/components/scalixity-blends + growth-partner —
 // the existing site's "you don't need a developer team, you need a
 // growth engineering partner" framing.
-const EYEBROW = "AI solutions for data-driven companies";
+const EYEBROW = "Why teams partner with us";
 const TITLE = "Shipping AI is hard. Finding the right partner shouldn't be.";
 
 export type Problem = {
