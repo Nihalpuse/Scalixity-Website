@@ -440,6 +440,27 @@ input:focus, textarea:focus, select:focus {
   box-shadow: 0 0 0 2px rgba(159, 168, 218, 0.2);
 }
 
+/* Brand-design (.brand-root) inputs control their own border / radius / shadow
+   / size via Tailwind utilities, so neutralise the legacy global input baseline
+   above for anything inside .brand-root. Wrapped in :where() so this carries
+   ZERO extra specificity — it overrides the bare `input{}` rule (same
+   specificity, later in source) but each input's own utility classes still win.
+   font-size: inherit keeps brand inputs ≥16px so iOS Safari doesn't zoom on
+   focus (the global rule forced text-sm = 14px on mobile). */
+:where(.brand-root) input,
+:where(.brand-root) textarea,
+:where(.brand-root) select {
+  border-width: 0;
+  border-radius: 0;
+  box-shadow: none;
+  font-size: inherit;
+}
+:where(.brand-root) input:focus,
+:where(.brand-root) textarea:focus,
+:where(.brand-root) select:focus {
+  box-shadow: none;
+}
+
 /* Table styles */
 .table-container {
   @apply overflow-x-auto;

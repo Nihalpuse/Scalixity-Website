@@ -8,11 +8,17 @@ const FILL = {
   bone: "#fffefd",
 } as const;
 
-// Smooth sine-wave seam, rendered as an SVG <path> filled with the "from"
-// colour. The top is a solid bar; the bottom edge is a true curve (cubic
-// béziers, not polyline segments — so no faceting/choppiness). Everything
-// below the curve is transparent, revealing the next section — the same
-// reveal the old notch used, so ink↔bone transitions keep working.
+// Section transitions always alternate ink↔bone, so the colour below the wave
+// (the next section) is simply the opposite of `fromColor`.
+const OPPOSITE = { ink: "bone", bone: "ink" } as const;
+
+// Smooth sine-wave seam, rendered as two filled SVG layers: a solid `toColor`
+// background (the next section's colour) with the `fromColor` wave painted on
+// top. The cubic-bézier wave is the boundary between them — so the seam is a
+// real two-tone curve that works in BOTH directions (a dark section below now
+// gets a wavy top, not a flat edge). Previously everything below the wave was
+// transparent and only revealed the bone body bg, so light→dark transitions
+// rendered flat.
 //
 // preserveAspectRatio="none" stretches the path to the divider's full width
 // (Y stays 1:1 with the px height, so no vertical distortion).
@@ -63,7 +69,8 @@ const MOBILE_H = 40;
 const MOBILE_PATH = wavePath(MOBILE_W, MOBILE_H, 9, 4, 12);
 
 export function CurvedDivider({ fromColor, className = "" }: CurvedDividerProps) {
-  const fill = FILL[fromColor];
+  const fromFill = FILL[fromColor];
+  const toFill = FILL[OPPOSITE[fromColor]];
   return (
     <>
       {/* Desktop / tablet (≥768px) */}
@@ -73,7 +80,8 @@ export function CurvedDivider({ fromColor, className = "" }: CurvedDividerProps)
         preserveAspectRatio="none"
         className={`hidden md:block w-full h-20 ${className}`}
       >
-        <path d={DESKTOP_PATH} fill={fill} />
+        <rect width={DESKTOP_W} height={DESKTOP_H} fill={toFill} />
+        <path d={DESKTOP_PATH} fill={fromFill} />
       </svg>
       {/* Phones (<768px) */}
       <svg
@@ -82,7 +90,8 @@ export function CurvedDivider({ fromColor, className = "" }: CurvedDividerProps)
         preserveAspectRatio="none"
         className={`block md:hidden w-full h-10 ${className}`}
       >
-        <path d={MOBILE_PATH} fill={fill} />
+        <rect width={MOBILE_W} height={MOBILE_H} fill={toFill} />
+        <path d={MOBILE_PATH} fill={fromFill} />
       </svg>
     </>
   );

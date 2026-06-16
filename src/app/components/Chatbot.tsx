@@ -476,16 +476,17 @@ const Chatbot: React.FC = () => {
     activeSection === 'contact' ? 'Ask about contacting us…' :
     'Type your message…';
 
+
   return (
     <div className="fixed bottom-5 right-5 z-[60] font-albert">
       {isOpen && (
         <div
-          className={`absolute bottom-[4.5rem] right-0 flex w-[calc(100vw-2.5rem)] max-w-[400px] h-[min(620px,calc(100vh-7rem))] origin-bottom-right flex-col overflow-hidden rounded-3xl bg-brand-bone shadow-[0_24px_70px_-20px_rgba(8,13,16,0.45)] ring-1 ring-brand-ink/10 transition-all duration-300 ease-brand-out ${
+          className={`fixed inset-0 flex h-full w-full flex-col overflow-hidden bg-brand-bone transition-all duration-300 ease-brand-out sm:absolute sm:inset-auto sm:bottom-[4.5rem] sm:right-0 sm:h-[min(620px,calc(100vh-7rem))] sm:w-[400px] sm:origin-bottom-right sm:rounded-3xl sm:shadow-[0_24px_70px_-20px_rgba(8,13,16,0.45)] sm:ring-1 sm:ring-brand-ink/10 ${
             isPanelVisible ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-3 scale-95'
           }`}
         >
-          {/* Header (dark) */}
-          <div className="flex items-center justify-between gap-3 bg-brand-ink px-5 py-4 text-brand-bone">
+          {/* Header (dark) — extra top padding on mobile clears the status bar/notch. */}
+          <div className="flex items-center justify-between gap-3 bg-brand-ink px-5 py-4 max-sm:pt-[calc(env(safe-area-inset-top)+1rem)] text-brand-bone">
             <div className="flex items-center gap-3">
               <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-brand-purple/25 text-lg leading-none text-brand-purple">
                 ✻
@@ -527,7 +528,7 @@ const Chatbot: React.FC = () => {
                       <p className="whitespace-pre-line">{message.content}</p>
                       <div className="relative">
                         <select
-                          className="w-full appearance-none rounded-xl border border-brand-ink/15 bg-brand-bone px-3 py-2.5 text-sm md:text-base text-brand-ink transition-colors focus:border-brand-purple focus:outline-none focus:ring-1 focus:ring-brand-purple"
+                          className="w-full appearance-none rounded-xl border border-brand-ink/15 bg-brand-bone px-3 py-2.5 text-base text-brand-ink transition-colors focus:border-brand-purple focus:outline-none focus:ring-1 focus:ring-brand-purple"
                           onChange={(e) =>
                             message.data && 'type' in message.data && message.data.type === 'industry'
                               ? handleIndustrySelect(e.target.value)
@@ -581,9 +582,15 @@ const Chatbot: React.FC = () => {
             <div ref={messagesEndRef} />
           </div>
 
-          {/* Footer: input + section nav + reset */}
-          <div className="border-t border-brand-ink/10 bg-brand-bone p-3">
-            <div className="flex items-center gap-2 rounded-2xl border border-brand-ink/15 px-2 py-1 transition-colors focus-within:border-brand-purple focus-within:ring-1 focus-within:ring-brand-purple">
+          {/* Footer: input + section nav + reset — extra bottom padding on
+              mobile clears the home indicator. */}
+          <div className="border-t border-brand-ink/10 bg-brand-bone p-3 max-sm:pb-[calc(env(safe-area-inset-bottom)+0.75rem)]">
+            <div className="flex items-center gap-1.5">
+              {/* Seamless pill input + a plain send arrow to the right. The
+                  explicit border/rounded/bg/shadow resets override the global
+                  `input {…}` rule in globals.css (which otherwise draws a second
+                  rounded box + focus glow inside the pill). text-base (16px)
+                  also stops iOS Safari from zooming in on focus. */}
               <input
                 type="text"
                 value={inputValue}
@@ -591,15 +598,15 @@ const Chatbot: React.FC = () => {
                 onKeyPress={handleKeyPress}
                 placeholder={placeholder}
                 disabled={isInputDisabled()}
-                className="flex-1 bg-transparent px-2 py-2 text-sm md:text-base text-brand-ink placeholder:text-brand-ink-soft focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+                className="flex-1 min-w-0 rounded-full border border-brand-ink/15 bg-brand-bone px-4 py-2.5 text-base text-brand-ink shadow-none transition-colors duration-200 ease-brand-out placeholder:text-brand-ink-soft focus:border-brand-purple/60 focus:shadow-none focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
               />
               <button
                 onClick={handleSendMessage}
                 disabled={isInputDisabled()}
                 aria-label="Send message"
-                className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-brand-purple text-brand-bone transition-colors hover:bg-brand-purple-hover disabled:opacity-40 disabled:hover:bg-brand-purple"
+                className="grid h-10 w-10 shrink-0 place-items-center rounded-full text-brand-purple transition-all duration-200 ease-brand-out hover:bg-brand-purple/10 active:scale-95 disabled:text-brand-ink-soft disabled:hover:bg-transparent"
               >
-                <Send className="h-4 w-4" />
+                <Send className="h-5 w-5" />
               </button>
             </div>
 
@@ -637,11 +644,14 @@ const Chatbot: React.FC = () => {
         </div>
       )}
 
-      {/* Floating toggle */}
+      {/* Floating toggle — hidden on mobile while the full-screen panel is open
+          (the panel header has its own close button). */}
       <button
         onClick={toggleChat}
         aria-label={isOpen ? 'Close chat' : 'Open chat'}
-        className="grid h-14 w-14 place-items-center rounded-full bg-brand-purple text-brand-bone shadow-[0_12px_30px_-8px_rgba(89,1,120,0.6)] transition-all duration-300 ease-brand-out hover:bg-brand-purple-hover hover:scale-105 active:scale-95"
+        className={`grid h-14 w-14 place-items-center rounded-full bg-brand-purple text-brand-bone shadow-[0_12px_30px_-8px_rgba(89,1,120,0.6)] transition-all duration-300 ease-brand-out hover:bg-brand-purple-hover hover:scale-105 active:scale-95 ${
+          isOpen ? 'max-sm:hidden' : ''
+        }`}
       >
         {isOpen ? <X className="h-6 w-6" /> : <MessageSquare className="h-6 w-6" />}
       </button>
